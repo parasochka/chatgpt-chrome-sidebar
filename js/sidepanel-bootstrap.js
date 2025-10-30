@@ -206,3 +206,4 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('focus', () => {
   forceReloadCurrentPortal();
 });
+
