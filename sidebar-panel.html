@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ChatGPT Sidebar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary stylesheet -->
+  <link rel="stylesheet" href="css/sidepanel-layout.css">
+
+  <!-- Fallback if sidepanel-layout.css fails to load -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #f5f6f8;
+    }
+    .frame-wrap {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #fff;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame-wrap">
+    <iframe
+      id="gpt-frame"
+      allow="clipboard-read; clipboard-write; autoplay; microphone; camera"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+
+  <!-- Domain selection and iframe src logic lives here -->
+  <script src="js/sidepanel-bootstrap.js"></script>
+</body>
+</html>

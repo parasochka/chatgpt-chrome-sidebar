@@ -1,0 +1,10 @@
+{
+  "name": "chatgpt-sidebar",
+  "version": "0.0.2",
+  "description": "Personal Chrome sidebar for ChatGPT using your own account (not affiliated with OpenAI).",
+  "author": "Artem Parasochka",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "zip": "zip -r ../chatgpt-sidebar.zip . -x '*.git*' 'node_modules/*' '*.DS_Store' '*.md'"
+  }
+}
