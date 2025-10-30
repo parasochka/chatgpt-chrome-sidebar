@@ -1,0 +1,71 @@
+/* Base reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light dark; /* use the system theme */
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* hide scrollbars inside the sidebar container */
+  background: #f5f6f8;
+  color: #222;
+}
+
+/* Wrapper that correctly rounds the iframe */
+.frame-wrap {
+  width: 100%;
+  height: 100%;
+  padding: 0;              /* add padding here if you ever need it */
+  border-radius: 12px;
+  overflow: hidden;        /* key to rounding the iframe contents */
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  transform: translateZ(0); /* smoothing that removes artifacts during animation */
+}
+
+/* The iframe itself */
+#gpt-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: gpt-fade-in .4s ease-out forwards;
+}
+
+@keyframes gpt-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background: #0d0f12;
+    color: #ddd;
+  }
+  .frame-wrap {
+    background: #111418;
+    box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  }
+}
+
+/* Accessibility: honor reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  #gpt-frame {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
