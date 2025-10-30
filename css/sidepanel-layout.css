@@ -28,6 +28,7 @@ html, body {
   background: #fff;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
   transform: translateZ(0); /* smoothing that removes artifacts during animation */
+  position: relative;
 }
 
 /* The iframe itself */
@@ -40,6 +41,48 @@ html, body {
   opacity: 0;
   transform: translateY(24px);
   animation: gpt-fade-in .4s ease-out forwards;
+}
+
+.refresh-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.refresh-button:hover,
+.refresh-button:focus-visible {
+  background: #f1f5f9;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.16);
+  transform: translateY(-1px);
+}
+
+.refresh-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.18);
+}
+
+.refresh-button[disabled] {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+}
+
+.refresh-button svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
 @keyframes gpt-fade-in {
@@ -58,6 +101,19 @@ html, body {
   .frame-wrap {
     background: #111418;
     box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  }
+  .refresh-button {
+    background: rgba(30, 41, 59, 0.9);
+    color: #e2e8f0;
+    box-shadow: 0 4px 16px rgba(2, 6, 23, 0.35);
+  }
+  .refresh-button:hover,
+  .refresh-button:focus-visible {
+    background: rgba(30, 41, 59, 1);
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.45);
+  }
+  .refresh-button:active {
+    box-shadow: 0 3px 14px rgba(2, 6, 23, 0.4);
   }
 }
 

@@ -42,11 +42,34 @@ function selectBestPortalCandidate(states) {
   return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
-function mountPortalIntoIframe(base) {
+function normalizeBase(base) {
+  try {
+    const url = new URL(base);
+    url.hash = '';
+    url.search = '';
+    return url.toString().replace(/\/$/, '');
+  } catch (e) {
+    return base.replace(/\/$/, '');
+  }
+}
+
+function mountPortalIntoIframe(base, { forceReload = false } = {}) {
   const iframe = document.getElementById('gpt-frame');
   if (!iframe) return;
-  // Load the root page; ChatGPT decides where to redirect
-  iframe.src = `${base}/`;
+
+  const normalized = normalizeBase(base);
+  const targetSrc = `${normalized}/`;
+  const previousBase = iframe.dataset.portalBase;
+  const shouldReload = forceReload || previousBase !== normalized;
+
+  if (!shouldReload) {
+    return;
+  }
+
+  const srcWithBuster = forceReload ? `${targetSrc}?sidepanel=${Date.now()}` : targetSrc;
+
+  iframe.dataset.portalBase = normalized;
+  iframe.src = srcWithBuster;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
@@ -103,10 +126,62 @@ function renderPortalNotice(state) {
   document.body.appendChild(root);
 }
 
+let cachedPortalState = null;
+let refreshButtonEl = null;
+
+const FORCE_RELOAD_INTERVAL_MS = 2000;
+let lastForcedReload = 0;
+
+function forceReloadCurrentPortal({ bypassThrottle = false } = {}) {
+  if (!cachedPortalState) return;
+
+  const now = Date.now();
+  if (!bypassThrottle && now - lastForcedReload < FORCE_RELOAD_INTERVAL_MS) {
+    return;
+  }
+
+  lastForcedReload = now;
+  mountPortalIntoIframe(cachedPortalState.base, { forceReload: true });
+}
+
+function ensureRefreshButton() {
+  if (refreshButtonEl) return refreshButtonEl;
+
+  const wrap = document.querySelector('.frame-wrap');
+  if (!wrap) return null;
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'refresh-button';
+  button.setAttribute('aria-label', 'Refresh ChatGPT view');
+  button.title = 'Refresh ChatGPT view';
+  button.innerHTML = `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 5a7 7 0 0 1 5.61 2.87l1.32-1.5A1 1 0 0 1 20.92 7l.08 4a1 1 0 0 1-1 1h-4a1 1 0 1 1 0-2h1.64A5 5 0 0 0 12 7a5 5 0 0 0-4.9 6.06 1 1 0 0 1-1.95.44A7 7 0 0 1 12 5Zm6.85 7.5a1 1 0 0 1 1.28.58A7 7 0 0 1 12 19a7 7 0 0 1-5.6-2.86l-1.33 1.5A1 1 0 0 1 3.09 17L3 13a1 1 0 0 1 1-1h4a1 1 0 0 1 0 2H6.36A5 5 0 0 0 12 17a5 5 0 0 0 4.9-6.06 1 1 0 0 1 1.95-.44Z" />
+    </svg>
+  `;
+
+  button.addEventListener('click', () => {
+    button.disabled = true;
+    forceReloadCurrentPortal({ bypassThrottle: true });
+    window.setTimeout(() => {
+      button.disabled = false;
+    }, FORCE_RELOAD_INTERVAL_MS);
+  });
+
+  wrap.appendChild(button);
+  refreshButtonEl = button;
+  return button;
+}
+
 async function bootstrapSidepanel() {
   // Check both bases in parallel
   const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
   const chosen = selectBestPortalCandidate(checks);
+
+  cachedPortalState = chosen;
+
+  ensureRefreshButton();
 
   // Always set the src so the user can sign in directly inside the iframe
   mountPortalIntoIframe(chosen.base);
@@ -117,4 +192,17 @@ async function bootstrapSidepanel() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
+document.addEventListener('DOMContentLoaded', () => {
+  ensureRefreshButton();
+  bootstrapSidepanel();
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    forceReloadCurrentPortal();
+  }
+});
+
+window.addEventListener('focus', () => {
+  forceReloadCurrentPortal();
+});
