@@ -42,34 +42,11 @@ function selectBestPortalCandidate(states) {
   return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
-function normalizeBase(base) {
-  try {
-    const url = new URL(base);
-    url.hash = '';
-    url.search = '';
-    return url.toString().replace(/\/$/, '');
-  } catch (e) {
-    return base.replace(/\/$/, '');
-  }
-}
-
-function mountPortalIntoIframe(base, { forceReload = false } = {}) {
+function mountPortalIntoIframe(base) {
   const iframe = document.getElementById('gpt-frame');
   if (!iframe) return;
-
-  const normalized = normalizeBase(base);
-  const targetSrc = `${normalized}/`;
-  const previousBase = iframe.dataset.portalBase;
-  const shouldReload = forceReload || previousBase !== normalized;
-
-  if (!shouldReload) {
-    return;
-  }
-
-  const srcWithBuster = forceReload ? `${targetSrc}?sidepanel=${Date.now()}` : targetSrc;
-
-  iframe.dataset.portalBase = normalized;
-  iframe.src = srcWithBuster;
+  // Load the root page; ChatGPT decides where to redirect
+  iframe.src = `${base}/`;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
@@ -126,14 +103,10 @@ function renderPortalNotice(state) {
   document.body.appendChild(root);
 }
 
-let cachedPortalState = null;
-
 async function bootstrapSidepanel() {
   // Check both bases in parallel
   const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
   const chosen = selectBestPortalCandidate(checks);
-
-  cachedPortalState = chosen;
 
   // Always set the src so the user can sign in directly inside the iframe
   mountPortalIntoIframe(chosen.base);
@@ -145,9 +118,3 @@ async function bootstrapSidepanel() {
 }
 
 document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
-
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && cachedPortalState) {
-    mountPortalIntoIframe(cachedPortalState.base, { forceReload: true });
-  }
-});
