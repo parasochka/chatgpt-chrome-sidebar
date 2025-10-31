@@ -5,6 +5,8 @@ const CHATGPT_PORTALS = [
   'https://chatgpt.com'
 ];
 
+let portalNoticeRoot = null;
+
 async function fetchPortalAuthState(base) {
   try {
     const res = await fetch(`${base}/api/auth/session`, {
@@ -42,16 +44,39 @@ function selectBestPortalCandidate(states) {
   return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
+function clearPortalNotice() {
+  if (portalNoticeRoot) {
+    portalNoticeRoot.remove();
+    portalNoticeRoot = null;
+  }
+}
+
+function buildPortalUrl(base) {
+  try {
+    const url = new URL('/', base);
+    return url.toString();
+  } catch (error) {
+    console.error('Failed to build portal URL', base, error);
+    return null;
+  }
+}
+
 function mountPortalIntoIframe(base) {
   const iframe = document.getElementById('gpt-frame');
   if (!iframe) return;
-  // Load the root page; ChatGPT decides where to redirect
-  iframe.src = `${base}/`;
+
+  const nextSrc = buildPortalUrl(base);
+  if (!nextSrc) {
+    return;
+  }
+
+  iframe.src = nextSrc;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
 
 function renderPortalNotice(state) {
+  clearPortalNotice();
   // Simple overlay banner without external dependencies
   const root = document.createElement('div');
   root.style.position = 'absolute';
@@ -101,6 +126,7 @@ function renderPortalNotice(state) {
   box.appendChild(p);
   root.appendChild(box);
   document.body.appendChild(root);
+  portalNoticeRoot = root;
 }
 
 async function bootstrapSidepanel() {
@@ -114,7 +140,11 @@ async function bootstrapSidepanel() {
   // If not authorized, show a hint
   if (chosen.state !== 'authorized') {
     renderPortalNotice(chosen);
+  } else {
+    clearPortalNotice();
   }
 }
 
-document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
+document.addEventListener('DOMContentLoaded', () => {
+  bootstrapSidepanel();
+});

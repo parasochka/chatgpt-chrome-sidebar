@@ -55,3 +55,4 @@ chrome.runtime.onStartup.addListener(registerSidepanelDnrRules);
 chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error) => console.error(error));
+

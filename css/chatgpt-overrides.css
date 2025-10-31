@@ -6,3 +6,39 @@ button[data-testid="close-sidebar-button"] {
 button[data-testid="close-sidebar-button"] > * {
   cursor: inherit !important;
 }
+
+#chatgpt-sidebar-refresh-button {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+#chatgpt-sidebar-refresh-button:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+#chatgpt-sidebar-refresh-button:active {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+@media (prefers-color-scheme: light) {
+  #chatgpt-sidebar-refresh-button:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  #chatgpt-sidebar-refresh-button:active {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+}
