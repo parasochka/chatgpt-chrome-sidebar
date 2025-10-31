@@ -5,6 +5,21 @@ const CHATGPT_PORTALS = [
   'https://chatgpt.com'
 ];
 
+let portalNoticeRoot = null;
+
+function normalizePortalBase(base) {
+  if (typeof base !== 'string') {
+    return '';
+  }
+
+  const trimmed = base.trim();
+  if (!trimmed) {
+    return '';
+  }
+
+  return trimmed.endsWith('/') ? trimmed : `${trimmed}/`;
+}
+
 async function fetchPortalAuthState(base) {
   try {
     const res = await fetch(`${base}/api/auth/session`, {
@@ -42,16 +57,56 @@ function selectBestPortalCandidate(states) {
   return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
-function mountPortalIntoIframe(base) {
+function clearPortalNotice() {
+  if (portalNoticeRoot) {
+    portalNoticeRoot.remove();
+    portalNoticeRoot = null;
+  }
+}
+
+function mountPortalIntoIframe(base, { forceRefresh = false } = {}) {
   const iframe = document.getElementById('gpt-frame');
   if (!iframe) return;
-  // Load the root page; ChatGPT decides where to redirect
-  iframe.src = `${base}/`;
+
+  const normalizedBase = normalizePortalBase(base);
+  if (!normalizedBase) {
+    return;
+  }
+
+  const currentSrc = iframe.getAttribute('src');
+  const sameBase = currentSrc === normalizedBase;
+
+  const assignSrc = () => {
+    iframe.src = normalizedBase;
+  };
+
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+
+  if (!sameBase) {
+    assignSrc();
+    return;
+  }
+
+  if (forceRefresh) {
+    try {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.location.reload();
+        return;
+      }
+    } catch (err) {
+      // Accessing cross-origin location can throw; fall back to resetting the src below
+    }
+
+    iframe.src = 'about:blank';
+    requestAnimationFrame(assignSrc);
+  }
+
+  // When the base is unchanged and no refresh was requested we leave the iframe as-is
 }
 
 function renderPortalNotice(state) {
+  clearPortalNotice();
   // Simple overlay banner without external dependencies
   const root = document.createElement('div');
   root.style.position = 'absolute';
@@ -101,20 +156,32 @@ function renderPortalNotice(state) {
   box.appendChild(p);
   root.appendChild(box);
   document.body.appendChild(root);
+  portalNoticeRoot = root;
 }
 
-async function bootstrapSidepanel() {
+async function bootstrapSidepanel(options = {}) {
+  const { forceRefresh = false } = options;
   // Check both bases in parallel
   const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
   const chosen = selectBestPortalCandidate(checks);
 
   // Always set the src so the user can sign in directly inside the iframe
-  mountPortalIntoIframe(chosen.base);
+  mountPortalIntoIframe(chosen.base, { forceRefresh });
 
   // If not authorized, show a hint
   if (chosen.state !== 'authorized') {
     renderPortalNotice(chosen);
+  } else {
+    clearPortalNotice();
   }
 }
 
-document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
+document.addEventListener('DOMContentLoaded', () => {
+  bootstrapSidepanel();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      bootstrapSidepanel({ forceRefresh: true });
+    }
+  });
+});
