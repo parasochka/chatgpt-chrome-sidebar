@@ -5,6 +5,14 @@ const CHATGPT_PORTALS = [
   'https://chatgpt.com'
 ];
 
+const IFRAME_ALLOW = 'clipboard-read; clipboard-write; autoplay; microphone; camera';
+const IFRAME_REFERRER_POLICY = 'no-referrer-when-downgrade';
+const REFRESH_IFRAME_MESSAGE_TYPE = 'chatgpt-sidebar/refresh-iframe';
+
+let chosenPortalBase = null;
+let visibilityListenerAttached = false;
+let refreshRequested = false;
+
 async function fetchPortalAuthState(base) {
   try {
     const res = await fetch(`${base}/api/auth/session`, {
@@ -42,13 +50,65 @@ function selectBestPortalCandidate(states) {
   return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
-function mountPortalIntoIframe(base) {
-  const iframe = document.getElementById('gpt-frame');
-  if (!iframe) return;
-  // Load the root page; ChatGPT decides where to redirect
-  iframe.src = `${base}/`;
-  iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
-  iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+function mountPortalIntoIframe(base, { replace = false } = {}) {
+  const frameWrap = document.querySelector('.frame-wrap');
+  if (!frameWrap) return null;
+
+  const targetSrc = `${base}/`;
+  let iframe = document.getElementById('gpt-frame');
+
+  if (!iframe || replace) {
+    const newIframe = document.createElement('iframe');
+    newIframe.id = 'gpt-frame';
+    newIframe.src = targetSrc;
+    newIframe.setAttribute('allow', IFRAME_ALLOW);
+    newIframe.setAttribute('referrerpolicy', IFRAME_REFERRER_POLICY);
+
+    if (iframe) {
+      frameWrap.replaceChild(newIframe, iframe);
+    } else {
+      frameWrap.appendChild(newIframe);
+    }
+
+    iframe = newIframe;
+  } else {
+    iframe.src = targetSrc;
+    iframe.setAttribute('allow', IFRAME_ALLOW);
+    iframe.setAttribute('referrerpolicy', IFRAME_REFERRER_POLICY);
+  }
+
+  iframe.dataset.portalBase = base;
+  return iframe;
+}
+
+function refreshIframe() {
+  if (!chosenPortalBase) {
+    refreshRequested = true;
+    return;
+  }
+
+  refreshRequested = false;
+  mountPortalIntoIframe(chosenPortalBase, { replace: true });
+}
+
+function attachVisibilityRefreshHandler() {
+  if (visibilityListenerAttached) return;
+  visibilityListenerAttached = true;
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && chosenPortalBase) {
+      // Replace the iframe node so the ChatGPT app reloads fresh data.
+      refreshIframe();
+    }
+  });
+}
+
+if (chrome?.runtime?.onMessage) {
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message && message.type === REFRESH_IFRAME_MESSAGE_TYPE) {
+      refreshIframe();
+    }
+  });
 }
 
 function renderPortalNotice(state) {
@@ -110,6 +170,12 @@ async function bootstrapSidepanel() {
 
   // Always set the src so the user can sign in directly inside the iframe
   mountPortalIntoIframe(chosen.base);
+  chosenPortalBase = chosen.base;
+  attachVisibilityRefreshHandler();
+
+  if (refreshRequested) {
+    refreshIframe();
+  }
 
   // If not authorized, show a hint
   if (chosen.state !== 'authorized') {
