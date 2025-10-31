@@ -9,15 +9,15 @@ A minimal Chrome extension that embeds ChatGPT directly into the browser’s sid
 - 🧠 Quick access to ChatGPT in Chrome’s native sidebar  
 - 🔐 Uses your existing ChatGPT session (no login inside the extension)  
 - ⚙️ Works with both `chat.openai.com` and `chatgpt.com`  
-- 🚫 No data collection, no analytics, no ads  
+- 🚫 No data collection, no analytics, no ads
+- 🔄 Refresh the chat history to pull in your latest conversations
 
 ---
 
 ## Installation
 
 ### From Chrome Web Store
-(coming soon)  
-Once approved, it will be available in the [Chrome Web Store](https://chrome.google.com/webstore/).
+Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/chatgpt-sidebar/ibgipmeolfponfpmjhflfgkbcecpmcoo).
 
 ### Manual Installation
 1. Download the project.  

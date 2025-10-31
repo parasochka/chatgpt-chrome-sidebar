@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2
+- Fixed the close button design
+- Added a refresh mechanism for viewing new chats in the history
+
 ## 0.1
 - First public release
 - Fixed translation issues
