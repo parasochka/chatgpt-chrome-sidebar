@@ -53,8 +53,7 @@ html, body {
 .sidepanel-toolbar {
   position: absolute;
   top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
