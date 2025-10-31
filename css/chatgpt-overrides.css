@@ -1,0 +1,8 @@
+/* Cursor fixes for ChatGPT UI overrides */
+button[data-testid="close-sidebar-button"] {
+  cursor: pointer !important;
+}
+
+button[data-testid="close-sidebar-button"] > * {
+  cursor: inherit !important;
+}
