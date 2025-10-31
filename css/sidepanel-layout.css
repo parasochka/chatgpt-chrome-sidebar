@@ -43,6 +43,8 @@ html, body {
   backdrop-filter: blur(12px);
   flex: 0 0 auto;
   z-index: 2;
+  color: #343541;
+  font-family: "Söhne", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .frame-actions {
@@ -67,7 +69,10 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font: 500 14px/1.2 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
+  font-family: inherit;
   white-space: nowrap;
   cursor: pointer;
   transition: background-color .2s ease, color .2s ease;
@@ -140,6 +145,7 @@ html, body {
   .frame-header {
     border-bottom-color: rgba(148,163,184,.16);
     background: rgba(17,20,24,.92);
+    color: #ececf1;
   }
   .toolbar-btn:hover,
   .toolbar-btn:focus-visible {
