@@ -20,8 +20,10 @@ function setRefreshButtonLoading(isLoading) {
   const button = getRefreshButton();
   if (!button) return;
 
-  button.disabled = isLoading;
   button.classList.toggle('is-loading', isLoading);
+  button.dataset.loading = isLoading ? 'true' : 'false';
+  button.setAttribute('aria-disabled', isLoading ? 'true' : 'false');
+  button.tabIndex = isLoading ? -1 : 0;
 
   const label = button.querySelector('.toolbar-btn__label');
   if (label) {
@@ -67,6 +69,9 @@ function setupToolbarInteractions() {
   const refreshButton = getRefreshButton();
   if (refreshButton) {
     refreshButton.addEventListener('click', () => {
+      if (refreshButton.getAttribute('aria-disabled') === 'true') {
+        return;
+      }
       reloadChatIframe();
     });
   }
