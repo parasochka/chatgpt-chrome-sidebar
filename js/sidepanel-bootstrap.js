@@ -7,9 +7,11 @@ const CHATGPT_PORTALS = [
 
 const IFRAME_ALLOW = 'clipboard-read; clipboard-write; autoplay; microphone; camera';
 const IFRAME_REFERRER_POLICY = 'no-referrer-when-downgrade';
+const REFRESH_IFRAME_MESSAGE_TYPE = 'chatgpt-sidebar/refresh-iframe';
 
 let chosenPortalBase = null;
 let visibilityListenerAttached = false;
+let refreshRequested = false;
 
 async function fetchPortalAuthState(base) {
   try {
@@ -79,6 +81,16 @@ function mountPortalIntoIframe(base, { replace = false } = {}) {
   return iframe;
 }
 
+function refreshIframe() {
+  if (!chosenPortalBase) {
+    refreshRequested = true;
+    return;
+  }
+
+  refreshRequested = false;
+  mountPortalIntoIframe(chosenPortalBase, { replace: true });
+}
+
 function attachVisibilityRefreshHandler() {
   if (visibilityListenerAttached) return;
   visibilityListenerAttached = true;
@@ -86,7 +98,15 @@ function attachVisibilityRefreshHandler() {
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible' && chosenPortalBase) {
       // Replace the iframe node so the ChatGPT app reloads fresh data.
-      mountPortalIntoIframe(chosenPortalBase, { replace: true });
+      refreshIframe();
+    }
+  });
+}
+
+if (chrome?.runtime?.onMessage) {
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message && message.type === REFRESH_IFRAME_MESSAGE_TYPE) {
+      refreshIframe();
     }
   });
 }
@@ -152,6 +172,10 @@ async function bootstrapSidepanel() {
   mountPortalIntoIframe(chosen.base);
   chosenPortalBase = chosen.base;
   attachVisibilityRefreshHandler();
+
+  if (refreshRequested) {
+    refreshIframe();
+  }
 
   // If not authorized, show a hint
   if (chosen.state !== 'authorized') {

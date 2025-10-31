@@ -55,3 +55,11 @@ chrome.runtime.onStartup.addListener(registerSidepanelDnrRules);
 chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error) => console.error(error));
+
+chrome.sidePanel.onShown.addListener(() => {
+  chrome.runtime.sendMessage({ type: 'chatgpt-sidebar/refresh-iframe' }, () => {
+    if (chrome.runtime.lastError) {
+      // Ignore missing listeners (e.g. if the side panel has not loaded yet)
+    }
+  });
+});
