@@ -26,9 +26,16 @@
     });
   };
 
+  const elementMatchesSelector = (element) =>
+    SELECTORS.some((selector) => element.matches(selector));
+
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.type === 'attributes' && mutation.target instanceof HTMLElement) {
+        if (elementMatchesSelector(mutation.target)) {
+          applyCursor(mutation.target);
+        }
+
         scanForButtons(mutation.target);
       }
 
@@ -37,7 +44,7 @@
           return;
         }
 
-        if (SELECTORS.some((selector) => node.matches(selector))) {
+        if (elementMatchesSelector(node)) {
           applyCursor(node);
         }
 
