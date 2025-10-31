@@ -69,3 +69,8 @@ html, body {
     transform: none;
   }
 }
+
+/* Ensure the close button keeps the expected pointer cursor */
+button[aria-label="Close sidebar"] {
+  cursor: pointer !important;
+}
