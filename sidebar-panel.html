@@ -55,15 +55,15 @@
       appearance: none;
       border: 0;
       margin: 0;
-      padding: 0;
-      width: 32px;
+      padding: 0 12px;
       height: 32px;
       border-radius: 8px;
       background: transparent;
       color: inherit;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
+      font: 500 14px/1.2 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       cursor: pointer;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
@@ -75,8 +75,9 @@
       cursor: default;
     }
     .toolbar-btn svg {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
       stroke: currentColor;
     }
     .toolbar-btn.is-loading svg {
@@ -103,14 +104,11 @@
           title="Refresh chats"
           aria-label="Refresh chats"
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <span class="toolbar-btn__label" aria-live="polite">Update Chats</span>
+          <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false">
             <path
-              d="M4.5 12a7.5 7.5 0 0 1 12.75-5.303l.75.75V4.5h1.5v5.25H14.25V8.25h2.028l-.54-.54A6 6 0 1 0 18 12h1.5a7.5 7.5 0 1 1-15 0Z"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              d="M22,16c0,4.41-3.586,8-8,8s-8-3.59-8-8s3.586-8,8-8l2.359,0.027l-1.164,1.164l2.828,2.828L24.035,6l-6.012-6l-2.828,2.828L16.375,4H14C7.375,4,2,9.371,2,16s5.375,12,12,12s12-5.371,12-12H22z"
+              fill="currentColor"
             />
           </svg>
         </button>
