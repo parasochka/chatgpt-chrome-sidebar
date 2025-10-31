@@ -5,6 +5,8 @@ const CHATGPT_PORTALS = [
   'https://chatgpt.com'
 ];
 
+let portalNoticeRoot = null;
+
 async function fetchPortalAuthState(base) {
   try {
     const res = await fetch(`${base}/api/auth/session`, {
@@ -42,16 +44,56 @@ function selectBestPortalCandidate(states) {
   return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
-function mountPortalIntoIframe(base) {
+function clearPortalNotice() {
+  if (portalNoticeRoot) {
+    portalNoticeRoot.remove();
+    portalNoticeRoot = null;
+  }
+}
+
+function buildPortalUrl(base, { cacheBust = false } = {}) {
+  try {
+    const url = new URL('/', base);
+    if (cacheBust) {
+      url.searchParams.set('_sidebar_ts', Date.now().toString());
+    }
+    return url.toString();
+  } catch (error) {
+    console.error('Failed to build portal URL', base, error);
+    return null;
+  }
+}
+
+function mountPortalIntoIframe(base, { forceRefresh = false } = {}) {
   const iframe = document.getElementById('gpt-frame');
   if (!iframe) return;
-  // Load the root page; ChatGPT decides where to redirect
-  iframe.src = `${base}/`;
+
+  const baseUrl = buildPortalUrl(base, { cacheBust: false });
+  if (!baseUrl) {
+    return;
+  }
+
+  const currentBase = iframe.dataset.portalBase;
+  if (!forceRefresh && currentBase === baseUrl) {
+    return;
+  }
+
+  const nextSrc = forceRefresh
+    ? buildPortalUrl(base, { cacheBust: true })
+    : baseUrl;
+
+  if (!nextSrc) {
+    return;
+  }
+
+  iframe.dataset.portalBase = baseUrl;
+  iframe.src = nextSrc;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
 
 function renderPortalNotice(state) {
+  clearPortalNotice();
   // Simple overlay banner without external dependencies
   const root = document.createElement('div');
   root.style.position = 'absolute';
@@ -101,20 +143,44 @@ function renderPortalNotice(state) {
   box.appendChild(p);
   root.appendChild(box);
   document.body.appendChild(root);
+  portalNoticeRoot = root;
 }
 
-async function bootstrapSidepanel() {
+async function bootstrapSidepanel(options = {}) {
+  const { forceRefresh = false } = options;
   // Check both bases in parallel
   const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
   const chosen = selectBestPortalCandidate(checks);
 
   // Always set the src so the user can sign in directly inside the iframe
-  mountPortalIntoIframe(chosen.base);
+  mountPortalIntoIframe(chosen.base, { forceRefresh });
 
   // If not authorized, show a hint
   if (chosen.state !== 'authorized') {
     renderPortalNotice(chosen);
+  } else {
+    clearPortalNotice();
   }
 }
 
-document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible') {
+    bootstrapSidepanel({ forceRefresh: true });
+  }
+}
+
+function registerRuntimeListeners() {
+  if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message && message.type === 'chatgpt-sidebar-opened') {
+        bootstrapSidepanel({ forceRefresh: true });
+      }
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  bootstrapSidepanel();
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  registerRuntimeListeners();
+});
