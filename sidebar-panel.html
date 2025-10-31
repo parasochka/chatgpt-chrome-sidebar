@@ -46,35 +46,39 @@
     .toolbar-tooltip {
       position: relative;
       display: inline-flex;
+      align-items: center;
     }
     .toolbar-tooltip__bubble {
       position: absolute;
-      top: calc(100% + 8px);
-      left: 50%;
-      transform: translate(-50%, 6px);
+      top: calc(100% + 12px);
+      right: 0;
+      left: auto;
+      transform: translate3d(0, 10px, 0);
+      transform-origin: top right;
       background: rgba(15, 23, 42, 0.96);
       color: #f8fafc;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font: 500 12px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font: 500 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       letter-spacing: 0.01em;
       white-space: normal;
-      width: min(50vw, 420px);
-      text-align: center;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16), 0 3px 8px rgba(15, 23, 42, 0.12);
+      max-width: min(70vw, 360px);
+      text-align: left;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.14);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.16s ease, transform 0.16s ease;
+      transition: opacity 0.16s ease, transform 0.18s ease;
       pointer-events: none;
       z-index: 2;
     }
     .toolbar-tooltip__bubble::after {
       content: "";
       position: absolute;
-      top: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 0 6px 6px 6px;
+      top: -8px;
+      right: 20px;
+      width: 0;
+      height: 0;
+      border-width: 0 8px 8px 8px;
       border-style: solid;
       border-color: transparent transparent rgba(15, 23, 42, 0.96) transparent;
     }
@@ -82,7 +86,7 @@
     .toolbar-tooltip:focus-within .toolbar-tooltip__bubble {
       opacity: 1;
       visibility: visible;
-      transform: translate(-50%, 0);
+      transform: translate3d(0, 0, 0);
     }
     .frame-body {
       flex: 1 1 auto;
