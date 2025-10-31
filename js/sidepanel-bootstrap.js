@@ -169,7 +169,7 @@ function setRefreshButtonState(isLoading) {
 
   const label = button.querySelector('.sidepanel-refresh__label');
   if (label) {
-    label.textContent = isLoading ? 'Updating…' : 'Update History';
+    label.textContent = isLoading ? 'Обновляется…' : 'Обновить';
   }
 }
 
