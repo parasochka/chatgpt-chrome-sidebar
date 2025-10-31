@@ -129,13 +129,14 @@ function renderPortalNotice(state) {
   portalNoticeRoot = root;
 }
 
-async function bootstrapSidepanel() {
+async function bootstrapSidepanel(options = {}) {
+  const { forceRefresh = false } = options;
   // Check both bases in parallel
   const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
   const chosen = selectBestPortalCandidate(checks);
 
   // Always set the src so the user can sign in directly inside the iframe
-  mountPortalIntoIframe(chosen.base);
+  mountPortalIntoIframe(chosen.base, { forceRefresh });
 
   // If not authorized, show a hint
   if (chosen.state !== 'authorized') {
