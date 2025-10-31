@@ -42,40 +42,11 @@ function selectBestPortalCandidate(states) {
   return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
-function normalizeBase(base) {
-  try {
-    const url = new URL(base);
-    url.hash = '';
-    url.search = '';
-    return url.toString().replace(/\/$/, '');
-  } catch (e) {
-    return (base || '').replace(/\/$/, '');
-  }
-}
-
-function mountPortalIntoIframe(base, { path = '/', forceReload = false } = {}) {
+function mountPortalIntoIframe(base) {
   const iframe = document.getElementById('gpt-frame');
   if (!iframe) return;
-
-  const normalizedBase = normalizeBase(base);
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  const targetSrc = `${normalizedBase}${normalizedPath}`;
-
-  const previousBase = iframe.dataset.portalBase;
-  const previousPath = iframe.dataset.portalPath || '';
-  const shouldReload = forceReload || previousBase !== normalizedBase || previousPath !== normalizedPath;
-
-  if (!shouldReload) {
-    return;
-  }
-
-  const finalSrc = forceReload
-    ? `${targetSrc}${targetSrc.includes('?') ? '&' : '?'}sidepanel=${Date.now()}`
-    : targetSrc;
-
-  iframe.dataset.portalBase = normalizedBase;
-  iframe.dataset.portalPath = normalizedPath;
-  iframe.src = finalSrc;
+  // Load the root page; ChatGPT decides where to redirect
+  iframe.src = `${base}/`;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
@@ -132,15 +103,10 @@ function renderPortalNotice(state) {
   document.body.appendChild(root);
 }
 
-let cachedPortalState = null;
-let lastConversationRefreshId = null;
-
 async function bootstrapSidepanel() {
   // Check both bases in parallel
   const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
   const chosen = selectBestPortalCandidate(checks);
-
-  cachedPortalState = chosen;
 
   // Always set the src so the user can sign in directly inside the iframe
   mountPortalIntoIframe(chosen.base);
@@ -152,34 +118,3 @@ async function bootstrapSidepanel() {
 }
 
 document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
-
-window.addEventListener('message', (event) => {
-  if (!event?.data || event.data.source !== 'chatgpt-sidebar') {
-    return;
-  }
-
-  const origin = normalizeBase(event.origin || '');
-  if (origin && !CHATGPT_PORTALS.includes(origin)) {
-    return;
-  }
-
-  if (event.data.type === 'conversation-created') {
-    const conversationId = event.data.conversationId;
-    if (!conversationId || conversationId === lastConversationRefreshId) {
-      return;
-    }
-
-    lastConversationRefreshId = conversationId;
-
-    const iframe = document.getElementById('gpt-frame');
-    const iframeBase = iframe?.dataset?.portalBase || cachedPortalState?.base || origin;
-    if (!iframeBase) {
-      return;
-    }
-
-    cachedPortalState = cachedPortalState || {};
-    cachedPortalState.base = iframeBase;
-
-    mountPortalIntoIframe(iframeBase, { path: `/c/${conversationId}`, forceReload: true });
-  }
-});

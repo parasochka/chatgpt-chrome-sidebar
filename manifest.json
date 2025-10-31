@@ -14,16 +14,6 @@
   "background": {
     "service_worker": "js/sidepanel-service-worker.js"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://chat.openai.com/*",
-        "https://chatgpt.com/*"
-      ],
-      "js": ["js/sidepanel-chat-sync.js"],
-      "run_at": "document_start"
-    }
-  ],
   "icons": {
     "16": "images/sidebar_16.png",
     "32": "images/sidebar_32.png",
