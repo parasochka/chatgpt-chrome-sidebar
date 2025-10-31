@@ -51,7 +51,19 @@ async function registerSidepanelDnrRules() {
 chrome.runtime.onInstalled.addListener(registerSidepanelDnrRules);
 chrome.runtime.onStartup.addListener(registerSidepanelDnrRules);
 
-// Make the action icon click open the side panel
-chrome.sidePanel
-  .setPanelBehavior({ openPanelOnActionClick: true })
-  .catch((error) => console.error(error));
+// Make the action icon click open the side panel (if supported)
+if (chrome?.sidePanel?.setPanelBehavior) {
+  chrome.sidePanel
+    .setPanelBehavior({ openPanelOnActionClick: true })
+    .catch((error) => console.error(error));
+}
+
+if (chrome?.sidePanel?.onShown?.addListener) {
+  chrome.sidePanel.onShown.addListener(() => {
+    chrome.runtime.sendMessage({ type: 'chatgpt-sidebar/refresh-iframe' }, () => {
+      if (chrome.runtime.lastError) {
+        // Ignore missing listeners (e.g. if the side panel has not loaded yet)
+      }
+    });
+  });
+}
