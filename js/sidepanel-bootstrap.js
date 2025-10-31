@@ -9,6 +9,50 @@ let cachedPortalState = null;
 let activeLoadPromise = null;
 let portalNoticeRoot = null;
 
+const TRUSTED_HISTORY_ORIGINS = new Set([
+  'https://chat.openai.com',
+  'https://chatgpt.com'
+]);
+let historyToolbarVisible = null;
+
+function updateHistoryToolbarVisibility(isVisible) {
+  const toolbar = document.querySelector('.sidepanel-toolbar');
+  if (!toolbar) {
+    return;
+  }
+
+  const finalState = Boolean(isVisible);
+  if (historyToolbarVisible === finalState) {
+    return;
+  }
+
+  historyToolbarVisible = finalState;
+  toolbar.hidden = !finalState;
+  toolbar.setAttribute('aria-hidden', finalState ? 'false' : 'true');
+}
+
+function handleHistoryVisibilityMessage(event) {
+  if (!event || typeof event.data !== 'object') {
+    return;
+  }
+
+  if (!TRUSTED_HISTORY_ORIGINS.has(event.origin)) {
+    return;
+  }
+
+  const iframe = document.getElementById('gpt-frame');
+  if (!iframe || event.source !== iframe.contentWindow) {
+    return;
+  }
+
+  const { source, type, visible } = event.data;
+  if (source !== 'chatgpt-sidebar' || type !== 'chat-history-visibility') {
+    return;
+  }
+
+  updateHistoryToolbarVisibility(Boolean(visible));
+}
+
 async function fetchPortalAuthState(base) {
   try {
     const res = await fetch(`${base}/api/auth/session`, {
@@ -223,7 +267,10 @@ function setupRefreshButton() {
   });
 }
 
+window.addEventListener('message', handleHistoryVisibilityMessage);
+
 document.addEventListener('DOMContentLoaded', () => {
+  updateHistoryToolbarVisibility(false);
   setupRefreshButton();
   loadPortal({ refreshSession: true });
 });

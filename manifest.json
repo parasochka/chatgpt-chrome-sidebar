@@ -33,5 +33,18 @@
       "64": "images/sidebar_64.png",
       "128": "images/sidebar_128.png"
     }
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*"
+      ],
+      "js": [
+        "js/history-visibility-tracker.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
 }
