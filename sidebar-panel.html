@@ -71,17 +71,6 @@
       pointer-events: none;
       z-index: 2;
     }
-    .toolbar-tooltip__bubble::after {
-      content: "";
-      position: absolute;
-      top: -8px;
-      right: 20px;
-      width: 0;
-      height: 0;
-      border-width: 0 8px 8px 8px;
-      border-style: solid;
-      border-color: transparent transparent rgba(15, 23, 42, 0.96) transparent;
-    }
     .toolbar-tooltip:hover .toolbar-tooltip__bubble,
     .toolbar-tooltip:focus-within .toolbar-tooltip__bubble {
       opacity: 1;
@@ -163,7 +152,7 @@
               />
             </svg>
           </button>
-          <span id="refresh-chat-tooltip" role="tooltip" class="toolbar-tooltip__bubble">To see newly created chats, reload the sidebar. This will refresh the ChatGPT page inside it.</span>
+          <span id="refresh-chat-tooltip" role="tooltip" class="toolbar-tooltip__bubble">Reload the sidebar to refresh the chat list.</span>
         </div>
       </div>
     </div>
