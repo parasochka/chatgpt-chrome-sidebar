@@ -21,6 +21,7 @@
         "https://chatgpt.com/*"
       ],
       "css": ["css/chatgpt-overrides.css"],
+      "js": ["js/chatgpt-cursor-fix.js"],
       "run_at": "document_end"
     }
   ],
