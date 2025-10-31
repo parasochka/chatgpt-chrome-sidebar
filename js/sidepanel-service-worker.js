@@ -55,3 +55,30 @@ chrome.runtime.onStartup.addListener(registerSidepanelDnrRules);
 chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error) => console.error(error));
+
+function notifySidepanelOpened(details) {
+  try {
+    const maybePromise = chrome.runtime.sendMessage({
+      type: "chatgpt-sidebar-opened",
+      windowId: details && typeof details.windowId === "number" ? details.windowId : null
+    });
+    if (maybePromise && typeof maybePromise.catch === "function") {
+      maybePromise.catch((error) => {
+        if (error && !/receiving end does not exist/i.test(String(error))) {
+          console.warn("Failed to notify sidepanel about open event", error);
+        }
+      });
+    }
+  } catch (error) {
+    // Ignore missing listeners but log unexpected errors for diagnostics
+    if (error && !/receiving end does not exist/i.test(String(error))) {
+      console.warn("Failed to notify sidepanel about open event", error);
+    }
+  }
+}
+
+if (chrome.sidePanel && chrome.sidePanel.onShown) {
+  chrome.sidePanel.onShown.addListener((details) => {
+    notifySidepanelOpened(details);
+  });
+}
