@@ -7,6 +7,8 @@ const CHATGPT_PORTALS = [
 
 let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
+const REFRESH_BUTTON_TIMEOUT_MS = 15000;
+let refreshButtonResetTimeoutId = null;
 
 function getChatIframe() {
   return document.getElementById('gpt-frame');
@@ -20,9 +22,22 @@ function setRefreshButtonLoading(isLoading) {
   const button = getRefreshButton();
   if (!button) return;
 
+  if (refreshButtonResetTimeoutId !== null) {
+    clearTimeout(refreshButtonResetTimeoutId);
+    refreshButtonResetTimeoutId = null;
+  }
+
+  if (isLoading) {
+    refreshButtonResetTimeoutId = window.setTimeout(() => {
+      refreshButtonResetTimeoutId = null;
+      setRefreshButtonLoading(false);
+    }, REFRESH_BUTTON_TIMEOUT_MS);
+  }
+
   button.classList.toggle('is-loading', isLoading);
   button.dataset.loading = isLoading ? 'true' : 'false';
   button.setAttribute('aria-disabled', isLoading ? 'true' : 'false');
+  button.disabled = Boolean(isLoading);
   button.tabIndex = isLoading ? -1 : 0;
 
   const label = button.querySelector('.toolbar-btn__label-content') || button.querySelector('.toolbar-btn__label');
@@ -130,8 +145,14 @@ function mountPortalIntoIframe(base) {
 }
 
 function renderPortalNotice(state) {
+  const existingNotice = document.querySelector('[data-portal-notice]');
+  if (existingNotice) {
+    existingNotice.remove();
+  }
+
   // Simple overlay banner without external dependencies
   const root = document.createElement('div');
+  root.setAttribute('data-portal-notice', '');
   root.style.position = 'absolute';
   root.style.top = '12px';
   root.style.left = '50%';
@@ -159,7 +180,7 @@ function renderPortalNotice(state) {
   const link = document.createElement('a');
   link.href = state.base;
   link.target = '_blank';
-  link.rel = 'noreferrer';
+  link.rel = 'noopener noreferrer';
   link.textContent = new URL(state.base).host;
 
   if (state.state === 'cloudflare') {
