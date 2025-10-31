@@ -22,6 +22,11 @@ function setRefreshButtonLoading(isLoading) {
 
   button.disabled = isLoading;
   button.classList.toggle('is-loading', isLoading);
+
+  const label = button.querySelector('.toolbar-btn__label');
+  if (label) {
+    label.textContent = isLoading ? 'Updating...' : 'Update Chats';
+  }
 }
 
 function reloadChatIframe() {
