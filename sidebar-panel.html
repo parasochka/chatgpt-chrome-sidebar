@@ -38,7 +38,10 @@
     }
     .frame-actions {
       display: flex;
+      justify-content: flex-end;
       gap: 8px;
+      width: 100%;
+      min-width: 0;
     }
     .frame-body {
       flex: 1 1 auto;
@@ -62,8 +65,10 @@
       color: inherit;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       font: 500 14px/1.2 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      white-space: nowrap;
       cursor: pointer;
       transition: background-color 0.2s ease, color 0.2s ease;
     }

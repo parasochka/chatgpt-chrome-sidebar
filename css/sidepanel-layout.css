@@ -48,15 +48,17 @@ html, body {
 .frame-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 .toolbar-btn {
   appearance: none;
   border: 0;
-  padding: 0;
   margin: 0;
-  width: 32px;
+  padding: 0 12px;
   height: 32px;
   border-radius: 8px;
   background: transparent;
@@ -64,6 +66,9 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  font: 500 14px/1.2 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color .2s ease, color .2s ease;
 }
@@ -79,8 +84,9 @@ html, body {
 }
 
 .toolbar-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   pointer-events: none;
   stroke: currentColor;
   fill: none;
