@@ -28,6 +28,83 @@ html, body {
   background: #fff;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
   transform: translateZ(0); /* smoothing that removes artifacts during animation */
+  display: flex;
+  flex-direction: column;
+}
+
+.frame-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(15,23,42,.08);
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  flex: 0 0 auto;
+  z-index: 2;
+  color: #343541;
+  font-family: "Söhne", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.frame-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.toolbar-btn {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0 12px;
+  height: 32px;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.toolbar-btn:hover,
+.toolbar-btn:focus-visible {
+  background: rgba(15,23,42,.08);
+}
+
+.toolbar-btn[aria-disabled="true"] {
+  cursor: default;
+  opacity: .55;
+}
+
+.toolbar-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  pointer-events: none;
+  stroke: currentColor;
+  fill: none;
+}
+
+.toolbar-btn.is-loading svg {
+  animation: toolbar-spin 1.2s linear infinite;
+}
+
+.frame-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
 }
 
 /* The iframe itself */
@@ -49,6 +126,12 @@ html, body {
   }
 }
 
+@keyframes toolbar-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   html, body {
@@ -59,6 +142,15 @@ html, body {
     background: #111418;
     box-shadow: 0 2px 12px rgba(0,0,0,.35);
   }
+  .frame-header {
+    border-bottom-color: rgba(148,163,184,.16);
+    background: rgba(17,20,24,.92);
+    color: #ececf1;
+  }
+  .toolbar-btn:hover,
+  .toolbar-btn:focus-visible {
+    background: rgba(148,163,184,.16);
+  }
 }
 
 /* Accessibility: honor reduced-motion preferences */
@@ -67,5 +159,8 @@ html, body {
     animation: none;
     opacity: 1;
     transform: none;
+  }
+  .toolbar-btn.is-loading svg {
+    animation: none;
   }
 }

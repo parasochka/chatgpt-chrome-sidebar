@@ -5,6 +5,95 @@ const CHATGPT_PORTALS = [
   'https://chatgpt.com'
 ];
 
+let lastRequestedIframeSrc = '';
+let toolbarInitialized = false;
+const REFRESH_BUTTON_TIMEOUT_MS = 15000;
+let refreshButtonResetTimeoutId = null;
+
+function getChatIframe() {
+  return document.getElementById('gpt-frame');
+}
+
+function getRefreshButton() {
+  return document.getElementById('refresh-chat-button');
+}
+
+function setRefreshButtonLoading(isLoading) {
+  const button = getRefreshButton();
+  if (!button) return;
+
+  if (refreshButtonResetTimeoutId !== null) {
+    clearTimeout(refreshButtonResetTimeoutId);
+    refreshButtonResetTimeoutId = null;
+  }
+
+  if (isLoading) {
+    refreshButtonResetTimeoutId = window.setTimeout(() => {
+      refreshButtonResetTimeoutId = null;
+      setRefreshButtonLoading(false);
+    }, REFRESH_BUTTON_TIMEOUT_MS);
+  }
+
+  button.classList.toggle('is-loading', isLoading);
+  button.dataset.loading = isLoading ? 'true' : 'false';
+  button.setAttribute('aria-disabled', isLoading ? 'true' : 'false');
+  button.disabled = Boolean(isLoading);
+  button.tabIndex = isLoading ? -1 : 0;
+
+  const label = button.querySelector('.toolbar-btn__label-content') || button.querySelector('.toolbar-btn__label');
+  if (label) {
+    label.textContent = isLoading ? 'Updating...' : 'Update Chats';
+  }
+}
+
+function reloadChatIframe() {
+  const iframe = getChatIframe();
+  if (!iframe) return;
+
+  const nextSrc = iframe.dataset.currentSrc || iframe.src || lastRequestedIframeSrc;
+  if (!nextSrc) return;
+
+  lastRequestedIframeSrc = nextSrc;
+  setRefreshButtonLoading(true);
+
+  try {
+    if (iframe.contentWindow && iframe.contentWindow.location && typeof iframe.contentWindow.location.reload === 'function') {
+      iframe.contentWindow.location.reload();
+      return;
+    }
+  } catch (err) {
+    // Cross-origin navigation prevents direct reload; fall back to resetting the src attribute.
+  }
+
+  iframe.src = nextSrc;
+}
+
+function setupToolbarInteractions() {
+  if (toolbarInitialized) return;
+  toolbarInitialized = true;
+
+  const iframe = getChatIframe();
+  if (iframe) {
+    iframe.addEventListener('load', () => {
+      // Persist the last successfully loaded src so we can replay it later.
+      iframe.dataset.currentSrc = iframe.src;
+      setRefreshButtonLoading(false);
+    });
+  }
+
+  const refreshButton = getRefreshButton();
+  if (refreshButton) {
+    refreshButton.addEventListener('click', () => {
+      if (refreshButton.getAttribute('aria-disabled') === 'true') {
+        return;
+      }
+      reloadChatIframe();
+    });
+  }
+
+  setRefreshButtonLoading(false);
+}
+
 async function fetchPortalAuthState(base) {
   try {
     const res = await fetch(`${base}/api/auth/session`, {
@@ -43,17 +132,27 @@ function selectBestPortalCandidate(states) {
 }
 
 function mountPortalIntoIframe(base) {
-  const iframe = document.getElementById('gpt-frame');
+  const iframe = getChatIframe();
   if (!iframe) return;
   // Load the root page; ChatGPT decides where to redirect
-  iframe.src = `${base}/`;
+  const targetSrc = `${base}/`;
+  lastRequestedIframeSrc = targetSrc;
+  iframe.dataset.currentSrc = targetSrc;
+  setRefreshButtonLoading(true);
+  iframe.src = targetSrc;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
 
 function renderPortalNotice(state) {
+  const existingNotice = document.querySelector('[data-portal-notice]');
+  if (existingNotice) {
+    existingNotice.remove();
+  }
+
   // Simple overlay banner without external dependencies
   const root = document.createElement('div');
+  root.setAttribute('data-portal-notice', '');
   root.style.position = 'absolute';
   root.style.top = '12px';
   root.style.left = '50%';
@@ -81,7 +180,7 @@ function renderPortalNotice(state) {
   const link = document.createElement('a');
   link.href = state.base;
   link.target = '_blank';
-  link.rel = 'noreferrer';
+  link.rel = 'noopener noreferrer';
   link.textContent = new URL(state.base).host;
 
   if (state.state === 'cloudflare') {
@@ -104,6 +203,8 @@ function renderPortalNotice(state) {
 }
 
 async function bootstrapSidepanel() {
+  setupToolbarInteractions();
+
   // Check both bases in parallel
   const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
   const chosen = selectBestPortalCandidate(checks);

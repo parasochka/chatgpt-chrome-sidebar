@@ -23,22 +23,189 @@
       overflow: hidden;
       border-radius: 12px;
       background: #fff;
+      display: flex;
+      flex-direction: column;
     }
-    iframe {
+    .frame-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      flex: 0 0 auto;
+      color: #343541;
+      font-family: "Söhne", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .frame-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      width: 100%;
+      min-width: 0;
+    }
+    .toolbar-tooltip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .toolbar-tooltip__bubble {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      left: auto;
+      transform: translate3d(0, 10px, 0);
+      transform-origin: top right;
+      background: rgba(15, 23, 42, 0.96);
+      color: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font: 400 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      letter-spacing: 0.01em;
+      white-space: normal;
+      max-width: min(70vw, 360px);
+      text-align: left;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.14);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.16s ease, transform 0.18s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .toolbar-tooltip:hover .toolbar-tooltip__bubble,
+    .toolbar-tooltip:focus-within .toolbar-tooltip__bubble {
+      opacity: 1;
+      visibility: visible;
+      transform: translate3d(0, 0, 0);
+    }
+    .frame-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      position: relative;
+    }
+    .frame-body iframe {
       width: 100%;
       height: 100%;
       border: 0;
       display: block;
     }
+    .toolbar-btn {
+      appearance: none;
+      border: 0;
+      margin: 0;
+      padding: 0 12px;
+      height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 400;
+      font-family: inherit;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .toolbar-btn__label {
+      display: inline-grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      align-items: center;
+      justify-items: center;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .toolbar-btn__label::before,
+    .toolbar-btn__label::after {
+      grid-area: 1 / 1 / 2 / 2;
+      visibility: hidden;
+      pointer-events: none;
+      white-space: nowrap;
+      font: inherit;
+    }
+    .toolbar-btn__label::before {
+      content: attr(data-label-default);
+    }
+    .toolbar-btn__label::after {
+      content: attr(data-label-loading);
+    }
+    .toolbar-btn__label-content {
+      grid-area: 1 / 1 / 2 / 2;
+    }
+    .toolbar-btn:hover {
+      background: rgba(15, 23, 42, 0.08);
+    }
+    .toolbar-btn[aria-disabled="true"] {
+      opacity: 0.55;
+      cursor: default;
+    }
+    .toolbar-btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      stroke: currentColor;
+    }
+    .toolbar-btn.is-loading svg {
+      animation: toolbar-spin 1.2s linear infinite;
+    }
+    @keyframes toolbar-spin {
+      to { transform: rotate(1turn); }
+    }
+    @media (prefers-color-scheme: dark) {
+      .frame-header {
+        color: #ececf1;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .toolbar-btn.is-loading svg {
+        animation: none;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="frame-wrap">
-    <iframe
-      id="gpt-frame"
-      allow="clipboard-read; clipboard-write; autoplay; microphone; camera"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
+    <div class="frame-header">
+      <div class="frame-actions">
+        <div class="toolbar-tooltip">
+          <button
+            id="refresh-chat-button"
+            class="toolbar-btn"
+            type="button"
+            aria-describedby="refresh-chat-tooltip"
+            aria-label="Refresh chats"
+          >
+            <span
+              class="toolbar-btn__label"
+              aria-live="polite"
+              data-label-default="Update Chats"
+              data-label-loading="Updating..."
+            >
+              <span class="toolbar-btn__label-content">Update Chats</span>
+            </span>
+            <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+              <path
+                d="M22,16c0,4.41-3.586,8-8,8s-8-3.59-8-8s3.586-8,8-8l2.359,0.027l-1.164,1.164l2.828,2.828L24.035,6l-6.012-6l-2.828,2.828L16.375,4H14C7.375,4,2,9.371,2,16s5.375,12,12,12s12-5.371,12-12H22z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <span id="refresh-chat-tooltip" role="tooltip" class="toolbar-tooltip__bubble">Reload sidebar to show new chats.</span>
+        </div>
+      </div>
+    </div>
+    <div class="frame-body">
+      <iframe
+        id="gpt-frame"
+        allow="clipboard-read; clipboard-write; autoplay; microphone; camera"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
   </div>
 
   <!-- Domain selection and iframe src logic lives here -->
