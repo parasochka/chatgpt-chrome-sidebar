@@ -1,0 +1,5 @@
+/* Force the sidebar close button to use a pointer cursor */
+button[aria-label="Close sidebar"],
+button[data-testid="close-sidebar-button"] {
+  cursor: pointer !important;
+}
