@@ -25,7 +25,7 @@ function setRefreshButtonLoading(isLoading) {
   button.setAttribute('aria-disabled', isLoading ? 'true' : 'false');
   button.tabIndex = isLoading ? -1 : 0;
 
-  const label = button.querySelector('.toolbar-btn__label');
+  const label = button.querySelector('.toolbar-btn__label-content') || button.querySelector('.toolbar-btn__label');
   if (label) {
     label.textContent = isLoading ? 'Updating...' : 'Update Chats';
   }

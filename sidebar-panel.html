@@ -61,7 +61,7 @@
       color: #f8fafc;
       padding: 10px 14px;
       border-radius: 12px;
-      font: 500 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      font: 400 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       letter-spacing: 0.01em;
       white-space: normal;
       max-width: min(70vw, 360px);
@@ -105,11 +105,37 @@
       gap: 8px;
       font-size: 14px;
       line-height: 1.2;
-      font-weight: 600;
+      font-weight: 400;
       font-family: inherit;
       white-space: nowrap;
       cursor: pointer;
       transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .toolbar-btn__label {
+      display: inline-grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      align-items: center;
+      justify-items: center;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .toolbar-btn__label::before,
+    .toolbar-btn__label::after {
+      grid-area: 1 / 1 / 2 / 2;
+      visibility: hidden;
+      pointer-events: none;
+      white-space: nowrap;
+      font: inherit;
+    }
+    .toolbar-btn__label::before {
+      content: attr(data-label-default);
+    }
+    .toolbar-btn__label::after {
+      content: attr(data-label-loading);
+    }
+    .toolbar-btn__label-content {
+      grid-area: 1 / 1 / 2 / 2;
     }
     .toolbar-btn:hover {
       background: rgba(15, 23, 42, 0.08);
@@ -154,7 +180,14 @@
             aria-describedby="refresh-chat-tooltip"
             aria-label="Refresh chats"
           >
-            <span class="toolbar-btn__label" aria-live="polite">Update Chats</span>
+            <span
+              class="toolbar-btn__label"
+              aria-live="polite"
+              data-label-default="Update Chats"
+              data-label-loading="Updating..."
+            >
+              <span class="toolbar-btn__label-content">Update Chats</span>
+            </span>
             <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false">
               <path
                 d="M22,16c0,4.41-3.586,8-8,8s-8-3.59-8-8s3.586-8,8-8l2.359,0.027l-1.164,1.164l2.828,2.828L24.035,6l-6.012-6l-2.828,2.828L16.375,4H14C7.375,4,2,9.371,2,16s5.375,12,12,12s12-5.371,12-12H22z"
