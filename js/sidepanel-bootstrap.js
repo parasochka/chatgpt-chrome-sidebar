@@ -55,7 +55,7 @@ function mountPortalIntoIframe(base, { forceRefresh = false } = {}) {
   const iframe = document.getElementById('gpt-frame');
   if (!iframe) return;
 
-  const normalizedBase = `${base.replace(/\/+$, '')}/`;
+  const normalizedBase = `${base.replace(/\/+$/, '')}/`;
   const previousBase = iframe.dataset.currentBase;
   const sameBase = previousBase === normalizedBase;
 
