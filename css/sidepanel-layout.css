@@ -18,6 +18,14 @@ html, body {
   color: #222;
 }
 
+pre,
+code,
+pre *,
+code * {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 /* Wrapper that correctly rounds the iframe */
 .frame-wrap {
   width: 100%;
