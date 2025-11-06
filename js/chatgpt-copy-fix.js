@@ -1,5 +1,5 @@
 function requestCopy(textToCopy) {
-  if (!textToCopy) {
+  if (typeof textToCopy !== 'string' || textToCopy.length === 0) {
     return;
   }
 
