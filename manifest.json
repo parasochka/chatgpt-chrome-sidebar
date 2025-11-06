@@ -5,7 +5,8 @@
   "description": "Personal Chrome sidebar for ChatGPT using your own account (not affiliated with OpenAI).",
   "permissions": [
     "sidePanel",
-    "declarativeNetRequestWithHostAccess"
+    "declarativeNetRequestWithHostAccess",
+    "clipboardWrite"
   ],
   "host_permissions": [
     "https://chat.openai.com/*",
@@ -20,8 +21,9 @@
         "https://chat.openai.com/*",
         "https://chatgpt.com/*"
       ],
+      "js": ["js/chatgpt-copy-fix.js"],
       "css": ["css/chatgpt-overrides.css"],
-      "run_at": "document_idle",
+      "run_at": "document_start",
       "all_frames": true
     }
   ],
