@@ -11,11 +11,6 @@ async function handleCopyRequestMessage(e) {
       return;
     }
 
-    const iframeWindow = getChatIframeWindow();
-    if (!iframeWindow || e.source !== iframeWindow) {
-      return;
-    }
-
     const { origin } = e;
     const isFromKnownPortal = typeof origin === 'string' && CHATGPT_PORTALS.some(base => origin === base || origin.startsWith(`${base}/`));
     if (!isFromKnownPortal) {
@@ -32,13 +27,8 @@ async function handleCopyRequestMessage(e) {
       console.log('Copied via Clipboard API');
       return;
     } catch (err) {
-      let ta = null;
       try {
-        if (!document.body) {
-          throw new Error('document.body not ready for fallback copy');
-        }
-
-        ta = document.createElement('textarea');
+        const ta = document.createElement('textarea');
         ta.value = text;
         ta.setAttribute('readonly', '');
         ta.style.position = 'fixed';
@@ -46,6 +36,7 @@ async function handleCopyRequestMessage(e) {
         document.body.appendChild(ta);
         ta.select();
         const ok = document.execCommand('copy');
+        ta.remove();
         if (!ok) {
           throw new Error('execCommand returned false');
         }
@@ -53,10 +44,6 @@ async function handleCopyRequestMessage(e) {
         return;
       } catch (fallbackErr) {
         console.error('execCommand fallback failed:', fallbackErr);
-      } finally {
-        if (ta && ta.isConnected) {
-          ta.remove();
-        }
       }
     }
   } catch (e2) {
@@ -73,11 +60,6 @@ let refreshButtonResetTimeoutId = null;
 
 function getChatIframe() {
   return document.getElementById('gpt-frame');
-}
-
-function getChatIframeWindow() {
-  const iframe = getChatIframe();
-  return iframe ? iframe.contentWindow : null;
 }
 
 function getRefreshButton() {
