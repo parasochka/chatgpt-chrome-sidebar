@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-sidebar",
-  "version": "0.2",
+  "version": "0.3",
   "description": "Personal Chrome sidebar for ChatGPT using your own account (not affiliated with OpenAI).",
   "author": "Artem Parasochka",
   "license": "SEE LICENSE IN LICENSE",
