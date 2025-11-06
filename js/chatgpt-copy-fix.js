@@ -1,23 +1,15 @@
-async function copyTextSafe(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch (_) {
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly','');
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      ta.style.top = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand('copy');
-      document.body.removeChild(ta);
-      if (ok) return true;
-    } catch (__){}
+function requestCopy(textToCopy) {
+  if (!textToCopy) {
+    return;
   }
-  return false;
+
+  try {
+    if (window.parent && window.parent !== window && typeof window.parent.postMessage === 'function') {
+      window.parent.postMessage({ type: 'COPY_REQUEST', text: textToCopy }, '*');
+    }
+  } catch (err) {
+    console.error('Failed to dispatch copy request:', err);
+  }
 }
 
 function getCodeTextFromButton(btn) {
@@ -41,7 +33,7 @@ function getCodeTextFromButton(btn) {
 }
 
 let lastHandledAt = 0;
-document.addEventListener('click', async (e) => {
+document.addEventListener('click', (e) => {
   const t = e.target;
   const btn = t && (t.closest('button,[role="button"],[data-testid]') || null);
   if (!btn) return;
@@ -64,14 +56,12 @@ document.addEventListener('click', async (e) => {
   const text = getCodeTextFromButton(btn);
   if (!text) return;
 
-  const ok = await copyTextSafe(text);
-  if (ok) {
-    lastHandledAt = Date.now();
-    e.stopImmediatePropagation();
-    e.preventDefault();
+  requestCopy(text);
+  lastHandledAt = Date.now();
+  e.stopImmediatePropagation();
+  e.preventDefault();
 
-    const original = btn.textContent;
-    btn.textContent = 'Copied!';
-    setTimeout(() => { btn.textContent = original; }, 1000);
-  }
+  const original = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => { btn.textContent = original; }, 1000);
 }, true);
