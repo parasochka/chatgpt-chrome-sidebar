@@ -6,24 +6,3 @@ button[data-testid="close-sidebar-button"] {
 button[data-testid="close-sidebar-button"] > * {
   cursor: inherit !important;
 }
-
-pre, code,
-div[data-testid="code"] pre,
-div[data-testid="code"] code {
-  -webkit-user-select: text !important;
-  user-select: text !important;
-  white-space: pre !important;
-  word-break: normal !important;
-  cursor: text !important;
-}
-[data-testid="code"] *::before,
-[data-testid="code"] *::after {
-  pointer-events: none !important;  /* overlays must not block selection */
-}
-[data-testid="code"] button {
-  pointer-events: auto !important;  /* keep copy buttons clickable */
-}
-html, body, main, article, section {
-  -webkit-user-select: text !important;
-  user-select: text !important;
-}
