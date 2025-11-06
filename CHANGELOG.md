@@ -1,8 +1,5 @@
 # Changelog
 
-## 0.3
-- Fix: Failed to copy to clipboard.
-
 ## 0.2
 - Fixed the close button design
 - Added a refresh mechanism for viewing new chats in the history

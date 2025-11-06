@@ -5,54 +5,6 @@ const CHATGPT_PORTALS = [
   'https://chatgpt.com'
 ];
 
-async function handleCopyRequestMessage(e) {
-  try {
-    if (!e || !e.data || e.data.type !== 'COPY_REQUEST') {
-      return;
-    }
-
-    const { origin } = e;
-    const isFromKnownPortal = typeof origin === 'string' && CHATGPT_PORTALS.some(base => origin === base || origin.startsWith(`${base}/`));
-    if (!isFromKnownPortal) {
-      return;
-    }
-
-    const text = e.data.text;
-    if (typeof text !== 'string' || text.length === 0) {
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(text);
-      console.log('Copied via Clipboard API');
-      return;
-    } catch (err) {
-      try {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        const ok = document.execCommand('copy');
-        ta.remove();
-        if (!ok) {
-          throw new Error('execCommand returned false');
-        }
-        console.log('Copied via execCommand fallback');
-        return;
-      } catch (fallbackErr) {
-        console.error('execCommand fallback failed:', fallbackErr);
-      }
-    }
-  } catch (e2) {
-    console.error('Copy handler failed:', e2);
-  }
-}
-
-window.addEventListener('message', handleCopyRequestMessage);
-
 let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
 const REFRESH_BUTTON_TIMEOUT_MS = 15000;

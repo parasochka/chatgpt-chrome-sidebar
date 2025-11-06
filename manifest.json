@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT Sidebar",
-  "version": "0.3.0",
+  "version": "0.2",
   "description": "Personal Chrome sidebar for ChatGPT using your own account (not affiliated with OpenAI).",
   "permissions": [
     "sidePanel",
-    "declarativeNetRequestWithHostAccess",
-    "clipboardWrite"
+    "declarativeNetRequestWithHostAccess"
   ],
   "host_permissions": [
     "https://chat.openai.com/*",
@@ -21,9 +20,8 @@
         "https://chat.openai.com/*",
         "https://chatgpt.com/*"
       ],
-      "js": ["js/chatgpt-copy-fix.js"],
       "css": ["css/chatgpt-overrides.css"],
-      "run_at": "document_start",
+      "run_at": "document_idle",
       "all_frames": true
     }
   ],
