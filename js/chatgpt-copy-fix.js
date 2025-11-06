@@ -3,19 +3,31 @@ async function copyTextSafe(text) {
     await navigator.clipboard.writeText(text);
     return true;
   } catch (_) {
+    const container = document.body || document.documentElement;
+    if (!container) return false;
+
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    ta.style.top = '-9999px';
+
+    container.appendChild(ta);
+
     try {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly','');
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      ta.style.top = '-9999px';
-      document.body.appendChild(ta);
+      ta.focus();
       ta.select();
+      ta.setSelectionRange?.(0, ta.value.length);
       const ok = document.execCommand('copy');
-      document.body.removeChild(ta);
       if (ok) return true;
-    } catch (__){}
+    } catch (__) {
+      // ignore - we'll report a failure below
+    } finally {
+      if (ta.parentNode) {
+        ta.parentNode.removeChild(ta);
+      }
+    }
   }
   return false;
 }
