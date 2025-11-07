@@ -1,12 +1,12 @@
-# ChatGPT Sidebar
+# Sidely - ChatGPT Sidebar for Chrome
 
-A minimal Chrome extension that embeds ChatGPT directly into the browser’s side panel — fast, private, and always one click away.
+Use ChatGPT inside Chrome's sidebar with Sidely - a secure, fast ChatGPT sidebar extension using your own account.
 
 ---
 
 ## Features
 
-- 🧠 Quick access to ChatGPT in Chrome’s native sidebar  
+- 🧠 Quick access to ChatGPT in Chrome's native sidebar
 - 🔐 Uses your existing ChatGPT session (no login inside the extension)  
 - ⚙️ Works with both `chat.openai.com` and `chatgpt.com`  
 - 🚫 No data collection, no analytics, no ads
@@ -31,7 +31,7 @@ Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/cha
 
 | Permission | Purpose |
 |-------------|----------|
-| `sidePanel` | Enables display inside Chrome’s side panel |
+| `sidePanel` | Enables display inside Chrome's side panel |
 | `declarativeNetRequestWithHostAccess` | Adjusts headers to allow ChatGPT to load in iframe |
 | `host_permissions` | Allows access to chat.openai.com and chatgpt.com |
 
@@ -46,5 +46,5 @@ All communication happens directly between your browser and ChatGPT.
 
 ## License
 
-Released under the [ChatGPT Chrome Sidebar Commercial License](LICENSE).
+Released under the [Sidely - ChatGPT Sidebar for Chrome Commercial License](LICENSE).
 © 2025 Artem Parasochka

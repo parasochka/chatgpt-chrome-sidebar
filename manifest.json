@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "ChatGPT Sidebar",
+  "name": "Sidely - ChatGPT Sidebar",
+  "short_name": "Sidely",
   "version": "0.2",
-  "description": "Personal Chrome sidebar for ChatGPT using your own account (not affiliated with OpenAI).",
+  "description": "Use ChatGPT inside Chrome's sidebar with Sidely - a secure, fast ChatGPT sidebar extension using your own account.",
   "permissions": [
     "sidePanel",
     "declarativeNetRequestWithHostAccess"
@@ -36,7 +37,7 @@
     "default_path": "sidebar-panel.html"
   },
   "action": {
-    "default_title": "ChatGPT Sidebar",
+    "default_title": "Sidely - ChatGPT Sidebar",
     "default_icon": {
       "16": "images/sidebar_16.png",
       "32": "images/sidebar_32.png",
