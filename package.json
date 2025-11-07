@@ -1,10 +1,10 @@
 {
-  "name": "chatgpt-sidebar",
+  "name": "sidely-sidebar",
   "version": "0.2",
-  "description": "Personal Chrome sidebar for ChatGPT using your own account (not affiliated with OpenAI).",
+  "description": "Use ChatGPT inside Chrome's sidebar with Sidely - a secure, fast ChatGPT sidebar extension using your own account.",
   "author": "Artem Parasochka",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
-    "zip": "zip -r ../chatgpt-sidebar.zip . -x '*.git*' 'node_modules/*' '*.DS_Store' '*.md'"
+    "zip": "zip -r ../sidely-sidebar.zip . -x '*.git*' 'node_modules/*' '*.DS_Store' '*.md'"
   }
 }
