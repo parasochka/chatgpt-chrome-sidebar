@@ -21,7 +21,6 @@
         "https://chat.openai.com/*",
         "https://chatgpt.com/*"
       ],
-      "js": ["js/chatgpt-copy-fix.js"],
       "css": ["css/chatgpt-overrides.css"],
       "run_at": "document_idle",
       "all_frames": true
