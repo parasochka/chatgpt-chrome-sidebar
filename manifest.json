@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Sidely - ChatGPT Sidebar",
   "short_name": "Sidely",
-  "version": "0.2",
+  "version": "0.3",
   "description": "Use ChatGPT inside Chrome's sidebar with Sidely - a secure, fast ChatGPT sidebar extension using your own account.",
   "permissions": [
     "sidePanel",
