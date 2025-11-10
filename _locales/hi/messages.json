@@ -1,0 +1,41 @@
+{
+  "appName": {
+    "message": "Sidely - ChatGPT साइडबार"
+  },
+  "appShortName": {
+    "message": "Sidely"
+  },
+  "appDescription": {
+    "message": "Sidely के साथ Chrome के साइडबार में ChatGPT का उपयोग करें—यह आपकी अपनी खाता जानकारी से सुरक्षित और तेज़ एक्सटेंशन है।"
+  },
+  "appTitle": {
+    "message": "Sidely - ChatGPT साइडबार"
+  },
+  "actionTitle": {
+    "message": "Sidely - ChatGPT साइडबार"
+  },
+  "refreshButtonAriaLabel": {
+    "message": "चैट ताज़ा करें"
+  },
+  "refreshButtonDefaultLabel": {
+    "message": "चैट अपडेट करें"
+  },
+  "refreshButtonLoadingLabel": {
+    "message": "अपडेट हो रहा है..."
+  },
+  "refreshButtonTooltip": {
+    "message": "नए चैट दिखाने के लिए साइडबार को फिर से लोड करें।"
+  },
+  "noticeCloudflare": {
+    "message": "आपको Cloudflare जाँच पूरी करनी होगी। __PORTAL__ को टैब में खोलें, साइन इन करें और वापस आएँ।",
+    "description": "__PORTAL__ को ChatGPT डोमेन से बदला जाएगा।"
+  },
+  "noticeUnauthorized": {
+    "message": "आपको अपने ChatGPT खाते में साइन इन करना होगा। __PORTAL__ को टैब में खोलें, साइन इन करें और वापस आएँ।",
+    "description": "__PORTAL__ को ChatGPT डोमेन से बदला जाएगा।"
+  },
+  "noticeError": {
+    "message": "सत्र सत्यापन विफल रहा। पृष्ठ को रिफ़्रेश करें या __PORTAL__ पर साइन इन करें।",
+    "description": "__PORTAL__ को ChatGPT डोमेन से बदला जाएगा।"
+  }
+}

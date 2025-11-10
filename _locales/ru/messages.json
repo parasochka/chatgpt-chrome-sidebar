@@ -1,0 +1,41 @@
+{
+  "appName": {
+    "message": "Sidely — боковая панель ChatGPT"
+  },
+  "appShortName": {
+    "message": "Sidely"
+  },
+  "appDescription": {
+    "message": "Используйте ChatGPT в боковой панели Chrome с Sidely — безопасным и быстрым расширением, работающим с вашим собственным аккаунтом."
+  },
+  "appTitle": {
+    "message": "Sidely — боковая панель ChatGPT"
+  },
+  "actionTitle": {
+    "message": "Sidely — боковая панель ChatGPT"
+  },
+  "refreshButtonAriaLabel": {
+    "message": "Обновить чаты"
+  },
+  "refreshButtonDefaultLabel": {
+    "message": "Обновить чаты"
+  },
+  "refreshButtonLoadingLabel": {
+    "message": "Обновление..."
+  },
+  "refreshButtonTooltip": {
+    "message": "Перезагрузите боковую панель, чтобы увидеть новые чаты."
+  },
+  "noticeCloudflare": {
+    "message": "Нужно пройти проверку Cloudflare. Откройте __PORTAL__ во вкладке, войдите в аккаунт и вернитесь.",
+    "description": "__PORTAL__ будет заменён на домен ChatGPT."
+  },
+  "noticeUnauthorized": {
+    "message": "Нужно войти в свой аккаунт ChatGPT. Откройте __PORTAL__ во вкладке, авторизуйтесь и вернитесь.",
+    "description": "__PORTAL__ будет заменён на домен ChatGPT."
+  },
+  "noticeError": {
+    "message": "Не удалось подтвердить сессию. Попробуйте обновить страницу или войдите на __PORTAL__.",
+    "description": "__PORTAL__ будет заменён на домен ChatGPT."
+  }
+}

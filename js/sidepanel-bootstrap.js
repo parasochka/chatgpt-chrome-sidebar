@@ -1,5 +1,58 @@
 // js/sidepanel-bootstrap.js
 
+const FALLBACK_MESSAGES = {
+  appTitle: 'Sidely - ChatGPT Sidebar',
+  refreshButtonDefault: 'Update Chats',
+  refreshButtonLoading: 'Updating...',
+  refreshButtonAriaLabel: 'Refresh chats',
+  refreshButtonTooltip: 'Reload sidebar to show new chats.',
+  noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
+  noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
+  noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
+};
+
+function getLocalizedString(key, fallback, substitutions) {
+  let message = null;
+
+  if (typeof chrome !== 'undefined' && chrome?.i18n?.getMessage) {
+    try {
+      message = chrome.i18n.getMessage(key, substitutions);
+    } catch (err) {
+      message = null;
+    }
+  }
+
+  let base = typeof message === 'string' && message.length ? message : fallback;
+  if (typeof base !== 'string') {
+    return fallback;
+  }
+
+  if (typeof substitutions === 'undefined') {
+    return base;
+  }
+
+  const values = Array.isArray(substitutions) ? substitutions : [substitutions];
+
+  return values.reduce((result, value, index) => {
+    if (typeof value !== 'string') {
+      return result;
+    }
+
+    const placeholderIndex = index + 1;
+    const placeholderPattern = new RegExp(`\\$${placeholderIndex}`, 'g');
+
+    return result
+      .replace(/__PORTAL__/g, value)
+      .replace(placeholderPattern, value);
+  }, base);
+}
+
+const APP_TITLE = getLocalizedString('appTitle', FALLBACK_MESSAGES.appTitle);
+const REFRESH_LABEL_DEFAULT = getLocalizedString('refreshButtonDefaultLabel', FALLBACK_MESSAGES.refreshButtonDefault);
+const REFRESH_LABEL_LOADING = getLocalizedString('refreshButtonLoadingLabel', FALLBACK_MESSAGES.refreshButtonLoading);
+const REFRESH_BUTTON_ARIA_LABEL = getLocalizedString('refreshButtonAriaLabel', FALLBACK_MESSAGES.refreshButtonAriaLabel);
+const REFRESH_BUTTON_TOOLTIP = getLocalizedString('refreshButtonTooltip', FALLBACK_MESSAGES.refreshButtonTooltip);
+
 const CHATGPT_PORTALS = [
   'https://chat.openai.com',
   'https://chatgpt.com'
@@ -42,7 +95,101 @@ function setRefreshButtonLoading(isLoading) {
 
   const label = button.querySelector('.toolbar-btn__label-content') || button.querySelector('.toolbar-btn__label');
   if (label) {
-    label.textContent = isLoading ? 'Updating...' : 'Update Chats';
+    label.textContent = isLoading ? REFRESH_LABEL_LOADING : REFRESH_LABEL_DEFAULT;
+  }
+}
+
+function setElementTextWithLink(target, message, link, linkText) {
+  if (!target) return;
+
+  target.textContent = '';
+
+  if (!message) {
+    return;
+  }
+
+  const resolvedLinkText = linkText || link?.textContent || '';
+
+  if (!link || !resolvedLinkText) {
+    target.append(message);
+    return;
+  }
+
+  const index = message.indexOf(resolvedLinkText);
+  link.textContent = resolvedLinkText;
+
+  if (index === -1) {
+    target.append(message);
+    if (message && !/\s$/.test(message)) {
+      target.append(' ');
+    }
+    target.append(link);
+    return;
+  }
+
+  if (index > 0) {
+    target.append(message.slice(0, index));
+  }
+
+  target.append(link);
+
+  const after = message.slice(index + resolvedLinkText.length);
+  if (after) {
+    target.append(after);
+  }
+}
+
+function getUILanguageTag() {
+  if (typeof chrome === 'undefined' || !chrome?.i18n) {
+    return null;
+  }
+
+  if (typeof chrome.i18n.getUILanguage === 'function') {
+    const tag = chrome.i18n.getUILanguage();
+    if (tag) {
+      return tag;
+    }
+  }
+
+  if (typeof chrome.i18n.getMessage === 'function') {
+    const tag = chrome.i18n.getMessage('@@ui_locale');
+    if (tag) {
+      return tag;
+    }
+  }
+
+  return null;
+}
+
+function applyLocalization() {
+  const languageTag = getUILanguageTag();
+  if (languageTag && document?.documentElement) {
+    document.documentElement.setAttribute('lang', languageTag.replace('_', '-'));
+  }
+
+  if (typeof APP_TITLE === 'string' && APP_TITLE.length) {
+    document.title = APP_TITLE;
+  }
+
+  const refreshButton = getRefreshButton();
+  if (refreshButton) {
+    refreshButton.setAttribute('aria-label', REFRESH_BUTTON_ARIA_LABEL);
+
+    const labelWrapper = refreshButton.querySelector('.toolbar-btn__label');
+    if (labelWrapper) {
+      labelWrapper.dataset.labelDefault = REFRESH_LABEL_DEFAULT;
+      labelWrapper.dataset.labelLoading = REFRESH_LABEL_LOADING;
+    }
+
+    const labelContent = refreshButton.querySelector('.toolbar-btn__label-content');
+    if (labelContent) {
+      labelContent.textContent = REFRESH_LABEL_DEFAULT;
+    }
+  }
+
+  const tooltip = document.getElementById('refresh-chat-tooltip');
+  if (tooltip) {
+    tooltip.textContent = REFRESH_BUTTON_TOOLTIP;
   }
 }
 
@@ -181,21 +328,22 @@ function renderPortalNotice(state) {
   link.href = state.base;
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
-  link.textContent = new URL(state.base).host;
+  const host = new URL(state.base).host;
+  link.textContent = host;
+
+  let messageKey = 'noticeError';
+  let fallback = FALLBACK_MESSAGES.noticeError;
 
   if (state.state === 'cloudflare') {
-    p.textContent = 'You need to complete the Cloudflare check. Open ';
-    p.appendChild(link);
-    p.append(' in a tab, sign in, then return.');
+    messageKey = 'noticeCloudflare';
+    fallback = FALLBACK_MESSAGES.noticeCloudflare;
   } else if (state.state === 'unauthorized') {
-    p.textContent = 'You need to sign in to your ChatGPT account. Open ';
-    p.appendChild(link);
-    p.append(' in a tab, sign in, then return.');
-  } else {
-    p.textContent = 'Session verification failed. Try refreshing the page or sign in at ';
-    p.appendChild(link);
-    p.append('.');
+    messageKey = 'noticeUnauthorized';
+    fallback = FALLBACK_MESSAGES.noticeUnauthorized;
   }
+
+  const message = getLocalizedString(messageKey, fallback, [host]);
+  setElementTextWithLink(p, message, link, host);
 
   box.appendChild(p);
   root.appendChild(box);
@@ -203,6 +351,7 @@ function renderPortalNotice(state) {
 }
 
 async function bootstrapSidepanel() {
+  applyLocalization();
   setupToolbarInteractions();
 
   // Check both bases in parallel
