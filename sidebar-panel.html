@@ -157,8 +157,41 @@
       to { transform: rotate(1turn); }
     }
     @media (prefers-color-scheme: dark) {
+      html, body {
+        background: #0d0f12;
+        color: #e2e8f0;
+      }
+      .frame-wrap {
+        background: #111418;
+      }
       .frame-header {
         color: #ececf1;
+        border-bottom-color: rgba(100, 116, 139, 0.32);
+        background: rgba(13, 16, 20, 0.9);
+        box-shadow: 0 12px 32px rgba(2, 6, 23, 0.4);
+      }
+      .toolbar-btn {
+        color: #e2e8f0;
+      }
+      .toolbar-btn:hover,
+      .toolbar-btn:focus-visible {
+        background: rgba(148, 163, 184, 0.16);
+        color: #f8fafc;
+      }
+      .toolbar-btn:active {
+        background: rgba(148, 163, 184, 0.24);
+      }
+      .toolbar-btn[aria-disabled="true"] {
+        color: rgba(148, 163, 184, 0.55);
+      }
+      .toolbar-btn.is-loading {
+        color: #38bdf8;
+      }
+      .toolbar-tooltip__bubble {
+        background: rgba(15, 23, 42, 0.94);
+        color: #e2e8f0;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        box-shadow: 0 20px 44px rgba(2, 6, 23, 0.45), 0 6px 18px rgba(15, 23, 42, 0.32);
       }
     }
     @media (prefers-reduced-motion: reduce) {
