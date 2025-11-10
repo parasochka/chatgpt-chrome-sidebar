@@ -6,7 +6,8 @@
   "description": "Use ChatGPT inside Chrome's sidebar with Sidely - a secure, fast ChatGPT sidebar extension using your own account.",
   "permissions": [
     "sidePanel",
-    "declarativeNetRequestWithHostAccess"
+    "declarativeNetRequestWithHostAccess",
+    "clipboardWrite"
   ],
   "host_permissions": [
     "https://chat.openai.com/*",
@@ -21,8 +22,9 @@
         "https://chat.openai.com/*",
         "https://chatgpt.com/*"
       ],
+      "js": ["js/chatgpt-copy-fix.js"],
       "css": ["css/chatgpt-overrides.css"],
-      "run_at": "document_idle",
+      "run_at": "document_start",
       "all_frames": true
     }
   ],
