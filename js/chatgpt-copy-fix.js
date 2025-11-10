@@ -1,22 +1,37 @@
-async function copyTextSafe(text) {
+function canUseAsyncClipboard() {
   try {
-    await navigator.clipboard.writeText(text);
-    return true;
+    const policy = document.permissionsPolicy || document.featurePolicy;
+    if (policy && typeof policy.allowsFeature === 'function') {
+      if (!policy.allowsFeature('clipboard-write')) return false;
+    }
   } catch (_) {
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly','');
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      ta.style.top = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand('copy');
-      document.body.removeChild(ta);
-      if (ok) return true;
-    } catch (__){}
+    return false;
   }
+  return !!(navigator.clipboard && navigator.clipboard.writeText);
+}
+
+async function copyTextSafe(text) {
+  if (canUseAsyncClipboard()) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (_) {}
+  }
+
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly','');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    ta.style.top = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    if (ok) return true;
+  } catch (__){}
+
   return false;
 }
 
