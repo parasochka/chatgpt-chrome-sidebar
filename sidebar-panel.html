@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="__MSG_@@ui_locale__">
 <head>
   <meta charset="utf-8">
-  <title>Sidely - ChatGPT Sidebar</title>
+  <title>__MSG_appTitle__</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Primary stylesheet -->
@@ -211,15 +211,15 @@
             class="toolbar-btn"
             type="button"
             aria-describedby="refresh-chat-tooltip"
-            aria-label="Refresh chats"
+            aria-label="__MSG_refreshButtonAriaLabel__"
           >
             <span
               class="toolbar-btn__label"
               aria-live="polite"
-              data-label-default="Update Chats"
-              data-label-loading="Updating..."
+              data-label-default="__MSG_refreshButtonDefaultLabel__"
+              data-label-loading="__MSG_refreshButtonLoadingLabel__"
             >
-              <span class="toolbar-btn__label-content">Update Chats</span>
+              <span class="toolbar-btn__label-content">__MSG_refreshButtonDefaultLabel__</span>
             </span>
             <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false">
               <path
@@ -228,7 +228,7 @@
               />
             </svg>
           </button>
-          <span id="refresh-chat-tooltip" role="tooltip" class="toolbar-tooltip__bubble">Reload sidebar to show new chats.</span>
+          <span id="refresh-chat-tooltip" role="tooltip" class="toolbar-tooltip__bubble">__MSG_refreshButtonTooltip__</span>
         </div>
       </div>
     </div>

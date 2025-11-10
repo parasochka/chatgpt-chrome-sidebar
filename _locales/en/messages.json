@@ -1,0 +1,41 @@
+{
+  "appName": {
+    "message": "Sidely - ChatGPT Sidebar"
+  },
+  "appShortName": {
+    "message": "Sidely"
+  },
+  "appDescription": {
+    "message": "Use ChatGPT inside Chrome's sidebar with Sidely - a secure, fast ChatGPT sidebar extension using your own account."
+  },
+  "appTitle": {
+    "message": "Sidely - ChatGPT Sidebar"
+  },
+  "actionTitle": {
+    "message": "Sidely - ChatGPT Sidebar"
+  },
+  "refreshButtonAriaLabel": {
+    "message": "Refresh chats"
+  },
+  "refreshButtonDefaultLabel": {
+    "message": "Update Chats"
+  },
+  "refreshButtonLoadingLabel": {
+    "message": "Updating..."
+  },
+  "refreshButtonTooltip": {
+    "message": "Reload sidebar to show new chats."
+  },
+  "noticeCloudflare": {
+    "message": "You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.",
+    "description": "__PORTAL__ will be replaced with the ChatGPT host name."
+  },
+  "noticeUnauthorized": {
+    "message": "You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.",
+    "description": "__PORTAL__ will be replaced with the ChatGPT host name."
+  },
+  "noticeError": {
+    "message": "Session verification failed. Try refreshing the page or sign in at __PORTAL__.",
+    "description": "__PORTAL__ will be replaced with the ChatGPT host name."
+  }
+}

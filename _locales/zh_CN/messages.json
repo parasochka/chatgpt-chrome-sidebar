@@ -1,0 +1,41 @@
+{
+  "appName": {
+    "message": "Sidely - ChatGPT 侧边栏"
+  },
+  "appShortName": {
+    "message": "Sidely"
+  },
+  "appDescription": {
+    "message": "在 Chrome 侧边栏中使用 Sidely，让你使用自己的账户以安全、快速的方式访问 ChatGPT。"
+  },
+  "appTitle": {
+    "message": "Sidely - ChatGPT 侧边栏"
+  },
+  "actionTitle": {
+    "message": "Sidely - ChatGPT 侧边栏"
+  },
+  "refreshButtonAriaLabel": {
+    "message": "刷新聊天"
+  },
+  "refreshButtonDefaultLabel": {
+    "message": "更新聊天"
+  },
+  "refreshButtonLoadingLabel": {
+    "message": "正在更新…"
+  },
+  "refreshButtonTooltip": {
+    "message": "重新加载侧边栏以显示新的聊天。"
+  },
+  "noticeCloudflare": {
+    "message": "你需要完成 Cloudflare 验证。请在标签页中打开 __PORTAL__，完成登录后再返回。",
+    "description": "__PORTAL__ 会被替换成 ChatGPT 域名。"
+  },
+  "noticeUnauthorized": {
+    "message": "你需要登录你的 ChatGPT 帐号。请在标签页中打开 __PORTAL__，登录后再返回。",
+    "description": "__PORTAL__ 会被替换成 ChatGPT 域名。"
+  },
+  "noticeError": {
+    "message": "会话验证失败。请尝试刷新页面，或在 __PORTAL__ 上登录。",
+    "description": "__PORTAL__ 会被替换成 ChatGPT 域名。"
+  }
+}

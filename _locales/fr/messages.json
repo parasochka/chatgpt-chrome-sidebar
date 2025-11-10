@@ -1,0 +1,41 @@
+{
+  "appName": {
+    "message": "Sidely - Barre latérale ChatGPT"
+  },
+  "appShortName": {
+    "message": "Sidely"
+  },
+  "appDescription": {
+    "message": "Utilisez ChatGPT dans la barre latérale de Chrome avec Sidely, une extension rapide et sécurisée utilisant votre propre compte."
+  },
+  "appTitle": {
+    "message": "Sidely - Barre latérale ChatGPT"
+  },
+  "actionTitle": {
+    "message": "Sidely - Barre latérale ChatGPT"
+  },
+  "refreshButtonAriaLabel": {
+    "message": "Actualiser les conversations"
+  },
+  "refreshButtonDefaultLabel": {
+    "message": "Mettre à jour les conversations"
+  },
+  "refreshButtonLoadingLabel": {
+    "message": "Mise à jour..."
+  },
+  "refreshButtonTooltip": {
+    "message": "Rechargez la barre latérale pour afficher les nouvelles conversations."
+  },
+  "noticeCloudflare": {
+    "message": "Vous devez terminer la vérification Cloudflare. Ouvrez __PORTAL__ dans un onglet, connectez-vous puis revenez.",
+    "description": "__PORTAL__ sera remplacé par le domaine de ChatGPT."
+  },
+  "noticeUnauthorized": {
+    "message": "Vous devez vous connecter à votre compte ChatGPT. Ouvrez __PORTAL__ dans un onglet, connectez-vous puis revenez.",
+    "description": "__PORTAL__ sera remplacé par le domaine de ChatGPT."
+  },
+  "noticeError": {
+    "message": "La vérification de la session a échoué. Essayez d'actualiser la page ou connectez-vous sur __PORTAL__.",
+    "description": "__PORTAL__ sera remplacé par le domaine de ChatGPT."
+  }
+}
