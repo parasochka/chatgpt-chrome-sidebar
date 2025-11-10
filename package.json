@@ -5,6 +5,7 @@
   "author": "Artem Parasochka",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
+    "build:firefox": "node scripts/build-firefox.js",
     "zip": "zip -r ../sidely-sidebar.zip . -x '*.git*' 'node_modules/*' '*.DS_Store' '*.md'"
   }
 }

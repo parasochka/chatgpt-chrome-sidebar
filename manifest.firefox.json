@@ -6,16 +6,17 @@
   "default_locale": "en",
   "description": "__MSG_appDescription__",
   "permissions": [
-    "sidePanel",
-    "declarativeNetRequestWithHostAccess",
-    "clipboardWrite"
+    "webRequest",
+    "webRequestBlocking",
+    "tabs"
   ],
   "host_permissions": [
     "https://chat.openai.com/*",
     "https://chatgpt.com/*"
   ],
   "background": {
-    "service_worker": "js/sidepanel-service-worker.js"
+    "service_worker": "js/sidepanel-service-worker.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -36,9 +37,6 @@
     "64": "images/sidebar_64.png",
     "128": "images/sidebar_128.png"
   },
-  "side_panel": {
-    "default_path": "sidebar-panel.html"
-  },
   "action": {
     "default_title": "__MSG_actionTitle__",
     "default_icon": {
@@ -49,13 +47,15 @@
       "128": "images/sidebar_128.png"
     }
   },
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "sidepanel-rules",
-        "enabled": true,
-        "path": "rules/sidepanel-rules.json"
-      }
-    ]
+  "sidebar_action": {
+    "default_title": "ChatGPT Sidebar",
+    "default_panel": "sidebar-panel.html",
+    "open_at_install": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "chatgpt-sidebar@yourdomain",
+      "strict_min_version": "115.0"
+    }
   }
 }
