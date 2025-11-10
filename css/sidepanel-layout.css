@@ -143,14 +143,35 @@ html, body {
     box-shadow: 0 2px 12px rgba(0,0,0,.35);
   }
   .frame-header {
-    border-bottom-color: rgba(148,163,184,.16);
-    background: rgba(17,20,24,.92);
+    border-bottom-color: rgba(100,116,139,.32);
+    background: rgba(13,16,20,.9);
+    box-shadow: 0 12px 32px rgba(2,6,23,.4);
     color: #ececf1;
+  }
+  .toolbar-btn {
+    color: #e2e8f0;
   }
   .toolbar-btn:hover,
   .toolbar-btn:focus-visible {
     background: rgba(148,163,184,.16);
+    color: #f8fafc;
   }
+  .toolbar-btn:active {
+    background: rgba(148,163,184,.24);
+  }
+  .toolbar-btn[aria-disabled="true"] {
+    color: rgba(148,163,184,.55);
+  }
+  .toolbar-btn.is-loading {
+    color: #38bdf8;
+  }
+  .toolbar-tooltip__bubble {
+    background: rgba(15,23,42,.94);
+    color: #e2e8f0;
+    border: 1px solid rgba(148,163,184,.28);
+    box-shadow: 0 20px 44px rgba(2,6,23,.45), 0 6px 18px rgba(15,23,42,.32);
+  }
+}
 }
 
 /* Accessibility: honor reduced-motion preferences */
