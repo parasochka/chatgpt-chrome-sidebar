@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4
+- Dark mode added
+- Localizations: English, Chinese (Mandarin), Spanish, Hindi, French, Portuguese, Russian
+
 ## 0.3
 - Fix: Failed to copy to clipboard.
 
