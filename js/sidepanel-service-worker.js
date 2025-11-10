@@ -10,8 +10,7 @@ const SIDEPANEL_DNR_RULES = [
       type: "modifyHeaders",
       responseHeaders: [
         { header: "content-security-policy", operation: "remove" },
-        { header: "x-frame-options", operation: "remove" },
-        { header: "permissions-policy", operation: "remove" }
+        { header: "x-frame-options", operation: "remove" }
       ]
     },
     condition: {
@@ -26,8 +25,7 @@ const SIDEPANEL_DNR_RULES = [
       type: "modifyHeaders",
       responseHeaders: [
         { header: "content-security-policy", operation: "remove" },
-        { header: "x-frame-options", operation: "remove" },
-        { header: "permissions-policy", operation: "remove" }
+        { header: "x-frame-options", operation: "remove" }
       ]
     },
     condition: {
