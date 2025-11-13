@@ -194,6 +194,7 @@ const STORAGE_KEYS = {
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
 const THEME_MODES = ['auto', 'light', 'dark'];
+const THEME_MESSAGE_TYPE = 'sidely-theme-change';
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
@@ -204,6 +205,8 @@ const SETTINGS_DEFAULTS = {
 let settingsState = { ...SETTINGS_DEFAULTS };
 let portalSelectionRunId = 0;
 let settingsControlsInitialized = false;
+let systemColorSchemeMediaQuery = null;
+let lastSyncedIframeTheme = null;
 
 function getChatIframe() {
   return document.getElementById('gpt-frame');
@@ -223,6 +226,67 @@ function getPortalContainer() {
 
 function getBodyElement() {
   return document.body || document.querySelector('body');
+}
+
+function initializeSystemThemeWatcher() {
+  if (systemColorSchemeMediaQuery || typeof window === 'undefined' || !window.matchMedia) {
+    return;
+  }
+  systemColorSchemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const handler = () => {
+    if (settingsState.themeMode === 'auto') {
+      applyThemeMode('auto');
+    }
+  };
+  if (typeof systemColorSchemeMediaQuery.addEventListener === 'function') {
+    systemColorSchemeMediaQuery.addEventListener('change', handler);
+  } else if (typeof systemColorSchemeMediaQuery.addListener === 'function') {
+    systemColorSchemeMediaQuery.addListener(handler);
+  }
+}
+
+function getSystemPrefersDark() {
+  if (systemColorSchemeMediaQuery) {
+    return systemColorSchemeMediaQuery.matches;
+  }
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return false;
+  }
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function getEffectiveTheme(mode) {
+  const normalized = normalizeThemeMode(mode);
+  if (normalized === 'dark' || normalized === 'light') {
+    return normalized;
+  }
+  return getSystemPrefersDark() ? 'dark' : 'light';
+}
+
+function syncDocumentColorScheme(theme) {
+  const root = document.documentElement;
+  if (!root) return;
+  root.style.setProperty('color-scheme', theme === 'dark' ? 'dark' : 'light');
+}
+
+function syncChatIframeTheme(theme, force = false) {
+  const iframe = getChatIframe();
+  if (!iframe || !iframe.contentWindow) {
+    if (force) {
+      lastSyncedIframeTheme = null;
+    }
+    return;
+  }
+  const resolved = theme === 'dark' ? 'dark' : 'light';
+  if (!force && lastSyncedIframeTheme === resolved) {
+    return;
+  }
+  lastSyncedIframeTheme = resolved;
+  try {
+    iframe.contentWindow.postMessage({ type: THEME_MESSAGE_TYPE, theme: resolved }, '*');
+  } catch (err) {
+    // Cross-origin iframe might block direct messaging; ignore silently.
+  }
 }
 
 function setRefreshButtonLoading(isLoading) {
@@ -427,6 +491,7 @@ function setupToolbarInteractions() {
       // Persist the last successfully loaded src so we can replay it later.
       iframe.dataset.currentSrc = iframe.src;
       setRefreshButtonLoading(false);
+      syncChatIframeTheme(getEffectiveTheme(settingsState.themeMode), true);
     });
   }
 
@@ -686,9 +751,16 @@ function normalizeThemeMode(value) {
 function applyThemeMode(mode) {
   const body = getBodyElement();
   if (!body) return;
+  initializeSystemThemeWatcher();
   const resolved = normalizeThemeMode(mode);
   body.classList.remove('theme-auto', 'theme-light', 'theme-dark');
   body.classList.add(`theme-${resolved}`);
+  const effectiveTheme = getEffectiveTheme(resolved);
+  if (body.dataset) {
+    body.dataset.themeResolved = effectiveTheme;
+  }
+  syncDocumentColorScheme(effectiveTheme);
+  syncChatIframeTheme(effectiveTheme);
 }
 
 async function loadSettingsFromStorage() {
