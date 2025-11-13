@@ -6,7 +6,7 @@
     "message": "Sidely"
   },
   "appDescription": {
-    "message": "Sidely के साथ Chrome के साइडबार में ChatGPT का उपयोग करें—यह आपकी अपनी खाता जानकारी से सुरक्षित और तेज़ एक्सटेंशन है।"
+    "message": "Chrome की साइडबार में सीधे ChatGPT इस्तेमाल करें. हल्का, तेज़ और सुरक्षित — आपकी अपनी ChatGPT अकाउंट से काम करता है."
   },
   "appTitle": {
     "message": "Sidely - ChatGPT साइडबार"
@@ -15,27 +15,27 @@
     "message": "Sidely - ChatGPT साइडबार"
   },
   "refreshButtonAriaLabel": {
-    "message": "चैट ताज़ा करें"
+    "message": "चैट रीफ्रेश करें"
   },
   "refreshButtonDefaultLabel": {
-    "message": "चैट अपडेट करें"
+    "message": "रीफ्रेश"
   },
   "refreshButtonLoadingLabel": {
     "message": "अपडेट हो रहा है..."
   },
   "refreshButtonTooltip": {
-    "message": "नए चैट दिखाने के लिए साइडबार को फिर से लोड करें।"
+    "message": "नई चैट दिखाने के लिए साइडबार रीफ्रेश करें."
   },
   "noticeCloudflare": {
-    "message": "आपको Cloudflare जाँच पूरी करनी होगी। __PORTAL__ को टैब में खोलें, साइन इन करें और वापस आएँ।",
-    "description": "__PORTAL__ को ChatGPT डोमेन से बदला जाएगा।"
+    "message": "Cloudflare चेक पूरा करना होगा. __PORTAL__ खोलें, लॉग इन करें और वापस आएं.",
+    "description": "__PORTAL__ को ChatGPT के डोमेन से बदला जाएगा."
   },
   "noticeUnauthorized": {
-    "message": "आपको अपने ChatGPT खाते में साइन इन करना होगा। __PORTAL__ को टैब में खोलें, साइन इन करें और वापस आएँ।",
-    "description": "__PORTAL__ को ChatGPT डोमेन से बदला जाएगा।"
+    "message": "अपने ChatGPT अकाउंट में लॉग इन करें. __PORTAL__ खोलें, लॉग इन करें और वापस आएं.",
+    "description": "__PORTAL__ को ChatGPT के डोमेन से बदला जाएगा."
   },
   "noticeError": {
-    "message": "सत्र सत्यापन विफल रहा। पृष्ठ को रिफ़्रेश करें या __PORTAL__ पर साइन इन करें।",
-    "description": "__PORTAL__ को ChatGPT डोमेन से बदला जाएगा।"
+    "message": "सेशन वेरिफाई नहीं हो पाया. पेज रीफ्रेश करें या __PORTAL__ पर लॉग इन करें.",
+    "description": "__PORTAL__ को ChatGPT के डोमेन से बदला जाएगा."
   }
 }

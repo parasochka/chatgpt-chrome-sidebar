@@ -1,41 +1,41 @@
 {
   "appName": {
-    "message": "Sidely - Barra lateral do ChatGPT"
+    "message": "Sidely - sidebar do ChatGPT"
   },
   "appShortName": {
     "message": "Sidely"
   },
   "appDescription": {
-    "message": "Use o ChatGPT na barra lateral do Chrome com o Sidely – uma extensão rápida e segura que utiliza a sua própria conta."
+    "message": "Use o ChatGPT direto na barra lateral do Chrome. Extensão leve, rápida e segura que usa sua própria conta do ChatGPT."
   },
   "appTitle": {
-    "message": "Sidely - Barra lateral do ChatGPT"
+    "message": "Sidely - sidebar do ChatGPT"
   },
   "actionTitle": {
-    "message": "Sidely - Barra lateral do ChatGPT"
+    "message": "Sidely - sidebar do ChatGPT"
   },
   "refreshButtonAriaLabel": {
-    "message": "Atualizar conversas"
+    "message": "Atualizar chats"
   },
   "refreshButtonDefaultLabel": {
-    "message": "Atualizar conversas"
+    "message": "Atualizar"
   },
   "refreshButtonLoadingLabel": {
     "message": "Atualizando..."
   },
   "refreshButtonTooltip": {
-    "message": "Recarregue a barra lateral para mostrar novas conversas."
+    "message": "Recarregue a sidebar para ver novos chats."
   },
   "noticeCloudflare": {
-    "message": "Você precisa concluir a verificação do Cloudflare. Abra __PORTAL__ em uma aba, faça login e volte.",
+    "message": "Você precisa passar pela verificação do Cloudflare. Abra o __PORTAL__, faça login e volte.",
     "description": "__PORTAL__ será substituído pelo domínio do ChatGPT."
   },
   "noticeUnauthorized": {
-    "message": "Você precisa entrar na sua conta do ChatGPT. Abra __PORTAL__ em uma aba, faça login e volte.",
+    "message": "Faça login na sua conta do ChatGPT. Abra o __PORTAL__, faça login e volte.",
     "description": "__PORTAL__ será substituído pelo domínio do ChatGPT."
   },
   "noticeError": {
-    "message": "A verificação da sessão falhou. Tente atualizar a página ou faça login em __PORTAL__.",
+    "message": "Falha ao verificar a sessão. Recarregue a página ou faça login no __PORTAL__.",
     "description": "__PORTAL__ será substituído pelo domínio do ChatGPT."
   }
 }

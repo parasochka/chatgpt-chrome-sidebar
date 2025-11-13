@@ -1,41 +1,41 @@
 {
   "appName": {
-    "message": "Sidely - Barre latérale ChatGPT"
+    "message": "Sidely - sidebar ChatGPT"
   },
   "appShortName": {
     "message": "Sidely"
   },
   "appDescription": {
-    "message": "Utilisez ChatGPT dans la barre latérale de Chrome avec Sidely, une extension rapide et sécurisée utilisant votre propre compte."
+    "message": "Utilise ChatGPT directement dans la barre latérale de Chrome. Léger, rapide et sécurisé, et fonctionne avec ton propre compte ChatGPT."
   },
   "appTitle": {
-    "message": "Sidely - Barre latérale ChatGPT"
+    "message": "Sidely - sidebar ChatGPT"
   },
   "actionTitle": {
-    "message": "Sidely - Barre latérale ChatGPT"
+    "message": "Sidely - sidebar ChatGPT"
   },
   "refreshButtonAriaLabel": {
-    "message": "Actualiser les conversations"
+    "message": "Rafraîchir les chats"
   },
   "refreshButtonDefaultLabel": {
-    "message": "Mettre à jour les conversations"
+    "message": "Rafraîchir"
   },
   "refreshButtonLoadingLabel": {
     "message": "Mise à jour..."
   },
   "refreshButtonTooltip": {
-    "message": "Rechargez la barre latérale pour afficher les nouvelles conversations."
+    "message": "Recharge la sidebar pour afficher les nouveaux chats."
   },
   "noticeCloudflare": {
-    "message": "Vous devez terminer la vérification Cloudflare. Ouvrez __PORTAL__ dans un onglet, connectez-vous puis revenez.",
-    "description": "__PORTAL__ sera remplacé par le domaine de ChatGPT."
+    "message": "Tu dois passer la vérification Cloudflare. Ouvre __PORTAL__, connecte-toi, puis reviens.",
+    "description": "__PORTAL__ est remplacé par le domaine de ChatGPT."
   },
   "noticeUnauthorized": {
-    "message": "Vous devez vous connecter à votre compte ChatGPT. Ouvrez __PORTAL__ dans un onglet, connectez-vous puis revenez.",
-    "description": "__PORTAL__ sera remplacé par le domaine de ChatGPT."
+    "message": "Connecte-toi à ton compte ChatGPT. Ouvre __PORTAL__, connecte-toi, puis reviens.",
+    "description": "__PORTAL__ est remplacé par le domaine de ChatGPT."
   },
   "noticeError": {
-    "message": "La vérification de la session a échoué. Essayez d'actualiser la page ou connectez-vous sur __PORTAL__.",
-    "description": "__PORTAL__ sera remplacé par le domaine de ChatGPT."
+    "message": "Échec de la vérification de session. Recharge la page ou connecte-toi via __PORTAL__.",
+    "description": "__PORTAL__ est remplacé par le domaine de ChatGPT."
   }
 }

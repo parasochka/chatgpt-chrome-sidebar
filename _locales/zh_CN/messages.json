@@ -6,7 +6,7 @@
     "message": "Sidely"
   },
   "appDescription": {
-    "message": "在 Chrome 侧边栏中使用 Sidely，让你使用自己的账户以安全、快速的方式访问 ChatGPT。"
+    "message": "在 Chrome 侧边栏里直接使用 ChatGPT。轻便、快速又安全，直接用你的 ChatGPT 账号登录即可。"
   },
   "appTitle": {
     "message": "Sidely - ChatGPT 侧边栏"
@@ -18,24 +18,24 @@
     "message": "刷新聊天"
   },
   "refreshButtonDefaultLabel": {
-    "message": "更新聊天"
+    "message": "刷新"
   },
   "refreshButtonLoadingLabel": {
-    "message": "正在更新…"
+    "message": "更新中..."
   },
   "refreshButtonTooltip": {
-    "message": "重新加载侧边栏以显示新的聊天。"
+    "message": "重新加载侧边栏以查看新的聊天内容。"
   },
   "noticeCloudflare": {
-    "message": "你需要完成 Cloudflare 验证。请在标签页中打开 __PORTAL__，完成登录后再返回。",
-    "description": "__PORTAL__ 会被替换成 ChatGPT 域名。"
+    "message": "需要完成 Cloudflare 验证。打开 __PORTAL__，登录后再返回。",
+    "description": "__PORTAL__ 会被替换成 ChatGPT 的域名。"
   },
   "noticeUnauthorized": {
-    "message": "你需要登录你的 ChatGPT 帐号。请在标签页中打开 __PORTAL__，登录后再返回。",
-    "description": "__PORTAL__ 会被替换成 ChatGPT 域名。"
+    "message": "你需要登录你的 ChatGPT 帐号。打开 __PORTAL__，登录后再回来。",
+    "description": "__PORTAL__ 会被替换成 ChatGPT 的域名。"
   },
   "noticeError": {
-    "message": "会话验证失败。请尝试刷新页面，或在 __PORTAL__ 上登录。",
-    "description": "__PORTAL__ 会被替换成 ChatGPT 域名。"
+    "message": "会话验证失败。请刷新页面或前往 __PORTAL__ 登录。",
+    "description": "__PORTAL__ 会被替换成 ChatGPT 的域名。"
   }
 }
