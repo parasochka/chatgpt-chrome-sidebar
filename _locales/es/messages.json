@@ -1,18 +1,18 @@
 {
   "appName": {
-    "message": "Sidely - Barra lateral de ChatGPT"
+    "message": "Sidely - barra lateral con ChatGPT"
   },
   "appShortName": {
     "message": "Sidely"
   },
   "appDescription": {
-    "message": "Usa ChatGPT en la barra lateral de Chrome con Sidely, una extensión segura y rápida que utiliza tu propia cuenta."
+    "message": "Usa ChatGPT directamente en la barra lateral de Chrome. Una extensión rápida, ligera y segura que funciona con tu propia cuenta de ChatGPT."
   },
   "appTitle": {
-    "message": "Sidely - Barra lateral de ChatGPT"
+    "message": "Sidely - barra lateral con ChatGPT"
   },
   "actionTitle": {
-    "message": "Sidely - Barra lateral de ChatGPT"
+    "message": "Sidely - barra lateral con ChatGPT"
   },
   "refreshButtonAriaLabel": {
     "message": "Actualizar chats"
@@ -24,10 +24,10 @@
     "message": "Actualizando..."
   },
   "refreshButtonTooltip": {
-    "message": "Vuelve a cargar la barra lateral para mostrar los chats nuevos."
+    "message": "Recarga la barra lateral para ver los chats nuevos."
   },
   "noticeCloudflare": {
-    "message": "Debes completar la verificación de Cloudflare. Abre __PORTAL__ en una pestaña, inicia sesión y vuelve.",
+    "message": "Necesitas completar la verificación de Cloudflare. Abre __PORTAL__ en una pestaña, inicia sesión y vuelve.",
     "description": "__PORTAL__ se reemplaza por el dominio de ChatGPT."
   },
   "noticeUnauthorized": {
@@ -35,7 +35,7 @@
     "description": "__PORTAL__ se reemplaza por el dominio de ChatGPT."
   },
   "noticeError": {
-    "message": "La verificación de la sesión falló. Intenta actualizar la página o inicia sesión en __PORTAL__.",
+    "message": "No se pudo verificar la sesión. Recarga la página o inicia sesión en __PORTAL__.",
     "description": "__PORTAL__ se reemplaza por el dominio de ChatGPT."
   }
 }

@@ -1,18 +1,18 @@
 {
   "appName": {
-    "message": "Sidely — боковая панель ChatGPT"
+    "message": "Sidely - сайдбар с ChatGPT"
   },
   "appShortName": {
     "message": "Sidely"
   },
   "appDescription": {
-    "message": "Используйте ChatGPT в боковой панели Chrome с Sidely — безопасным и быстрым расширением, работающим с вашим собственным аккаунтом."
+    "message": "Запускай ChatGPT прямо в боковой панели Chrome. Легкий, быстрый и безопасный сайдбар, который работает напрямую с твоим аккаунтом ChatGPT."
   },
   "appTitle": {
-    "message": "Sidely — боковая панель ChatGPT"
+    "message": "Sidely - сайдбар с ChatGPT"
   },
   "actionTitle": {
-    "message": "Sidely — боковая панель ChatGPT"
+    "message": "Sidely - сайдбар с ChatGPT"
   },
   "refreshButtonAriaLabel": {
     "message": "Обновить чаты"
@@ -24,18 +24,18 @@
     "message": "Обновление..."
   },
   "refreshButtonTooltip": {
-    "message": "Перезагрузите боковую панель, чтобы увидеть новые чаты."
+    "message": "Перезагрузи сайдбар, чтобы появились новые чаты."
   },
   "noticeCloudflare": {
-    "message": "Нужно пройти проверку Cloudflare. Откройте __PORTAL__ во вкладке, войдите в аккаунт и вернитесь.",
+    "message": "Нужно пройти проверку Cloudflare. Открой __PORTAL__ во вкладке, войди и вернись обратно.",
     "description": "__PORTAL__ будет заменён на домен ChatGPT."
   },
   "noticeUnauthorized": {
-    "message": "Нужно войти в свой аккаунт ChatGPT. Откройте __PORTAL__ во вкладке, авторизуйтесь и вернитесь.",
+    "message": "Войди в свой аккаунт ChatGPT. Открой __PORTAL__ во вкладке, авторизуйся и вернись.",
     "description": "__PORTAL__ будет заменён на домен ChatGPT."
   },
   "noticeError": {
-    "message": "Не удалось подтвердить сессию. Попробуйте обновить страницу или войдите на __PORTAL__.",
+    "message": "Не удалось подтвердить сессию. Обнови страницу или войди через __PORTAL__.",
     "description": "__PORTAL__ будет заменён на домен ChatGPT."
   }
 }
