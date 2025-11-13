@@ -22,13 +22,20 @@ body {
 
 body {
   transition: background-color 0.2s ease;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 100%;
   --portal-max-width: 100%;
   --portal-horizontal-padding: 0px;
+  --frame-max-width: 100%;
 }
 
 .frame-wrap {
-  width: 100%;
+  flex: 1 1 auto;
+  width: min(100%, var(--frame-max-width, 100%));
   height: 100%;
+  margin: 0 auto;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
@@ -209,6 +216,7 @@ body {
 .portal-container {
   display: flex;
   flex-direction: column;
+  flex: 1 1 100%;
 }
 
 .portal-stage {
@@ -234,17 +242,26 @@ body {
 }
 
 .settings-panel {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px 20px 24px;
-  background: #f8fafc;
+  gap: 24px;
+  padding: 24px 28px 32px;
+  background: rgba(248, 250, 252, 0.98);
   color: #0f172a;
   overflow-y: auto;
+  backdrop-filter: blur(8px);
 }
 
 .settings-panel[hidden] {
   display: none;
+}
+
+.settings-panel__header,
+.settings-panel__body {
+  width: min(100%, 640px);
+  margin: 0 auto;
 }
 
 .settings-panel__header {
@@ -262,11 +279,11 @@ body {
 
 .settings-close-btn {
   appearance: none;
-  border: 0;
-  background: transparent;
-  border-radius: 999px;
-  width: 32px;
-  height: 32px;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  background: rgba(15, 23, 42, 0.04);
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -274,25 +291,32 @@ body {
   line-height: 1;
   color: inherit;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.settings-close-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .settings-close-btn:hover,
 .settings-close-btn:focus-visible {
-  background: rgba(15, 23, 42, 0.08);
+  background: rgba(15, 23, 42, 0.1);
+  border-color: rgba(15, 23, 42, 0.4);
 }
 
 .settings-panel__body {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .settings-section {
-  padding: 16px;
-  border-radius: 12px;
+  padding: 18px 20px;
+  border-radius: 14px;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
 }
 
 .settings-section__title {
@@ -309,13 +333,20 @@ body {
 
 .settings-select {
   width: 100%;
-  border-radius: 8px;
-  border: 1px solid rgba(15, 23, 42, 0.15);
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.2);
   background: #fff;
   font-size: 14px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   font-family: inherit;
   color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-select:focus-visible {
+  outline: none;
+  border-color: #10a37f;
+  box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.2);
 }
 
 .settings-fieldset {
@@ -327,36 +358,57 @@ body {
 .settings-options {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .settings-option {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: rgba(15, 23, 42, 0.03);
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(15, 23, 42, 0.02);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .settings-option input[type="radio"] {
   width: 16px;
   height: 16px;
+  accent-color: #10a37f;
+}
+
+.settings-option__label {
+  font-weight: 500;
+}
+
+.settings-option:has(input:checked) {
+  border-color: rgba(16, 163, 127, 0.6);
+  background: rgba(16, 163, 127, 0.08);
+}
+
+.settings-option:focus-within {
+  outline: 2px solid rgba(16, 163, 127, 0.4);
+  outline-offset: 2px;
 }
 
 body.size-s {
   --portal-max-width: 360px;
   --portal-horizontal-padding: 4px;
+  --frame-max-width: 360px;
 }
 
 body.size-m {
-  --portal-max-width: 100%;
+  --portal-max-width: 720px;
   --portal-horizontal-padding: 0px;
+  --frame-max-width: 720px;
 }
 
 body.size-l {
-  --portal-max-width: 860px;
-  --portal-horizontal-padding: 0px;
+  --portal-max-width: 960px;
+  --portal-horizontal-padding: 8px;
+  --frame-max-width: 960px;
 }
 
 body.size-s .frame-header {
@@ -370,6 +422,16 @@ body.size-l .frame-header {
 body.size-l .toolbar-btn {
   height: 36px;
   font-size: 15px;
+}
+
+@media (max-width: 480px) {
+  .settings-panel {
+    padding: 20px 16px 24px;
+  }
+
+  .settings-section {
+    padding: 16px;
+  }
 }
 
 @keyframes gpt-fade-in {
@@ -435,13 +497,14 @@ body.size-l .toolbar-btn {
   }
 
   .settings-panel {
-    background: #0f172a;
+    background: rgba(13, 16, 23, 0.9);
     color: #f8fafc;
   }
 
   .settings-section {
-    background: #111827;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.65);
+    background: rgba(15, 23, 42, 0.9);
+    border-color: rgba(148, 163, 184, 0.25);
+    box-shadow: 0 20px 40px rgba(2, 6, 23, 0.7);
   }
 
   .settings-section__hint {
@@ -449,13 +512,30 @@ body.size-l .toolbar-btn {
   }
 
   .settings-select {
-    background: #0f172a;
-    border-color: rgba(148, 163, 184, 0.35);
+    background: rgba(15, 23, 42, 0.7);
+    border-color: rgba(148, 163, 184, 0.4);
     color: #f8fafc;
   }
 
   .settings-option {
-    background: rgba(148, 163, 184, 0.12);
+    border-color: rgba(148, 163, 184, 0.25);
+    background: rgba(148, 163, 184, 0.1);
+  }
+
+  .settings-option:has(input:checked) {
+    border-color: rgba(16, 163, 127, 0.8);
+    background: rgba(16, 163, 127, 0.18);
+  }
+
+  .settings-close-btn {
+    border-color: rgba(148, 163, 184, 0.4);
+    background: rgba(148, 163, 184, 0.1);
+  }
+
+  .settings-close-btn:hover,
+  .settings-close-btn:focus-visible {
+    background: rgba(148, 163, 184, 0.2);
+    border-color: rgba(148, 163, 184, 0.6);
   }
 }
 

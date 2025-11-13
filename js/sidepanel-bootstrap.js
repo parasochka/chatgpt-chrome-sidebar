@@ -12,7 +12,7 @@ const FALLBACK_MESSAGES = {
   settingsCloseLabel: 'Close sidebar',
   settingsTitle: 'Settings',
   settingsExtensionLanguageTitle: 'Extension language',
-  settingsExtensionLanguageHint: 'Choose which language Sidely should display in its UI.',
+  settingsExtensionLanguageHint: 'Switch the Sidely interface language instantly.',
   settingsLanguageEnglish: 'English',
   settingsLanguageChineseChina: 'Chinese (China)',
   settingsLanguageFrench: 'French',
@@ -26,10 +26,10 @@ const FALLBACK_MESSAGES = {
   settingsDomainChatgptCom: 'chatgpt.com',
   settingsDomainChatOpenaiCom: 'chat.openai.com',
   settingsSizeTitle: 'Sidebar size',
-  settingsSizeHint: "Adjust Sidely's layout for compact or wide side panels.",
-  settingsSizeSLabel: 'S — compact',
-  settingsSizeMLabel: 'M — default',
-  settingsSizeLLabel: 'L — wide',
+  settingsSizeHint: 'Control how wide the ChatGPT sidebar should be.',
+  settingsSizeSLabel: 'S — minimal width',
+  settingsSizeMLabel: 'M — default width',
+  settingsSizeLLabel: 'L — fully expanded',
   settingsThemeTitle: 'Theme',
   settingsThemeHint: 'Choose a light, dark, or auto theme for the sidebar.',
   settingsThemeAuto: 'Auto (match system)',
@@ -40,22 +40,53 @@ const FALLBACK_MESSAGES = {
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
 };
 
-function getLocalizedString(key, fallback, substitutions) {
-  let message = null;
+const DEFAULT_LANGUAGE = 'en';
 
-  if (typeof chrome !== 'undefined' && chrome?.i18n?.getMessage) {
-    try {
-      message = chrome.i18n.getMessage(key, substitutions);
-    } catch (err) {
-      message = null;
-    }
+const LOCALE_FOLDER_BY_LANGUAGE = {
+  en: 'en',
+  es: 'es',
+  fr: 'fr',
+  hi: 'hi',
+  'pt-BR': 'pt_BR',
+  ru: 'ru',
+  'zh-CN': 'zh_CN'
+};
+
+let activeLocaleId = null;
+let activeLocaleMessages = null;
+
+let APP_TITLE = FALLBACK_MESSAGES.appTitle;
+let HEADER_HOME_LABEL = FALLBACK_MESSAGES.headerHomeLabel;
+let REFRESH_LABEL_DEFAULT = FALLBACK_MESSAGES.refreshButtonDefaultLabel;
+let REFRESH_LABEL_LOADING = FALLBACK_MESSAGES.refreshButtonLoadingLabel;
+let REFRESH_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.refreshButtonAriaLabel;
+let REFRESH_BUTTON_TOOLTIP = FALLBACK_MESSAGES.refreshButtonTooltip;
+let HEADER_SETTINGS_LABEL = FALLBACK_MESSAGES.headerSettingsLabel;
+let SETTINGS_CLOSE_LABEL = FALLBACK_MESSAGES.settingsCloseLabel;
+let SETTINGS_TITLE = FALLBACK_MESSAGES.settingsTitle;
+
+function getRuntimeAssetURL(path) {
+  if (typeof chrome !== 'undefined' && chrome?.runtime?.getURL) {
+    return chrome.runtime.getURL(path);
   }
+  return path;
+}
 
-  let base = typeof message === 'string' && message.length ? message : fallback;
+function getMessageFromActiveLocale(key) {
+  if (!activeLocaleMessages || typeof key !== 'string') {
+    return null;
+  }
+  const entry = activeLocaleMessages[key];
+  if (!entry || typeof entry.message !== 'string') {
+    return null;
+  }
+  return entry.message;
+}
+
+function applyMessageSubstitutions(base, substitutions) {
   if (typeof base !== 'string') {
-    return fallback;
+    return base;
   }
-
   if (typeof substitutions === 'undefined') {
     return base;
   }
@@ -76,15 +107,80 @@ function getLocalizedString(key, fallback, substitutions) {
   }, base);
 }
 
-const APP_TITLE = getLocalizedString('appTitle', FALLBACK_MESSAGES.appTitle);
-const HEADER_HOME_LABEL = getLocalizedString('headerHomeLabel', FALLBACK_MESSAGES.headerHomeLabel);
-const REFRESH_LABEL_DEFAULT = getLocalizedString('refreshButtonDefaultLabel', FALLBACK_MESSAGES.refreshButtonDefaultLabel);
-const REFRESH_LABEL_LOADING = getLocalizedString('refreshButtonLoadingLabel', FALLBACK_MESSAGES.refreshButtonLoadingLabel);
-const REFRESH_BUTTON_ARIA_LABEL = getLocalizedString('refreshButtonAriaLabel', FALLBACK_MESSAGES.refreshButtonAriaLabel);
-const REFRESH_BUTTON_TOOLTIP = getLocalizedString('refreshButtonTooltip', FALLBACK_MESSAGES.refreshButtonTooltip);
-const HEADER_SETTINGS_LABEL = getLocalizedString('headerSettingsLabel', FALLBACK_MESSAGES.headerSettingsLabel);
-const SETTINGS_CLOSE_LABEL = getLocalizedString('settingsCloseLabel', FALLBACK_MESSAGES.settingsCloseLabel);
-const SETTINGS_TITLE = getLocalizedString('settingsTitle', FALLBACK_MESSAGES.settingsTitle);
+function getLocalizedString(key, fallback, substitutions) {
+  const localeMessage = getMessageFromActiveLocale(key);
+  if (typeof localeMessage === 'string' && localeMessage.length) {
+    return applyMessageSubstitutions(localeMessage, substitutions);
+  }
+
+  if (typeof chrome !== 'undefined' && chrome?.i18n?.getMessage) {
+    try {
+      const chromeMessage = chrome.i18n.getMessage(key, substitutions);
+      if (typeof chromeMessage === 'string' && chromeMessage.length) {
+        return chromeMessage;
+      }
+    } catch (err) {
+      // ignore and fall back
+    }
+  }
+
+  if (typeof fallback !== 'string') {
+    return fallback;
+  }
+  return applyMessageSubstitutions(fallback, substitutions);
+}
+
+function refreshCachedLocaleStrings() {
+  APP_TITLE = getLocalizedString('appTitle', FALLBACK_MESSAGES.appTitle);
+  HEADER_HOME_LABEL = getLocalizedString('headerHomeLabel', FALLBACK_MESSAGES.headerHomeLabel);
+  REFRESH_LABEL_DEFAULT = getLocalizedString('refreshButtonDefaultLabel', FALLBACK_MESSAGES.refreshButtonDefaultLabel);
+  REFRESH_LABEL_LOADING = getLocalizedString('refreshButtonLoadingLabel', FALLBACK_MESSAGES.refreshButtonLoadingLabel);
+  REFRESH_BUTTON_ARIA_LABEL = getLocalizedString('refreshButtonAriaLabel', FALLBACK_MESSAGES.refreshButtonAriaLabel);
+  REFRESH_BUTTON_TOOLTIP = getLocalizedString('refreshButtonTooltip', FALLBACK_MESSAGES.refreshButtonTooltip);
+  HEADER_SETTINGS_LABEL = getLocalizedString('headerSettingsLabel', FALLBACK_MESSAGES.headerSettingsLabel);
+  SETTINGS_CLOSE_LABEL = getLocalizedString('settingsCloseLabel', FALLBACK_MESSAGES.settingsCloseLabel);
+  SETTINGS_TITLE = getLocalizedString('settingsTitle', FALLBACK_MESSAGES.settingsTitle);
+}
+
+function getLocaleFolderFromLanguage(language) {
+  if (typeof language !== 'string') {
+    return null;
+  }
+  const normalized = language in LOCALE_FOLDER_BY_LANGUAGE ? language : normalizeLanguage(language);
+  return LOCALE_FOLDER_BY_LANGUAGE[normalized] || null;
+}
+
+async function ensureActiveLocaleMessages(language) {
+  const desiredFolder = getLocaleFolderFromLanguage(language) || LOCALE_FOLDER_BY_LANGUAGE[DEFAULT_LANGUAGE];
+  if (!desiredFolder) {
+    activeLocaleMessages = null;
+    activeLocaleId = null;
+    return;
+  }
+
+  if (activeLocaleId === desiredFolder && activeLocaleMessages) {
+    return;
+  }
+
+  const localeUrl = getRuntimeAssetURL(`_locales/${desiredFolder}/messages.json`);
+  try {
+    const response = await fetch(localeUrl, { cache: 'no-cache' });
+    if (!response.ok) {
+      throw new Error(`Failed to load locale ${desiredFolder}`);
+    }
+    const messages = await response.json();
+    activeLocaleId = desiredFolder;
+    activeLocaleMessages = messages;
+  } catch (error) {
+    console.warn('Unable to load locale file', desiredFolder, error);
+    if (desiredFolder !== LOCALE_FOLDER_BY_LANGUAGE[DEFAULT_LANGUAGE]) {
+      await ensureActiveLocaleMessages(DEFAULT_LANGUAGE);
+    } else {
+      activeLocaleMessages = null;
+      activeLocaleId = null;
+    }
+  }
+}
 
 const CHATGPT_PORTALS = [
   'https://chat.openai.com',
@@ -102,11 +198,11 @@ const STORAGE_KEYS = {
   themeMode: 'sidelyThemeMode'
 };
 
-const ALLOWED_LANGUAGES = ['en', 'zh-CN', 'fr', 'hi', 'pt-BR', 'ru', 'es'];
+const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
 const THEME_MODES = ['auto', 'light', 'dark'];
 
 const SETTINGS_DEFAULTS = {
-  language: 'en',
+  language: DEFAULT_LANGUAGE,
   domainMode: 'auto',
   panelSize: 'M',
   themeMode: 'auto'
@@ -210,7 +306,7 @@ function setElementTextWithLink(target, message, link, linkText) {
   }
 }
 
-function getUILanguageTag() {
+function detectBrowserUILanguage() {
   if (typeof chrome === 'undefined' || !chrome?.i18n) {
     return null;
   }
@@ -232,15 +328,25 @@ function getUILanguageTag() {
   return null;
 }
 
+function getDocumentLanguageTag() {
+  if (settingsState?.language) {
+    return settingsState.language;
+  }
+  const detected = detectBrowserUILanguage();
+  if (typeof detected === 'string' && detected.length) {
+    return detected.replace('_', '-');
+  }
+  return DEFAULT_LANGUAGE;
+}
+
 function applyLocalization() {
-  const languageTag = getUILanguageTag();
+  refreshCachedLocaleStrings();
+  const languageTag = getDocumentLanguageTag();
   if (languageTag && document?.documentElement) {
     document.documentElement.setAttribute('lang', languageTag.replace('_', '-'));
   }
 
-  if (typeof APP_TITLE === 'string' && APP_TITLE.length) {
-    document.title = APP_TITLE;
-  }
+  document.title = APP_TITLE;
 
   const homeButton = document.getElementById('home-button');
   if (homeButton) {
@@ -284,10 +390,6 @@ function applyLocalization() {
   const settingsCloseButton = document.getElementById('settings-close-button');
   if (settingsCloseButton) {
     settingsCloseButton.setAttribute('aria-label', SETTINGS_CLOSE_LABEL);
-    const label = settingsCloseButton.querySelector('.settings-close-btn__label');
-    if (label) {
-      label.textContent = SETTINGS_CLOSE_LABEL;
-    }
   }
 
   const settingsTitle = document.querySelector('.settings-panel__title');
@@ -567,7 +669,18 @@ function storageSet(items) {
 }
 
 function normalizeLanguage(value) {
-  return ALLOWED_LANGUAGES.includes(value) ? value : SETTINGS_DEFAULTS.language;
+  if (typeof value !== 'string') {
+    return SETTINGS_DEFAULTS.language;
+  }
+  const canonical = value.replace('_', '-');
+  if (ALLOWED_LANGUAGES.includes(canonical)) {
+    return canonical;
+  }
+  const base = canonical.split('-')[0];
+  if (ALLOWED_LANGUAGES.includes(base)) {
+    return base;
+  }
+  return SETTINGS_DEFAULTS.language;
 }
 
 function normalizeDomainMode(value) {
@@ -602,6 +715,11 @@ async function loadSettingsFromStorage() {
 
   if (typeof stored[STORAGE_KEYS.language] === 'string') {
     nextState.language = normalizeLanguage(stored[STORAGE_KEYS.language]);
+  } else {
+    const detected = detectBrowserUILanguage();
+    if (detected) {
+      nextState.language = normalizeLanguage(detected);
+    }
   }
 
   if (typeof stored[STORAGE_KEYS.domainMode] === 'string') {
@@ -651,16 +769,27 @@ function syncSettingsUI() {
   });
 }
 
+async function setExtensionLanguage(value) {
+  const normalized = normalizeLanguage(value);
+  settingsState.language = normalized;
+  await storageSet({ [STORAGE_KEYS.language]: normalized });
+  await ensureActiveLocaleMessages(normalized);
+  applyLocalization();
+  syncSettingsUI();
+}
+
 function setupSettingsControls() {
   if (settingsControlsInitialized) return;
   settingsControlsInitialized = true;
 
   const languageSelect = document.getElementById('extension-language-select');
   if (languageSelect) {
-    languageSelect.addEventListener('change', event => {
+    languageSelect.addEventListener('change', async event => {
+      if (!(event.target instanceof HTMLSelectElement)) {
+        return;
+      }
       const value = normalizeLanguage(event.target.value);
-      settingsState.language = value;
-      storageSet({ [STORAGE_KEYS.language]: value });
+      await setExtensionLanguage(value);
     });
   }
 
@@ -782,10 +911,11 @@ async function loadPortalAccordingToSettings() {
 }
 
 async function bootstrapSidepanel() {
-  applyLocalization();
   applyThemeMode(settingsState.themeMode);
   applyPanelSizeClass(settingsState.panelSize);
   await loadSettingsFromStorage();
+  await ensureActiveLocaleMessages(settingsState.language);
+  applyLocalization();
   syncSettingsUI();
   setupSettingsControls();
   hideSettingsPanel();
