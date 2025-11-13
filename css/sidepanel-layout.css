@@ -281,7 +281,7 @@ body {
   appearance: none;
   border: 0;
   background: transparent;
-  border-radius: 999px;
+  border-radius: 10px;
   width: 36px;
   height: 36px;
   display: inline-flex;
@@ -420,76 +420,76 @@ body {
 
 /* Manual theme overrides */
 body.theme-dark {
-  background: #020617;
-  color: #f1f5f9;
+  background: #202123;
+  color: #ececf1;
 }
 
 body.theme-dark .frame-wrap {
-  background: #040c1a;
-  box-shadow: 0 20px 64px rgba(2, 6, 23, 0.8);
+  background: #2c2d35;
+  box-shadow: 0 20px 64px rgba(2, 6, 23, 0.65);
 }
 
 body.theme-dark .frame-header {
-  border-bottom-color: rgba(51, 65, 85, 0.6);
-  background: rgba(2, 6, 23, 0.95);
-  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.8);
-  color: #f8fafc;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background: #343541;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color: #f7f7f8;
 }
 
 body.theme-dark .toolbar-btn {
-  color: #f8fafc;
+  color: #f7f7f8;
 }
 
 body.theme-dark .toolbar-btn:hover,
 body.theme-dark .toolbar-btn:focus-visible {
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
 body.theme-dark .toolbar-btn:active {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 body.theme-dark .toolbar-btn[aria-disabled="true"] {
-  color: rgba(148, 163, 184, 0.6);
+  color: rgba(148, 163, 184, 0.65);
 }
 
 body.theme-dark .toolbar-tooltip__bubble {
-  background: rgba(15, 23, 42, 0.95);
-  color: #f1f5f9;
-  border: 1px solid rgba(59, 130, 246, 0.35);
-  box-shadow: 0 24px 50px rgba(2, 6, 23, 0.8), 0 6px 18px rgba(15, 23, 42, 0.45);
+  background: #3f4151;
+  color: #f7f7f8;
+  border: 1px solid rgba(86, 88, 105, 0.85);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 6px 18px rgba(15, 23, 42, 0.45);
 }
 
 body.theme-dark .settings-panel {
-  background: #050f1f;
-  color: #f8fafc;
+  background: #202123;
+  color: #ececf1;
 }
 
 body.theme-dark .settings-panel__title {
-  color: #f8fafc;
+  color: inherit;
 }
 
 body.theme-dark .settings-section {
-  background: #07162d;
-  border-color: rgba(59, 130, 246, 0.35);
-  box-shadow: 0 25px 60px rgba(2, 6, 23, 0.75);
+  background: #2f3135;
+  border-color: #444654;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
 }
 
 body.theme-dark .settings-section__hint {
-  color: rgba(226, 232, 240, 0.85);
+  color: rgba(236, 236, 241, 0.85);
 }
 
 body.theme-dark .settings-select {
-  background: rgba(15, 23, 42, 0.85);
-  border-color: rgba(59, 130, 246, 0.45);
-  color: #f8fafc;
+  background: #343541;
+  border-color: #565869;
+  color: #f7f7f8;
 }
 
 body.theme-dark .settings-option {
-  border-color: rgba(59, 130, 246, 0.35);
-  background: rgba(15, 23, 42, 0.65);
-  color: #e2e8f0;
+  border-color: #565869;
+  background: #343541;
+  color: #ececf1;
 }
 
 body.theme-dark .settings-option__label {
@@ -497,9 +497,9 @@ body.theme-dark .settings-option__label {
 }
 
 body.theme-dark .settings-option:has(input:checked) {
-  border-color: rgba(16, 185, 129, 0.85);
-  background: rgba(16, 185, 129, 0.2);
-  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35) inset;
+  border-color: rgba(16, 163, 127, 0.85);
+  background: rgba(16, 163, 127, 0.16);
+  box-shadow: 0 0 0 1px rgba(16, 163, 127, 0.35) inset;
 }
 
 body.theme-dark .settings-close-btn {
@@ -509,84 +509,84 @@ body.theme-dark .settings-close-btn {
 
 body.theme-dark .settings-close-btn:hover,
 body.theme-dark .settings-close-btn:focus-visible {
-  background: rgba(148, 163, 184, 0.18);
-  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.55) inset;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
   color: #fff;
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   body.theme-auto {
-    background: #020617;
-    color: #f1f5f9;
+    background: #202123;
+    color: #ececf1;
   }
 
   body.theme-auto .frame-wrap {
-    background: #040c1a;
-    box-shadow: 0 20px 64px rgba(2, 6, 23, 0.8);
+    background: #2c2d35;
+    box-shadow: 0 20px 64px rgba(2, 6, 23, 0.65);
   }
 
   body.theme-auto .frame-header {
-    border-bottom-color: rgba(51, 65, 85, 0.6);
-    background: rgba(2, 6, 23, 0.95);
-    box-shadow: 0 12px 32px rgba(2, 6, 23, 0.8);
-    color: #f8fafc;
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    background: #343541;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    color: #f7f7f8;
   }
 
   body.theme-auto .toolbar-btn {
-    color: #f8fafc;
+    color: #f7f7f8;
   }
 
   body.theme-auto .toolbar-btn:hover,
   body.theme-auto .toolbar-btn:focus-visible {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(255, 255, 255, 0.08);
     color: #fff;
   }
 
   body.theme-auto .toolbar-btn:active {
-    background: rgba(59, 130, 246, 0.3);
+    background: rgba(255, 255, 255, 0.14);
   }
 
   body.theme-auto .toolbar-btn[aria-disabled="true"] {
-    color: rgba(148, 163, 184, 0.6);
+    color: rgba(148, 163, 184, 0.65);
   }
 
   body.theme-auto .toolbar-tooltip__bubble {
-    background: rgba(15, 23, 42, 0.95);
-    color: #f1f5f9;
-    border: 1px solid rgba(59, 130, 246, 0.35);
-    box-shadow: 0 24px 50px rgba(2, 6, 23, 0.8), 0 6px 18px rgba(15, 23, 42, 0.45);
+    background: #3f4151;
+    color: #f7f7f8;
+    border: 1px solid rgba(86, 88, 105, 0.85);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 6px 18px rgba(15, 23, 42, 0.45);
   }
 
   body.theme-auto .settings-panel {
-    background: #050f1f;
-    color: #f8fafc;
+    background: #202123;
+    color: #ececf1;
   }
 
   body.theme-auto .settings-panel__title {
-    color: #f8fafc;
+    color: inherit;
   }
 
   body.theme-auto .settings-section {
-    background: #07162d;
-    border-color: rgba(59, 130, 246, 0.35);
-    box-shadow: 0 25px 60px rgba(2, 6, 23, 0.75);
+    background: #2f3135;
+    border-color: #444654;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
   }
 
   body.theme-auto .settings-section__hint {
-    color: rgba(226, 232, 240, 0.85);
+    color: rgba(236, 236, 241, 0.85);
   }
 
   body.theme-auto .settings-select {
-    background: rgba(15, 23, 42, 0.85);
-    border-color: rgba(59, 130, 246, 0.45);
-    color: #f8fafc;
+    background: #343541;
+    border-color: #565869;
+    color: #f7f7f8;
   }
 
   body.theme-auto .settings-option {
-    border-color: rgba(59, 130, 246, 0.35);
-    background: rgba(15, 23, 42, 0.65);
-    color: #e2e8f0;
+    border-color: #565869;
+    background: #343541;
+    color: #ececf1;
   }
 
   body.theme-auto .settings-option__label {
@@ -594,9 +594,9 @@ body.theme-dark .settings-close-btn:focus-visible {
   }
 
   body.theme-auto .settings-option:has(input:checked) {
-    border-color: rgba(16, 185, 129, 0.85);
-    background: rgba(16, 185, 129, 0.2);
-    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35) inset;
+    border-color: rgba(16, 163, 127, 0.85);
+    background: rgba(16, 163, 127, 0.16);
+    box-shadow: 0 0 0 1px rgba(16, 163, 127, 0.35) inset;
   }
 
   body.theme-auto .settings-close-btn {
@@ -606,8 +606,8 @@ body.theme-dark .settings-close-btn:focus-visible {
 
   body.theme-auto .settings-close-btn:hover,
   body.theme-auto .settings-close-btn:focus-visible {
-    background: rgba(148, 163, 184, 0.18);
-    box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.55) inset;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
     color: #fff;
   }
 }
