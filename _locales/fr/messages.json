@@ -39,9 +39,7 @@
     "description": "__PORTAL__ est remplacé par le domaine de ChatGPT."
   },
   "headerHomeLabel": { "message": "Accueil" },
-  "headerHomeTooltip": { "message": "Retourner à l'écran d'accueil de ChatGPT." },
   "headerSettingsLabel": { "message": "Paramètres" },
-  "headerSettingsTooltip": { "message": "Ouvrir les paramètres de Sidely." },
   "settingsTitle": { "message": "Paramètres" },
   "settingsCloseLabel": { "message": "Fermer la barre latérale" },
   "settingsExtensionLanguageTitle": { "message": "Langue de l’extension" },

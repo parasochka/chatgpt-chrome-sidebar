@@ -39,9 +39,7 @@
     "description": "__PORTAL__ will be replaced with the ChatGPT host name."
   },
   "headerHomeLabel": { "message": "Home" },
-  "headerHomeTooltip": { "message": "Go back to the ChatGPT home screen." },
   "headerSettingsLabel": { "message": "Settings" },
-  "headerSettingsTooltip": { "message": "Open Sidely settings." },
   "settingsTitle": { "message": "Settings" },
   "settingsCloseLabel": { "message": "Close sidebar" },
   "settingsExtensionLanguageTitle": { "message": "Extension language" },
