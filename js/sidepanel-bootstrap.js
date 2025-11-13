@@ -2,10 +2,14 @@
 
 const FALLBACK_MESSAGES = {
   appTitle: 'Sidely - ChatGPT Sidebar',
-  refreshButtonDefault: 'Update Chats',
-  refreshButtonLoading: 'Updating...',
-  refreshButtonAriaLabel: 'Refresh chats',
-  refreshButtonTooltip: 'Reload sidebar to show new chats.',
+  headerHomeLabel: 'Home',
+  headerHomeTooltip: 'Go back to the ChatGPT home screen.',
+  headerRefreshLabel: 'Refresh',
+  headerRefreshLoadingLabel: 'Refreshing…',
+  headerRefreshTooltip: 'Reload sidebar to show new chats.',
+  headerSettingsLabel: 'Settings',
+  headerSettingsTooltip: 'Open Sidely settings.',
+  settingsCloseLabel: 'Close settings',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
@@ -48,10 +52,15 @@ function getLocalizedString(key, fallback, substitutions) {
 }
 
 const APP_TITLE = getLocalizedString('appTitle', FALLBACK_MESSAGES.appTitle);
-const REFRESH_LABEL_DEFAULT = getLocalizedString('refreshButtonDefaultLabel', FALLBACK_MESSAGES.refreshButtonDefault);
-const REFRESH_LABEL_LOADING = getLocalizedString('refreshButtonLoadingLabel', FALLBACK_MESSAGES.refreshButtonLoading);
-const REFRESH_BUTTON_ARIA_LABEL = getLocalizedString('refreshButtonAriaLabel', FALLBACK_MESSAGES.refreshButtonAriaLabel);
-const REFRESH_BUTTON_TOOLTIP = getLocalizedString('refreshButtonTooltip', FALLBACK_MESSAGES.refreshButtonTooltip);
+const HEADER_HOME_LABEL = getLocalizedString('headerHomeLabel', FALLBACK_MESSAGES.headerHomeLabel);
+const HEADER_HOME_TOOLTIP = getLocalizedString('headerHomeTooltip', FALLBACK_MESSAGES.headerHomeTooltip);
+const REFRESH_LABEL_DEFAULT = getLocalizedString('headerRefreshLabel', FALLBACK_MESSAGES.headerRefreshLabel);
+const REFRESH_LABEL_LOADING = getLocalizedString('headerRefreshLoadingLabel', FALLBACK_MESSAGES.headerRefreshLoadingLabel);
+const REFRESH_BUTTON_ARIA_LABEL = REFRESH_LABEL_DEFAULT;
+const REFRESH_BUTTON_TOOLTIP = getLocalizedString('headerRefreshTooltip', FALLBACK_MESSAGES.headerRefreshTooltip);
+const HEADER_SETTINGS_LABEL = getLocalizedString('headerSettingsLabel', FALLBACK_MESSAGES.headerSettingsLabel);
+const HEADER_SETTINGS_TOOLTIP = getLocalizedString('headerSettingsTooltip', FALLBACK_MESSAGES.headerSettingsTooltip);
+const SETTINGS_CLOSE_LABEL = getLocalizedString('settingsCloseLabel', FALLBACK_MESSAGES.settingsCloseLabel);
 
 const CHATGPT_PORTALS = [
   'https://chat.openai.com',
@@ -62,13 +71,44 @@ let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
 const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
+const STORAGE_KEYS = {
+  language: 'sidelyExtensionLanguage',
+  domainMode: 'sidelyPortalDomainMode',
+  panelSize: 'sidelyPanelSize'
+};
+
+const ALLOWED_LANGUAGES = ['en', 'zh-CN', 'fr', 'hi', 'pt-BR', 'ru', 'es'];
+
+const SETTINGS_DEFAULTS = {
+  language: 'en',
+  domainMode: 'auto',
+  panelSize: 'M'
+};
+
+const PANEL_SIZE_CLASSES = {
+  S: 'size-s',
+  M: 'size-m',
+  L: 'size-l'
+};
+
+let settingsState = { ...SETTINGS_DEFAULTS };
+let portalSelectionRunId = 0;
+let settingsControlsInitialized = false;
 
 function getChatIframe() {
   return document.getElementById('gpt-frame');
 }
 
 function getRefreshButton() {
-  return document.getElementById('refresh-chat-button');
+  return document.getElementById('refresh-button');
+}
+
+function getSettingsPanel() {
+  return document.getElementById('settings-panel');
+}
+
+function getPortalContainer() {
+  return document.getElementById('portal-container');
 }
 
 function setRefreshButtonLoading(isLoading) {
@@ -171,6 +211,15 @@ function applyLocalization() {
     document.title = APP_TITLE;
   }
 
+  const homeButton = document.getElementById('home-button');
+  if (homeButton) {
+    homeButton.setAttribute('aria-label', HEADER_HOME_LABEL);
+    const homeLabel = homeButton.querySelector('.toolbar-btn__label-content');
+    if (homeLabel) {
+      homeLabel.textContent = HEADER_HOME_LABEL;
+    }
+  }
+
   const refreshButton = getRefreshButton();
   if (refreshButton) {
     refreshButton.setAttribute('aria-label', REFRESH_BUTTON_ARIA_LABEL);
@@ -190,6 +239,30 @@ function applyLocalization() {
   const tooltip = document.getElementById('refresh-chat-tooltip');
   if (tooltip) {
     tooltip.textContent = REFRESH_BUTTON_TOOLTIP;
+  }
+
+  const homeTooltip = document.getElementById('home-button-tooltip');
+  if (homeTooltip) {
+    homeTooltip.textContent = HEADER_HOME_TOOLTIP;
+  }
+
+  const settingsButton = document.getElementById('settings-button');
+  if (settingsButton) {
+    settingsButton.setAttribute('aria-label', HEADER_SETTINGS_LABEL);
+    const settingsLabel = settingsButton.querySelector('.toolbar-btn__label-content');
+    if (settingsLabel) {
+      settingsLabel.textContent = HEADER_SETTINGS_LABEL;
+    }
+  }
+
+  const settingsTooltip = document.getElementById('settings-button-tooltip');
+  if (settingsTooltip) {
+    settingsTooltip.textContent = HEADER_SETTINGS_TOOLTIP;
+  }
+
+  const settingsCloseButton = document.getElementById('settings-close-button');
+  if (settingsCloseButton) {
+    settingsCloseButton.setAttribute('aria-label', SETTINGS_CLOSE_LABEL);
   }
 }
 
@@ -235,6 +308,33 @@ function setupToolbarInteractions() {
         return;
       }
       reloadChatIframe();
+    });
+  }
+
+  const homeButton = document.getElementById('home-button');
+  if (homeButton) {
+    homeButton.addEventListener('click', () => {
+      hideSettingsPanel();
+      loadPortalAccordingToSettings();
+    });
+  }
+
+  const settingsButton = document.getElementById('settings-button');
+  const closeButton = document.getElementById('settings-close-button');
+
+  if (settingsButton) {
+    settingsButton.addEventListener('click', () => {
+      if (isSettingsPanelVisible()) {
+        hideSettingsPanel();
+      } else {
+        showSettingsPanel();
+      }
+    });
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      hideSettingsPanel();
     });
   }
 
@@ -292,10 +392,7 @@ function mountPortalIntoIframe(base) {
 }
 
 function renderPortalNotice(state) {
-  const existingNotice = document.querySelector('[data-portal-notice]');
-  if (existingNotice) {
-    existingNotice.remove();
-  }
+  clearPortalNotice();
 
   // Simple overlay banner without external dependencies
   const root = document.createElement('div');
@@ -350,21 +447,271 @@ function renderPortalNotice(state) {
   document.body.appendChild(root);
 }
 
-async function bootstrapSidepanel() {
-  applyLocalization();
-  setupToolbarInteractions();
+function clearPortalNotice() {
+  const existingNotice = document.querySelector('[data-portal-notice]');
+  if (existingNotice) {
+    existingNotice.remove();
+  }
+}
 
-  // Check both bases in parallel
-  const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
-  const chosen = selectBestPortalCandidate(checks);
+function getStorageArea() {
+  if (typeof chrome !== 'undefined' && chrome?.storage?.sync) {
+    return chrome.storage.sync;
+  }
+  if (typeof chrome !== 'undefined' && chrome?.storage?.local) {
+    return chrome.storage.local;
+  }
+  return null;
+}
 
-  // Always set the src so the user can sign in directly inside the iframe
+function storageGet(keys) {
+  return new Promise(resolve => {
+    const storageArea = getStorageArea();
+    if (!storageArea) {
+      const results = {};
+      if (Array.isArray(keys) && typeof window !== 'undefined' && window?.localStorage) {
+        keys.forEach(key => {
+          const value = window.localStorage.getItem(key);
+          if (value !== null) {
+            results[key] = value;
+          }
+        });
+      }
+      resolve(results);
+      return;
+    }
+
+    try {
+      storageArea.get(keys, items => {
+        if (chrome?.runtime?.lastError) {
+          console.warn('storage.get failed', chrome.runtime.lastError);
+        }
+        resolve(items || {});
+      });
+    } catch (err) {
+      console.warn('storage.get error', err);
+      resolve({});
+    }
+  });
+}
+
+function storageSet(items) {
+  return new Promise(resolve => {
+    const storageArea = getStorageArea();
+    if (!storageArea) {
+      if (items && typeof window !== 'undefined' && window?.localStorage) {
+        Object.entries(items).forEach(([key, value]) => {
+          try {
+            window.localStorage.setItem(key, value);
+          } catch (err) {
+            console.warn('localStorage.setItem failed', err);
+          }
+        });
+      }
+      resolve();
+      return;
+    }
+
+    try {
+      storageArea.set(items, () => {
+        if (chrome?.runtime?.lastError) {
+          console.warn('storage.set failed', chrome.runtime.lastError);
+        }
+        resolve();
+      });
+    } catch (err) {
+      console.warn('storage.set error', err);
+      resolve();
+    }
+  });
+}
+
+function normalizeLanguage(value) {
+  return ALLOWED_LANGUAGES.includes(value) ? value : SETTINGS_DEFAULTS.language;
+}
+
+function normalizeDomainMode(value) {
+  const allowed = ['auto', 'chatgpt.com', 'chat.openai.com'];
+  return allowed.includes(value) ? value : SETTINGS_DEFAULTS.domainMode;
+}
+
+function normalizePanelSize(value) {
+  const allowed = ['S', 'M', 'L'];
+  return allowed.includes(value) ? value : SETTINGS_DEFAULTS.panelSize;
+}
+
+async function loadSettingsFromStorage() {
+  const stored = await storageGet([
+    STORAGE_KEYS.language,
+    STORAGE_KEYS.domainMode,
+    STORAGE_KEYS.panelSize
+  ]);
+
+  const language = typeof stored[STORAGE_KEYS.language] === 'string'
+    ? normalizeLanguage(stored[STORAGE_KEYS.language])
+    : SETTINGS_DEFAULTS.language;
+  const domainMode = typeof stored[STORAGE_KEYS.domainMode] === 'string'
+    ? normalizeDomainMode(stored[STORAGE_KEYS.domainMode])
+    : SETTINGS_DEFAULTS.domainMode;
+  const panelSize = typeof stored[STORAGE_KEYS.panelSize] === 'string'
+    ? normalizePanelSize(stored[STORAGE_KEYS.panelSize])
+    : SETTINGS_DEFAULTS.panelSize;
+
+  settingsState = { language, domainMode, panelSize };
+  applyPanelSizeClass(settingsState.panelSize);
+}
+
+function applyPanelSizeClass(size) {
+  const body = document.body;
+  if (!body) return;
+  const desired = PANEL_SIZE_CLASSES[size] || PANEL_SIZE_CLASSES[SETTINGS_DEFAULTS.panelSize];
+  Object.values(PANEL_SIZE_CLASSES).forEach(cls => body.classList.remove(cls));
+  body.classList.add(desired);
+}
+
+function syncSettingsUI() {
+  const languageSelect = document.getElementById('extension-language-select');
+  if (languageSelect && settingsState.language) {
+    languageSelect.value = settingsState.language;
+  }
+
+  const domainInputs = document.querySelectorAll('input[name="domain-mode"]');
+  domainInputs.forEach(input => {
+    input.checked = input.value === settingsState.domainMode;
+  });
+
+  const sizeInputs = document.querySelectorAll('input[name="panel-size"]');
+  sizeInputs.forEach(input => {
+    input.checked = input.value === settingsState.panelSize;
+  });
+}
+
+function setupSettingsControls() {
+  if (settingsControlsInitialized) return;
+  settingsControlsInitialized = true;
+
+  const languageSelect = document.getElementById('extension-language-select');
+  if (languageSelect) {
+    languageSelect.addEventListener('change', event => {
+      const value = normalizeLanguage(event.target.value);
+      settingsState.language = value;
+      storageSet({ [STORAGE_KEYS.language]: value });
+    });
+  }
+
+  const domainInputs = document.querySelectorAll('input[name="domain-mode"]');
+  domainInputs.forEach(input => {
+    input.addEventListener('change', event => {
+      if (!event.target.checked) {
+        return;
+      }
+      const value = normalizeDomainMode(event.target.value);
+      settingsState.domainMode = value;
+      storageSet({ [STORAGE_KEYS.domainMode]: value });
+      hideSettingsPanel();
+      loadPortalAccordingToSettings();
+    });
+  });
+
+  const sizeInputs = document.querySelectorAll('input[name="panel-size"]');
+  sizeInputs.forEach(input => {
+    input.addEventListener('change', event => {
+      if (!event.target.checked) {
+        return;
+      }
+      const value = normalizePanelSize(event.target.value);
+      settingsState.panelSize = value;
+      applyPanelSizeClass(value);
+      storageSet({ [STORAGE_KEYS.panelSize]: value });
+    });
+  });
+}
+
+function showSettingsPanel() {
+  const portal = getPortalContainer();
+  const panel = getSettingsPanel();
+  const settingsButton = document.getElementById('settings-button');
+  if (portal) {
+    portal.hidden = true;
+  }
+  if (panel) {
+    panel.hidden = false;
+  }
+  if (settingsButton) {
+    settingsButton.setAttribute('aria-expanded', 'true');
+  }
+  syncSettingsUI();
+}
+
+function hideSettingsPanel() {
+  const portal = getPortalContainer();
+  const panel = getSettingsPanel();
+  const settingsButton = document.getElementById('settings-button');
+  if (portal) {
+    portal.hidden = false;
+  }
+  if (panel) {
+    panel.hidden = true;
+  }
+  if (settingsButton) {
+    settingsButton.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function isSettingsPanelVisible() {
+  const panel = getSettingsPanel();
+  return Boolean(panel && panel.hidden === false);
+}
+
+function getExplicitPortalBaseFromMode(mode) {
+  if (!mode || mode === 'auto') {
+    return null;
+  }
+  const sanitized = mode.replace(/^https?:\/\//i, '');
+  return `https://${sanitized}`;
+}
+
+async function loadPortalAccordingToSettings() {
+  const mode = settingsState.domainMode || SETTINGS_DEFAULTS.domainMode;
+  const runId = ++portalSelectionRunId;
+  setRefreshButtonLoading(true);
+
+  let chosen;
+  const explicitBase = getExplicitPortalBaseFromMode(mode);
+
+  if (explicitBase) {
+    chosen = await fetchPortalAuthState(explicitBase);
+  } else {
+    const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
+    chosen = selectBestPortalCandidate(checks);
+  }
+
+  if (!chosen) {
+    chosen = { state: 'error', base: explicitBase || CHATGPT_PORTALS[0] };
+  }
+
+  if (runId !== portalSelectionRunId) {
+    return;
+  }
+
   mountPortalIntoIframe(chosen.base);
 
-  // If not authorized, show a hint
   if (chosen.state !== 'authorized') {
     renderPortalNotice(chosen);
+  } else {
+    clearPortalNotice();
   }
+}
+
+async function bootstrapSidepanel() {
+  applyLocalization();
+  applyPanelSizeClass(settingsState.panelSize);
+  await loadSettingsFromStorage();
+  syncSettingsUI();
+  setupSettingsControls();
+  hideSettingsPanel();
+  setupToolbarInteractions();
+  await loadPortalAccordingToSettings();
 }
 
 document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
