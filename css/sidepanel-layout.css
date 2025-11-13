@@ -303,7 +303,6 @@ body {
 .settings-close-btn:focus-visible {
   background: #e9edf3;
   color: rgba(15, 23, 42, 0.9);
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.15), 0 1px 2px rgba(15, 23, 42, 0.08);
 }
 
 .settings-panel__body {
@@ -510,7 +509,6 @@ body.theme-dark .settings-close-btn {
 body.theme-dark .settings-close-btn:hover,
 body.theme-dark .settings-close-btn:focus-visible {
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
   color: #fff;
 }
 
@@ -607,7 +605,6 @@ body.theme-dark .settings-close-btn:focus-visible {
   body.theme-auto .settings-close-btn:hover,
   body.theme-auto .settings-close-btn:focus-visible {
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
     color: #fff;
   }
 }
