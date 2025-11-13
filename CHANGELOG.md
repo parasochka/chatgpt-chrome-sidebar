@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5
+- updating translations
+
 ## 0.4
 - Dark mode added
 - Localizations: English, Chinese (Mandarin), Spanish, Hindi, French, Portuguese, Russian
