@@ -25,11 +25,6 @@ const FALLBACK_MESSAGES = {
   settingsDomainAuto: 'Auto (recommended)',
   settingsDomainChatgptCom: 'chatgpt.com',
   settingsDomainChatOpenaiCom: 'chat.openai.com',
-  settingsSizeTitle: 'Sidebar size',
-  settingsSizeHint: 'Control how wide the ChatGPT sidebar should be.',
-  settingsSizeSLabel: 'S — minimal width',
-  settingsSizeMLabel: 'M — default width',
-  settingsSizeLLabel: 'L — fully expanded',
   settingsThemeTitle: 'Theme',
   settingsThemeHint: 'Choose a light, dark, or auto theme for the sidebar.',
   settingsThemeAuto: 'Auto (match system)',
@@ -194,7 +189,6 @@ let refreshButtonResetTimeoutId = null;
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   domainMode: 'sidelyPortalDomainMode',
-  panelSize: 'sidelyPanelSize',
   themeMode: 'sidelyThemeMode'
 };
 
@@ -204,14 +198,7 @@ const THEME_MODES = ['auto', 'light', 'dark'];
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
   domainMode: 'auto',
-  panelSize: 'M',
   themeMode: 'auto'
-};
-
-const PANEL_SIZE_CLASSES = {
-  S: 'size-s',
-  M: 'size-m',
-  L: 'size-l'
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -688,11 +675,6 @@ function normalizeDomainMode(value) {
   return allowed.includes(value) ? value : SETTINGS_DEFAULTS.domainMode;
 }
 
-function normalizePanelSize(value) {
-  const allowed = ['S', 'M', 'L'];
-  return allowed.includes(value) ? value : SETTINGS_DEFAULTS.panelSize;
-}
-
 function normalizeThemeMode(value) {
   if (typeof value !== 'string') {
     return SETTINGS_DEFAULTS.themeMode;
@@ -726,25 +708,12 @@ async function loadSettingsFromStorage() {
     nextState.domainMode = normalizeDomainMode(stored[STORAGE_KEYS.domainMode]);
   }
 
-  if (typeof stored[STORAGE_KEYS.panelSize] === 'string') {
-    nextState.panelSize = normalizePanelSize(stored[STORAGE_KEYS.panelSize]);
-  }
-
   if (typeof stored[STORAGE_KEYS.themeMode] === 'string') {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
   settingsState = nextState;
-  applyPanelSizeClass(settingsState.panelSize);
   applyThemeMode(settingsState.themeMode);
-}
-
-function applyPanelSizeClass(size) {
-  const body = getBodyElement();
-  if (!body) return;
-  const desired = PANEL_SIZE_CLASSES[size] || PANEL_SIZE_CLASSES[SETTINGS_DEFAULTS.panelSize];
-  Object.values(PANEL_SIZE_CLASSES).forEach(cls => body.classList.remove(cls));
-  body.classList.add(desired);
 }
 
 function syncSettingsUI() {
@@ -756,11 +725,6 @@ function syncSettingsUI() {
   const domainInputs = document.querySelectorAll('input[name="domain-mode"]');
   domainInputs.forEach(input => {
     input.checked = input.value === settingsState.domainMode;
-  });
-
-  const sizeInputs = document.querySelectorAll('input[name="panel-size"]');
-  sizeInputs.forEach(input => {
-    input.checked = input.value === settingsState.panelSize;
   });
 
   const themeInputs = document.querySelectorAll('input[name="theme-mode"]');
@@ -804,19 +768,6 @@ function setupSettingsControls() {
       storageSet({ [STORAGE_KEYS.domainMode]: value });
       hideSettingsPanel();
       loadPortalAccordingToSettings();
-    });
-  });
-
-  const sizeInputs = document.querySelectorAll('input[name="panel-size"]');
-  sizeInputs.forEach(input => {
-    input.addEventListener('change', event => {
-      if (!event.target.checked) {
-        return;
-      }
-      const value = normalizePanelSize(event.target.value);
-      settingsState.panelSize = value;
-      applyPanelSizeClass(value);
-      storageSet({ [STORAGE_KEYS.panelSize]: value });
     });
   });
 
@@ -912,7 +863,6 @@ async function loadPortalAccordingToSettings() {
 
 async function bootstrapSidepanel() {
   applyThemeMode(settingsState.themeMode);
-  applyPanelSizeClass(settingsState.panelSize);
   await loadSettingsFromStorage();
   await ensureActiveLocaleMessages(settingsState.language);
   applyLocalization();
