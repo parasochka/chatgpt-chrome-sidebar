@@ -206,34 +206,28 @@
     }
     .settings-close-btn {
       appearance: none;
-      border: 1px solid rgba(15, 23, 42, 0.2);
-      background: rgba(15, 23, 42, 0.05);
-      border-radius: 999px;
-      padding: 0 14px 0 12px;
-      height: 32px;
+      border: 0;
+      background: rgba(15, 23, 42, 0.08);
+      border-radius: 12px;
+      width: 36px;
+      height: 36px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: inherit;
+      color: rgba(15, 23, 42, 0.65);
       cursor: pointer;
-      transition: background 0.2s ease, border-color 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
     .settings-close-btn svg {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       fill: currentColor;
-    }
-    .settings-close-btn__label {
-      line-height: 1;
-      white-space: nowrap;
     }
     .settings-close-btn:hover,
     .settings-close-btn:focus-visible {
       background: rgba(15, 23, 42, 0.12);
-      border-color: rgba(15, 23, 42, 0.4);
+      color: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12) inset;
     }
     .settings-panel__body {
       display: flex;
@@ -285,84 +279,84 @@
       to { transform: rotate(1turn); }
     }
     body.theme-dark {
-      background: #0d0f12;
-      color: #e2e8f0;
+      background: #020617;
+      color: #f1f5f9;
     }
     body.theme-dark .frame-wrap {
-      background: #111418;
+      background: #040c1a;
     }
     body.theme-dark .frame-header {
-      color: #ececf1;
-      border-bottom-color: rgba(100, 116, 139, 0.32);
-      background: rgba(13, 16, 20, 0.9);
+      color: #f8fafc;
+      border-bottom-color: rgba(51, 65, 85, 0.6);
+      background: rgba(2, 6, 23, 0.95);
     }
     body.theme-dark .toolbar-btn {
       color: inherit;
     }
     body.theme-dark .toolbar-btn:hover,
     body.theme-dark .toolbar-btn:focus-visible {
-      background: rgba(148, 163, 184, 0.16);
+      background: rgba(59, 130, 246, 0.2);
     }
     body.theme-dark .toolbar-tooltip__bubble {
-      background: rgba(15, 23, 42, 0.94);
-      color: #e2e8f0;
-      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(15, 23, 42, 0.95);
+      color: #f1f5f9;
+      border: 1px solid rgba(59, 130, 246, 0.35);
     }
     body.theme-dark .settings-panel {
-      background: #0f172a;
+      background: #050f1f;
     }
     body.theme-dark .settings-section {
-      background: #111827;
+      background: #07162d;
     }
     body.theme-dark .settings-close-btn {
-      border-color: rgba(148, 163, 184, 0.35);
-      background: rgba(148, 163, 184, 0.12);
+      background: rgba(15, 23, 42, 0.65);
+      color: #f8fafc;
     }
     body.theme-dark .settings-close-btn:hover,
     body.theme-dark .settings-close-btn:focus-visible {
-      background: rgba(148, 163, 184, 0.2);
-      border-color: rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      color: #fff;
     }
 
     @media (prefers-color-scheme: dark) {
       body.theme-auto {
-        background: #0d0f12;
-        color: #e2e8f0;
+        background: #020617;
+        color: #f1f5f9;
       }
       body.theme-auto .frame-wrap {
-        background: #111418;
+        background: #040c1a;
       }
       body.theme-auto .frame-header {
-        color: #ececf1;
-        border-bottom-color: rgba(100, 116, 139, 0.32);
-        background: rgba(13, 16, 20, 0.9);
+        color: #f8fafc;
+        border-bottom-color: rgba(51, 65, 85, 0.6);
+        background: rgba(2, 6, 23, 0.95);
       }
       body.theme-auto .toolbar-btn {
         color: inherit;
       }
       body.theme-auto .toolbar-btn:hover,
       body.theme-auto .toolbar-btn:focus-visible {
-        background: rgba(148, 163, 184, 0.16);
+        background: rgba(59, 130, 246, 0.2);
       }
       body.theme-auto .toolbar-tooltip__bubble {
-        background: rgba(15, 23, 42, 0.94);
-        color: #e2e8f0;
-        border: 1px solid rgba(148, 163, 184, 0.28);
+        background: rgba(15, 23, 42, 0.95);
+        color: #f1f5f9;
+        border: 1px solid rgba(59, 130, 246, 0.35);
       }
       body.theme-auto .settings-panel {
-        background: #0f172a;
+        background: #050f1f;
       }
       body.theme-auto .settings-section {
-        background: #111827;
+        background: #07162d;
       }
       body.theme-auto .settings-close-btn {
-        border-color: rgba(148, 163, 184, 0.35);
-        background: rgba(148, 163, 184, 0.12);
+        background: rgba(15, 23, 42, 0.65);
+        color: #f8fafc;
       }
       body.theme-auto .settings-close-btn:hover,
       body.theme-auto .settings-close-btn:focus-visible {
-        background: rgba(148, 163, 184, 0.2);
-        border-color: rgba(148, 163, 184, 0.5);
+        background: rgba(15, 23, 42, 0.8);
+        color: #fff;
       }
     }
   </style>
@@ -502,34 +496,6 @@
                 <label class="settings-option">
                   <input type="radio" name="domain-mode" value="chat.openai.com">
                   <span class="settings-option__label" data-i18n-key="settingsDomainChatOpenaiCom">__MSG_settingsDomainChatOpenaiCom__</span>
-                </label>
-              </div>
-            </fieldset>
-          </section>
-          <section class="settings-section" aria-labelledby="settings-size-title">
-            <h3
-              id="settings-size-title"
-              class="settings-section__title"
-              data-i18n-key="settingsSizeTitle"
-            >__MSG_settingsSizeTitle__</h3>
-            <p
-              id="settings-size-hint"
-              class="settings-section__hint"
-              data-i18n-key="settingsSizeHint"
-            >__MSG_settingsSizeHint__</p>
-            <fieldset class="settings-fieldset" aria-describedby="settings-size-hint">
-              <div class="settings-options">
-                <label class="settings-option">
-                  <input type="radio" name="panel-size" value="S">
-                  <span class="settings-option__label" data-i18n-key="settingsSizeSLabel">__MSG_settingsSizeSLabel__</span>
-                </label>
-                <label class="settings-option">
-                  <input type="radio" name="panel-size" value="M" checked>
-                  <span class="settings-option__label" data-i18n-key="settingsSizeMLabel">__MSG_settingsSizeMLabel__</span>
-                </label>
-                <label class="settings-option">
-                  <input type="radio" name="panel-size" value="L">
-                  <span class="settings-option__label" data-i18n-key="settingsSizeLLabel">__MSG_settingsSizeLLabel__</span>
                 </label>
               </div>
             </fieldset>
