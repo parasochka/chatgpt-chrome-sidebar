@@ -181,6 +181,7 @@ const CHATGPT_PORTALS = [
   'https://chat.openai.com',
   'https://chatgpt.com'
 ];
+const PORTAL_PROBE_TIMEOUT_MS = 8000;
 
 let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
@@ -204,6 +205,7 @@ const SETTINGS_DEFAULTS = {
 
 let settingsState = { ...SETTINGS_DEFAULTS };
 let portalSelectionRunId = 0;
+let languageSelectionRunId = 0;
 let settingsControlsInitialized = false;
 let systemColorSchemeMediaQuery = null;
 let lastSyncedIframeTheme = null;
@@ -536,10 +538,13 @@ function setupToolbarInteractions() {
 }
 
 async function fetchPortalAuthState(base) {
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timeoutId = controller ? setTimeout(() => controller.abort(), PORTAL_PROBE_TIMEOUT_MS) : null;
   try {
     const res = await fetch(`${base}/api/auth/session`, {
       credentials: 'include', // important: include the session cookies
-      headers: { 'accept': 'application/json' }
+      headers: { 'accept': 'application/json' },
+      ...(controller ? { signal: controller.signal } : {})
     });
 
     if (res.status === 403) {
@@ -556,8 +561,14 @@ async function fetchPortalAuthState(base) {
     }
     return { state: 'unauthorized', base };
   } catch (e) {
-    console.error('Session check failed for', base, e);
-    return { state: 'error', base, error: e };
+    const timedOut = e?.name === 'AbortError';
+    const label = timedOut ? 'timed out' : 'failed';
+    console.warn(`Session check ${label} for`, base, e);
+    return { state: 'error', base, error: e, timedOut };
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
   }
 }
 
@@ -807,9 +818,13 @@ function syncSettingsUI() {
 
 async function setExtensionLanguage(value) {
   const normalized = normalizeLanguage(value);
+  const runId = ++languageSelectionRunId;
   settingsState.language = normalized;
   await storageSet({ [STORAGE_KEYS.language]: normalized });
   await ensureActiveLocaleMessages(normalized);
+  if (runId !== languageSelectionRunId) {
+    return;
+  }
   applyLocalization();
   syncSettingsUI();
 }
@@ -934,7 +949,6 @@ async function loadPortalAccordingToSettings() {
 }
 
 async function bootstrapSidepanel() {
-  applyThemeMode(settingsState.themeMode);
   await loadSettingsFromStorage();
   await ensureActiveLocaleMessages(settingsState.language);
   applyLocalization();
