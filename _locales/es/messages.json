@@ -40,13 +40,10 @@
   },
   "headerHomeLabel": { "message": "Home" },
   "headerHomeTooltip": { "message": "Go back to the ChatGPT home screen." },
-  "headerRefreshLabel": { "message": "Refresh" },
-  "headerRefreshLoadingLabel": { "message": "Refreshing..." },
-  "headerRefreshTooltip": { "message": "Reload the current ChatGPT view." },
   "headerSettingsLabel": { "message": "Settings" },
   "headerSettingsTooltip": { "message": "Open Sidely settings." },
   "settingsTitle": { "message": "Settings" },
-  "settingsCloseLabel": { "message": "Close settings" },
+  "settingsCloseLabel": { "message": "Cerrar barra lateral" },
   "settingsExtensionLanguageTitle": { "message": "Extension language" },
   "settingsExtensionLanguageHint": { "message": "Choose which language Sidely should display in its UI." },
   "settingsLanguageEnglish": { "message": "English" },
@@ -65,5 +62,10 @@
   "settingsSizeHint": { "message": "Adjust Sidely's layout for compact or wide side panels." },
   "settingsSizeSLabel": { "message": "S — compact" },
   "settingsSizeMLabel": { "message": "M — default" },
-  "settingsSizeLLabel": { "message": "L — wide" }
+  "settingsSizeLLabel": { "message": "L — wide" },
+  "settingsThemeTitle": { "message": "Tema" },
+  "settingsThemeHint": { "message": "Elige un tema claro, oscuro o automático para la barra lateral." },
+  "settingsThemeAuto": { "message": "Automático (según el sistema)" },
+  "settingsThemeLight": { "message": "Claro" },
+  "settingsThemeDark": { "message": "Oscuro" }
 }
