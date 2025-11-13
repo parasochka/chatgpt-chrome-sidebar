@@ -39,9 +39,7 @@
     "description": "__PORTAL__ को ChatGPT के डोमेन से बदला जाएगा."
   },
   "headerHomeLabel": { "message": "मुख्य पृष्ठ" },
-  "headerHomeTooltip": { "message": "ChatGPT की होम स्क्रीन पर वापस जाएँ।" },
   "headerSettingsLabel": { "message": "सेटिंग्स" },
-  "headerSettingsTooltip": { "message": "Sidely की सेटिंग्स खोलें।" },
   "settingsTitle": { "message": "सेटिंग्स" },
   "settingsCloseLabel": { "message": "साइडबार बंद करें" },
   "settingsExtensionLanguageTitle": { "message": "एक्सटेंशन भाषा" },

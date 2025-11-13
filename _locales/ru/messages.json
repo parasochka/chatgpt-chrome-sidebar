@@ -39,9 +39,7 @@
     "description": "__PORTAL__ будет заменён на домен ChatGPT."
   },
   "headerHomeLabel": { "message": "Главная" },
-  "headerHomeTooltip": { "message": "Вернуться на главный экран ChatGPT." },
   "headerSettingsLabel": { "message": "Настройки" },
-  "headerSettingsTooltip": { "message": "Открыть настройки Sidely." },
   "settingsTitle": { "message": "Настройки" },
   "settingsCloseLabel": { "message": "Закрыть боковую панель" },
   "settingsExtensionLanguageTitle": { "message": "Язык расширения" },

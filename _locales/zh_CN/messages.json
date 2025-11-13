@@ -39,9 +39,7 @@
     "description": "__PORTAL__ 会被替换成 ChatGPT 的域名。"
   },
   "headerHomeLabel": { "message": "首页" },
-  "headerHomeTooltip": { "message": "返回 ChatGPT 首页。" },
   "headerSettingsLabel": { "message": "设置" },
-  "headerSettingsTooltip": { "message": "打开 Sidely 设置。" },
   "settingsTitle": { "message": "设置" },
   "settingsCloseLabel": { "message": "关闭侧边栏" },
   "settingsExtensionLanguageTitle": { "message": "扩展语言" },
