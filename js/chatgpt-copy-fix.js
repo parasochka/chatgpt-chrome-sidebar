@@ -1,3 +1,5 @@
+const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
+
 function canUseAsyncClipboard() {
   try {
     const policy = document.permissionsPolicy || document.featurePolicy;
@@ -90,3 +92,33 @@ document.addEventListener('click', async (e) => {
     setTimeout(() => { btn.textContent = original; }, 1000);
   }
 }, true);
+
+function applySidelyInjectedTheme(theme) {
+  const root = document.documentElement;
+  if (!root) return;
+  const next = theme === 'dark' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  root.dataset.sidelyTheme = next;
+  root.style.setProperty('color-scheme', next);
+  if (root.classList) {
+    root.classList.toggle('dark', next === 'dark');
+    root.classList.toggle('light', next === 'light');
+  }
+  try {
+    window.localStorage.setItem('theme', next);
+    window.localStorage.setItem('preferred-theme', next);
+  } catch (_) {}
+  try {
+    document.cookie = `oai/apps/theme=${next}; path=/; max-age=31536000`;
+  } catch (_) {}
+}
+
+window.addEventListener('message', event => {
+  if (!event || !event.data || event.data.type !== SIDELY_THEME_MESSAGE) {
+    return;
+  }
+  if (!event.origin || !event.origin.startsWith('chrome-extension://')) {
+    return;
+  }
+  applySidelyInjectedTheme(event.data.theme);
+});
