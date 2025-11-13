@@ -28,9 +28,19 @@ async function copyTextSafe(text) {
     ta.style.opacity = '0';
     ta.style.top = '-9999px';
     document.body.appendChild(ta);
+    const activeElement = document.activeElement;
+    const selection = typeof window !== 'undefined' && window.getSelection ? window.getSelection() : null;
+    const storedRange = selection && selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
     ta.select();
     const ok = document.execCommand('copy');
     document.body.removeChild(ta);
+    if (storedRange && selection) {
+      selection.removeAllRanges();
+      selection.addRange(storedRange);
+    }
+    if (activeElement && typeof activeElement.focus === 'function') {
+      activeElement.focus();
+    }
     if (ok) return true;
   } catch (__){}
 
