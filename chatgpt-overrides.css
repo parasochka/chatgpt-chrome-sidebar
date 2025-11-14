@@ -1,0 +1,5 @@
+/* Hide "Use voice mode" CTA buttons */
+:is(button, a)[data-testid*="voice-mode" i],
+:is(button, a)[aria-label*="voice mode" i] {
+  display: none !important;
+}
