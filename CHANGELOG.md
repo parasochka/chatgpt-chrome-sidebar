@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6
+New settings menu:
+- Manage dark/light themes
+- Manage extension languages
+- Select your preferred domain
+
 ## 0.5
 - updating translations
 
