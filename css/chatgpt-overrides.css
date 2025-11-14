@@ -29,54 +29,40 @@ html, body, main, article, section {
 }
 
 /* Remove the "Use voice mode" CTA buttons that appear outside the composer */
-:is(button, a)[
-    data-testid*="voice-mode" i
-  ],
-:is(button, a)[
-    aria-label*="voice mode" i
-  ] {
+:is(button, a)[data-testid*="voice-mode" i],
+:is(button, a)[aria-label*="voice mode" i] {
   display: none !important;
 }
 
 /* Remove the "Add from Google Drive" CTA buttons in menus and toolbars */
-:is(button, a, [role="menuitem"])[
-    data-testid*="drive-upload" i
-  ],
-:is(button, a, [role="menuitem"])[
-    data-testid*="google-drive" i
-  ],
-:is(button, a, [role="menuitem"])[
-    data-testid*="drive" i
-  ][
-    data-testid*="upload" i
-  ],
-:is(button, a, [role="menuitem"])[
-    aria-label*="add from google drive" i
-  ],
-:is(button, a, [role="menuitem"])[
-    aria-label*="google drive" i
-  ] {
+:is(button, a, [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[
+  aria-label*="google drive" i
+],
+:is(button, a, [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[
+  data-testid*="google-drive" i
+],
+:is(button, a, [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[
+  data-testid*="drive-upload" i
+],
+:is(button, a, [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[
+  data-tooltip*="google drive" i
+],
+:is(button, a, [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[
+  data-tooltip*="Add from Google Drive" i
+] {
   display: none !important;
 }
 
-/* Remove standalone "Dictate" buttons outside of the composer */
-:is(button, a)[
-    data-testid*="dictate" i
-  ],
-:is(button, a)[
-    data-testid*="dictation" i
-  ],
-:is(button, a)[
-    aria-label*="dictate" i
-  ],
-:is(button, a)[
-    aria-label*="dictation" i
-  ],
-:is(button, a)[
-    aria-label*="voice typing" i
-  ],
-:is(button, a)[
-    data-testid*="voice-typing" i
-  ] {
+/* Remove ALL "Dictate" buttons (toolbar + standalone) */
+:is(button, a)[data-testid*="dictate" i],
+:is(button, a)[data-testid*="dictation" i],
+:is(button, a)[data-testid*="voice-typing" i],
+:is(button, a)[data-testid*="voice_input" i],
+:is(button, a)[aria-label*="dictate" i],
+:is(button, a)[aria-label*="dictation" i],
+:is(button, a)[aria-label*="voice typing" i],
+:is(button, a)[aria-label*="voice input" i],
+:is(button, a)[title*="Dictate" i],
+:is(button, a)[title*="Voice typing" i] {
   display: none !important;
 }
