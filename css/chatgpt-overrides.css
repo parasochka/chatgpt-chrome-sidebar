@@ -27,3 +27,13 @@ html, body, main, article, section {
   -webkit-user-select: text !important;
   user-select: text !important;
 }
+
+/* Hide the ChatGPT mic access error popup without affecting other UI elements */
+[aria-label="Enable mic access to dictate"] {
+  display: none !important;
+}
+
+[aria-label="Add from Google Drive"],
+[data-testid="drive-upload"] {
+  display: none !important;
+}
