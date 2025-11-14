@@ -29,6 +29,7 @@ body {
   --portal-max-width: 720px;
   --portal-horizontal-padding: 0px;
   --frame-max-width: 450px;
+  --interactive-hover-bg: rgba(15, 23, 42, 0.08);
 }
 
 .frame-wrap {
@@ -144,12 +145,16 @@ body {
 
 .toolbar-btn:hover,
 .toolbar-btn:focus-visible {
-  background: rgba(15, 23, 42, 0.08);
+  background: var(--interactive-hover-bg);
 }
 
 .toolbar-btn[aria-disabled="true"] {
   cursor: default;
   opacity: 0.55;
+}
+
+.toolbar-btn.is-loading {
+  opacity: 1;
 }
 
 .toolbar-btn svg {
@@ -303,7 +308,7 @@ body {
 
 .settings-close-btn:hover,
 .settings-close-btn:focus-visible {
-  background: rgba(15, 23, 42, 0.08);
+  background: var(--interactive-hover-bg);
   color: rgba(15, 23, 42, 0.95);
   outline: none;
 }
@@ -424,6 +429,7 @@ body {
 body.theme-dark {
   background: #202123;
   color: #ececf1;
+  --interactive-hover-bg: rgba(255, 255, 255, 0.08);
 }
 
 body.theme-dark .frame-wrap {
@@ -444,7 +450,6 @@ body.theme-dark .toolbar-btn {
 
 body.theme-dark .toolbar-btn:hover,
 body.theme-dark .toolbar-btn:focus-visible {
-  background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
@@ -454,6 +459,10 @@ body.theme-dark .toolbar-btn:active {
 
 body.theme-dark .toolbar-btn[aria-disabled="true"] {
   color: rgba(148, 163, 184, 0.65);
+}
+
+body.theme-dark .toolbar-btn.is-loading {
+  color: #f7f7f8;
 }
 
 body.theme-dark .toolbar-tooltip__bubble {
@@ -511,7 +520,6 @@ body.theme-dark .settings-close-btn {
 
 body.theme-dark .settings-close-btn:hover,
 body.theme-dark .settings-close-btn:focus-visible {
-  background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
@@ -520,6 +528,7 @@ body.theme-dark .settings-close-btn:focus-visible {
   body.theme-auto {
     background: #202123;
     color: #ececf1;
+    --interactive-hover-bg: rgba(255, 255, 255, 0.08);
   }
 
   body.theme-auto .frame-wrap {
@@ -540,7 +549,6 @@ body.theme-dark .settings-close-btn:focus-visible {
 
   body.theme-auto .toolbar-btn:hover,
   body.theme-auto .toolbar-btn:focus-visible {
-    background: rgba(255, 255, 255, 0.08);
     color: #fff;
   }
 
@@ -550,6 +558,10 @@ body.theme-dark .settings-close-btn:focus-visible {
 
   body.theme-auto .toolbar-btn[aria-disabled="true"] {
     color: rgba(148, 163, 184, 0.65);
+  }
+
+  body.theme-auto .toolbar-btn.is-loading {
+    color: #f7f7f8;
   }
 
   body.theme-auto .toolbar-tooltip__bubble {
@@ -607,7 +619,6 @@ body.theme-dark .settings-close-btn:focus-visible {
 
   body.theme-auto .settings-close-btn:hover,
   body.theme-auto .settings-close-btn:focus-visible {
-    background: rgba(255, 255, 255, 0.08);
     color: #fff;
   }
 }
