@@ -6,28 +6,41 @@
 }
 
 :root {
-  color-scheme: light dark; /* use the system theme */
+  color-scheme: light dark;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* hide scrollbars inside the sidebar container */
+  overflow: hidden;
   background: #f5f6f8;
   color: #222;
+  font-family: "Söhne", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-/* Wrapper that correctly rounds the iframe */
+body {
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 100%;
+  --portal-max-width: 720px;
+  --portal-horizontal-padding: 0px;
+  --frame-max-width: 450px;
+}
+
 .frame-wrap {
-  width: 100%;
+  flex: 1 1 auto;
+  width: min(100%, var(--frame-max-width, 100%));
   height: 100%;
-  padding: 0;              /* add padding here if you ever need it */
+  margin: 0 auto;
   border-radius: 12px;
-  overflow: hidden;        /* key to rounding the iframe contents */
+  overflow: hidden;
   background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,.06);
-  transform: translateZ(0); /* smoothing that removes artifacts during animation */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transform: translateZ(0);
   display: flex;
   flex-direction: column;
 }
@@ -35,25 +48,76 @@ html, body {
 .frame-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
+  justify-content: center;
   padding: 8px 12px;
-  border-bottom: 1px solid rgba(15,23,42,.08);
-  background: rgba(255,255,255,.92);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   flex: 0 0 auto;
   z-index: 2;
   color: #343541;
-  font-family: "Söhne", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.frame-actions {
-  display: flex;
+.frame-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: flex-end;
   gap: 8px;
   width: 100%;
+}
+
+.frame-toolbar__zone {
+  display: flex;
+  align-items: center;
   min-width: 0;
+}
+
+.frame-toolbar__zone--left {
+  justify-content: flex-start;
+}
+
+.frame-toolbar__zone--center {
+  justify-content: center;
+}
+
+.frame-toolbar__zone--right {
+  justify-content: flex-end;
+}
+
+.toolbar-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.toolbar-tooltip__bubble {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  transform: translate3d(0, 10px, 0);
+  transform-origin: top right;
+  background: rgba(15, 23, 42, 0.96);
+  color: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font: 400 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  letter-spacing: 0.01em;
+  white-space: normal;
+  max-width: min(70vw, 320px);
+  text-align: left;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.16s ease, transform 0.18s ease;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.toolbar-tooltip:hover .toolbar-tooltip__bubble,
+.toolbar-tooltip:focus-within .toolbar-tooltip__bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
 }
 
 .toolbar-btn {
@@ -75,17 +139,17 @@ html, body {
   font-family: inherit;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color .2s ease, color .2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .toolbar-btn:hover,
 .toolbar-btn:focus-visible {
-  background: rgba(15,23,42,.08);
+  background: rgba(15, 23, 42, 0.08);
 }
 
 .toolbar-btn[aria-disabled="true"] {
   cursor: default;
-  opacity: .55;
+  opacity: 0.55;
 }
 
 .toolbar-btn svg {
@@ -93,21 +157,79 @@ html, body {
   height: 20px;
   flex-shrink: 0;
   pointer-events: none;
-  stroke: currentColor;
-  fill: none;
+  fill: currentColor;
+}
+
+.toolbar-btn svg path {
+  fill: currentColor;
+  stroke: none;
 }
 
 .toolbar-btn.is-loading svg {
   animation: toolbar-spin 1.2s linear infinite;
 }
 
+.toolbar-btn__label {
+  display: inline-grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.toolbar-btn__label::before,
+.toolbar-btn__label::after {
+  grid-area: 1 / 1 / 2 / 2;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+  font: inherit;
+}
+
+.toolbar-btn__label::before {
+  content: attr(data-label-default);
+}
+
+.toolbar-btn__label::after {
+  content: attr(data-label-loading);
+}
+
+.toolbar-btn__label-content {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
 .frame-body {
   flex: 1 1 auto;
   min-height: 0;
   position: relative;
+  display: flex;
 }
 
-/* The iframe itself */
+.portal-container,
+.settings-panel {
+  flex: 1 1 100%;
+  min-height: 0;
+}
+
+.portal-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+}
+
+.portal-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--portal-max-width, 100%);
+  padding: 0 var(--portal-horizontal-padding, 0);
+}
+
 #gpt-frame {
   display: block;
   width: 100%;
@@ -116,7 +238,173 @@ html, body {
   background: transparent;
   opacity: 0;
   transform: translateY(24px);
-  animation: gpt-fade-in .4s ease-out forwards;
+  animation: gpt-fade-in 0.4s ease-out forwards;
+}
+
+.settings-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 28px 32px;
+  background: rgba(248, 250, 252, 0.98);
+  color: #0f172a;
+  overflow-y: auto;
+  backdrop-filter: blur(8px);
+}
+
+.settings-panel[hidden] {
+  display: none;
+}
+
+.settings-panel__header,
+.settings-panel__body {
+  width: min(100%, 640px);
+  margin: 0 auto;
+}
+
+.settings-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-panel__title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.settings-close-btn {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(15, 23, 42, 0.75);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.settings-close-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.settings-close-btn:hover,
+.settings-close-btn:focus-visible {
+  background: rgba(15, 23, 42, 0.08);
+  color: rgba(15, 23, 42, 0.95);
+  outline: none;
+}
+
+.settings-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-section {
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
+}
+
+.settings-section__title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.settings-section__hint {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.settings-select {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  background: #fff;
+  font-size: 14px;
+  padding: 10px 12px;
+  font-family: inherit;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-select:focus-visible {
+  outline: none;
+  border-color: #10a37f;
+  box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.2);
+}
+
+.settings-fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.settings-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(15, 23, 42, 0.02);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.settings-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #10a37f;
+}
+
+.settings-option__label {
+  font-weight: 500;
+}
+
+.settings-option:has(input:checked) {
+  border-color: rgba(16, 163, 127, 0.6);
+  background: rgba(16, 163, 127, 0.08);
+  box-shadow: 0 0 0 1px rgba(16, 163, 127, 0.2) inset;
+}
+
+.settings-option:focus-within {
+  outline: 2px solid rgba(16, 163, 127, 0.4);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .settings-panel {
+    padding: 20px 16px 24px;
+  }
+
+  .settings-section {
+    padding: 16px;
+  }
 }
 
 @keyframes gpt-fade-in {
@@ -132,55 +420,206 @@ html, body {
   }
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  html, body {
-    background: #0d0f12;
-    color: #ddd;
-  }
-  .frame-wrap {
-    background: #111418;
-    box-shadow: 0 2px 12px rgba(0,0,0,.35);
-  }
-  .frame-header {
-    border-bottom-color: rgba(100,116,139,.32);
-    background: rgba(13,16,20,.9);
-    box-shadow: 0 12px 32px rgba(2,6,23,.4);
-    color: #ececf1;
-  }
-  .toolbar-btn {
-    color: #e2e8f0;
-  }
-  .toolbar-btn:hover,
-  .toolbar-btn:focus-visible {
-    background: rgba(148,163,184,.16);
-    color: #f8fafc;
-  }
-  .toolbar-btn:active {
-    background: rgba(148,163,184,.24);
-  }
-  .toolbar-btn[aria-disabled="true"] {
-    color: rgba(148,163,184,.55);
-  }
-  .toolbar-btn.is-loading {
-    color: #fff;
-  }
-  .toolbar-tooltip__bubble {
-    background: rgba(15,23,42,.94);
-    color: #e2e8f0;
-    border: 1px solid rgba(148,163,184,.28);
-    box-shadow: 0 20px 44px rgba(2,6,23,.45), 0 6px 18px rgba(15,23,42,.32);
-  }
-}
+/* Manual theme overrides */
+body.theme-dark {
+  background: #202123;
+  color: #ececf1;
 }
 
-/* Accessibility: honor reduced-motion preferences */
+body.theme-dark .frame-wrap {
+  background: #2c2d35;
+  box-shadow: 0 20px 64px rgba(2, 6, 23, 0.65);
+}
+
+body.theme-dark .frame-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background: #343541;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color: #f7f7f8;
+}
+
+body.theme-dark .toolbar-btn {
+  color: #f7f7f8;
+}
+
+body.theme-dark .toolbar-btn:hover,
+body.theme-dark .toolbar-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+body.theme-dark .toolbar-btn:active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark .toolbar-btn[aria-disabled="true"] {
+  color: rgba(148, 163, 184, 0.65);
+}
+
+body.theme-dark .toolbar-tooltip__bubble {
+  background: #3f4151;
+  color: #f7f7f8;
+  border: 1px solid rgba(86, 88, 105, 0.85);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 6px 18px rgba(15, 23, 42, 0.45);
+}
+
+body.theme-dark .settings-panel {
+  background: #202123;
+  color: #ececf1;
+}
+
+body.theme-dark .settings-panel__title {
+  color: inherit;
+}
+
+body.theme-dark .settings-section {
+  background: #2f3135;
+  border-color: #444654;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+}
+
+body.theme-dark .settings-section__hint {
+  color: rgba(236, 236, 241, 0.85);
+}
+
+body.theme-dark .settings-select {
+  background: #343541;
+  border-color: #565869;
+  color: #f7f7f8;
+}
+
+body.theme-dark .settings-option {
+  border-color: #565869;
+  background: #343541;
+  color: #ececf1;
+}
+
+body.theme-dark .settings-option__label {
+  color: #fff;
+}
+
+body.theme-dark .settings-option:has(input:checked) {
+  border-color: rgba(16, 163, 127, 0.85);
+  background: rgba(16, 163, 127, 0.16);
+  box-shadow: 0 0 0 1px rgba(16, 163, 127, 0.35) inset;
+}
+
+body.theme-dark .settings-close-btn {
+  color: #f8fafc;
+  background: transparent;
+}
+
+body.theme-dark .settings-close-btn:hover,
+body.theme-dark .settings-close-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  body.theme-auto {
+    background: #202123;
+    color: #ececf1;
+  }
+
+  body.theme-auto .frame-wrap {
+    background: #2c2d35;
+    box-shadow: 0 20px 64px rgba(2, 6, 23, 0.65);
+  }
+
+  body.theme-auto .frame-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    background: #343541;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    color: #f7f7f8;
+  }
+
+  body.theme-auto .toolbar-btn {
+    color: #f7f7f8;
+  }
+
+  body.theme-auto .toolbar-btn:hover,
+  body.theme-auto .toolbar-btn:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  body.theme-auto .toolbar-btn:active {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  body.theme-auto .toolbar-btn[aria-disabled="true"] {
+    color: rgba(148, 163, 184, 0.65);
+  }
+
+  body.theme-auto .toolbar-tooltip__bubble {
+    background: #3f4151;
+    color: #f7f7f8;
+    border: 1px solid rgba(86, 88, 105, 0.85);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 6px 18px rgba(15, 23, 42, 0.45);
+  }
+
+  body.theme-auto .settings-panel {
+    background: #202123;
+    color: #ececf1;
+  }
+
+  body.theme-auto .settings-panel__title {
+    color: inherit;
+  }
+
+  body.theme-auto .settings-section {
+    background: #2f3135;
+    border-color: #444654;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+  }
+
+  body.theme-auto .settings-section__hint {
+    color: rgba(236, 236, 241, 0.85);
+  }
+
+  body.theme-auto .settings-select {
+    background: #343541;
+    border-color: #565869;
+    color: #f7f7f8;
+  }
+
+  body.theme-auto .settings-option {
+    border-color: #565869;
+    background: #343541;
+    color: #ececf1;
+  }
+
+  body.theme-auto .settings-option__label {
+    color: #fff;
+  }
+
+  body.theme-auto .settings-option:has(input:checked) {
+    border-color: rgba(16, 163, 127, 0.85);
+    background: rgba(16, 163, 127, 0.16);
+    box-shadow: 0 0 0 1px rgba(16, 163, 127, 0.35) inset;
+  }
+
+  body.theme-auto .settings-close-btn {
+    color: #f8fafc;
+    background: transparent;
+  }
+
+  body.theme-auto .settings-close-btn:hover,
+  body.theme-auto .settings-close-btn:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+}
+
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   #gpt-frame {
     animation: none;
     opacity: 1;
     transform: none;
   }
+
   .toolbar-btn.is-loading svg {
     animation: none;
   }

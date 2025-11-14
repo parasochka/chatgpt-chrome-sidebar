@@ -37,5 +37,28 @@
   "noticeError": {
     "message": "会话验证失败。请刷新页面或前往 __PORTAL__ 登录。",
     "description": "__PORTAL__ 会被替换成 ChatGPT 的域名。"
-  }
+  },
+  "headerHomeLabel": { "message": "首页" },
+  "headerSettingsLabel": { "message": "设置" },
+  "settingsTitle": { "message": "设置" },
+  "settingsCloseLabel": { "message": "关闭侧边栏" },
+  "settingsExtensionLanguageTitle": { "message": "扩展语言" },
+  "settingsExtensionLanguageHint": { "message": "立即切换 Sidely 界面的显示语言。" },
+  "settingsLanguageEnglish": { "message": "英语" },
+  "settingsLanguageChineseChina": { "message": "中文（中国）" },
+  "settingsLanguageFrench": { "message": "法语" },
+  "settingsLanguageHindi": { "message": "印地语" },
+  "settingsLanguagePortugueseBrazil": { "message": "葡萄牙语（巴西）" },
+  "settingsLanguageRussian": { "message": "俄语" },
+  "settingsLanguageSpanish": { "message": "西班牙语" },
+  "settingsDomainTitle": { "message": "ChatGPT 域名" },
+  "settingsDomainHint": { "message": "选择 Sidely 要打开的 ChatGPT 域名。" },
+  "settingsDomainAuto": { "message": "自动（推荐）" },
+  "settingsDomainChatgptCom": { "message": "chatgpt.com" },
+  "settingsDomainChatOpenaiCom": { "message": "chat.openai.com" },
+  "settingsThemeTitle": { "message": "主题" },
+  "settingsThemeHint": { "message": "为侧边栏选择浅色、深色或自动主题。" },
+  "settingsThemeAuto": { "message": "自动（跟随系统）" },
+  "settingsThemeLight": { "message": "浅色" },
+  "settingsThemeDark": { "message": "深色" }
 }

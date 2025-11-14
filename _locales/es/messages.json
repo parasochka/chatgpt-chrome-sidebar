@@ -37,5 +37,28 @@
   "noticeError": {
     "message": "No se pudo verificar la sesión. Recarga la página o inicia sesión en __PORTAL__.",
     "description": "__PORTAL__ se reemplaza por el dominio de ChatGPT."
-  }
+  },
+  "headerHomeLabel": { "message": "Inicio" },
+  "headerSettingsLabel": { "message": "Ajustes" },
+  "settingsTitle": { "message": "Configuración" },
+  "settingsCloseLabel": { "message": "Cerrar barra lateral" },
+  "settingsExtensionLanguageTitle": { "message": "Idioma de la extensión" },
+  "settingsExtensionLanguageHint": { "message": "Cambia al instante el idioma de la interfaz de Sidely." },
+  "settingsLanguageEnglish": { "message": "Inglés" },
+  "settingsLanguageChineseChina": { "message": "Chino (China)" },
+  "settingsLanguageFrench": { "message": "Francés" },
+  "settingsLanguageHindi": { "message": "Hindi" },
+  "settingsLanguagePortugueseBrazil": { "message": "Portugués (Brasil)" },
+  "settingsLanguageRussian": { "message": "Ruso" },
+  "settingsLanguageSpanish": { "message": "Español" },
+  "settingsDomainTitle": { "message": "Dominio de ChatGPT" },
+  "settingsDomainHint": { "message": "Elige qué dominio de ChatGPT debe abrir Sidely." },
+  "settingsDomainAuto": { "message": "Automático (recomendado)" },
+  "settingsDomainChatgptCom": { "message": "chatgpt.com" },
+  "settingsDomainChatOpenaiCom": { "message": "chat.openai.com" },
+  "settingsThemeTitle": { "message": "Tema" },
+  "settingsThemeHint": { "message": "Elige un tema claro, oscuro o automático para la barra lateral." },
+  "settingsThemeAuto": { "message": "Automático (según el sistema)" },
+  "settingsThemeLight": { "message": "Claro" },
+  "settingsThemeDark": { "message": "Oscuro" }
 }
