@@ -33,7 +33,16 @@ html, body, main, article, section {
   display: none !important;
 }
 
+/* Also hide the mic button itself so the error is never triggered */
+button[data-testid="dictation-toggle"],
+button[aria-label="Enable dictation"],
+[aria-label*="mic access"] {
+  display: none !important;
+}
+
+/* Hide Google Drive upload entry points */
 [aria-label="Add from Google Drive"],
+[aria-label*="Google Drive"],
 [data-testid="drive-upload"] {
   display: none !important;
 }
