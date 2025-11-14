@@ -3,7 +3,6 @@
 const FALLBACK_MESSAGES = {
   appTitle: 'Sidely - ChatGPT Sidebar',
   headerHomeLabel: 'Home',
-  headerHomeTooltip: 'Go back to the ChatGPT home screen.',
   refreshButtonAriaLabel: 'Refresh chats',
   refreshButtonDefaultLabel: 'Update Chats',
   refreshButtonLoadingLabel: 'Updating...',
