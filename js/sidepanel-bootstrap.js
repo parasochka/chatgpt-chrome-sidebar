@@ -868,6 +868,9 @@ function setupSettingsControls() {
       settingsState.themeMode = value;
       applyThemeMode(value);
       storageSet({ [STORAGE_KEYS.themeMode]: value });
+      if (value === 'light' || value === 'dark') {
+        reloadChatIframe();
+      }
     });
   });
 }
