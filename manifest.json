@@ -12,7 +12,8 @@
   ],
   "host_permissions": [
     "https://chat.openai.com/*",
-    "https://chatgpt.com/*"
+    "https://chatgpt.com/*",
+    "https://*.openai.com/*"
   ],
   "background": {
     "service_worker": "js/sidepanel-service-worker.js"
@@ -24,9 +25,18 @@
         "https://chatgpt.com/*"
       ],
       "js": ["js/chatgpt-copy-fix.js"],
-      "css": ["css/chatgpt-overrides.css"],
+      "css": ["css/chatgpt-copy-fix.css"],
       "run_at": "document_start",
       "all_frames": true
+    },
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://*.openai.com/*"
+      ],
+      "js": ["chatgpt-overrides.js"],
+      "css": ["chatgpt-overrides.css"],
+      "run_at": "document_idle"
     }
   ],
   "icons": {
