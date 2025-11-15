@@ -19,24 +19,16 @@
     "service_worker": "js/sidepanel-service-worker.js"
   },
   "content_scripts": [
-    {
-      "matches": [
-        "https://chat.openai.com/*",
-        "https://chatgpt.com/*"
-      ],
-      "js": ["js/chatgpt-copy-fix.js"],
-      "css": ["css/chatgpt-copy-fix.css"],
+      {
+        "matches": [
+          "https://chat.openai.com/*",
+          "https://chatgpt.com/*",
+          "https://*.openai.com/*"
+        ],
+        "js": ["js/chatgpt-overrides.js"],
+        "css": ["css/chatgpt-overrides.css"],
       "run_at": "document_start",
       "all_frames": true
-    },
-    {
-      "matches": [
-        "https://chatgpt.com/*",
-        "https://*.openai.com/*"
-      ],
-      "js": ["chatgpt-overrides.js"],
-      "css": ["chatgpt-overrides.css"],
-      "run_at": "document_idle"
     }
   ],
   "icons": {
