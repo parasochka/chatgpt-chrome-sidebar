@@ -38,27 +38,67 @@
     "message": "सेशन वेरिफाई नहीं हो पाया. पेज रीफ्रेश करें या __PORTAL__ पर लॉग इन करें.",
     "description": "__PORTAL__ को ChatGPT के डोमेन से बदला जाएगा."
   },
-  "headerHomeLabel": { "message": "मुख्य पृष्ठ" },
-  "headerSettingsLabel": { "message": "सेटिंग्स" },
-  "settingsTitle": { "message": "सेटिंग्स" },
-  "settingsCloseLabel": { "message": "साइडबार बंद करें" },
-  "settingsExtensionLanguageTitle": { "message": "एक्सटेंशन भाषा" },
-  "settingsExtensionLanguageHint": { "message": "Sidely इंटरफ़ेस की भाषा तुरंत बदलें।" },
-  "settingsLanguageEnglish": { "message": "अंग्रेज़ी" },
-  "settingsLanguageChineseChina": { "message": "चीनी (चीन)" },
-  "settingsLanguageFrench": { "message": "फ़्रेंच" },
-  "settingsLanguageHindi": { "message": "हिंदी" },
-  "settingsLanguagePortugueseBrazil": { "message": "पुर्तगाली (ब्राज़ील)" },
-  "settingsLanguageRussian": { "message": "रूसी" },
-  "settingsLanguageSpanish": { "message": "स्पैनिश" },
-  "settingsDomainTitle": { "message": "ChatGPT डोमेन" },
-  "settingsDomainHint": { "message": "चुनें कि Sidely कौन‑सा ChatGPT डोमेन खोले।" },
-  "settingsDomainAuto": { "message": "ऑटो (अनुशंसित)" },
-  "settingsDomainChatgptCom": { "message": "chatgpt.com" },
-  "settingsDomainChatOpenaiCom": { "message": "chat.openai.com" },
-  "settingsThemeTitle": { "message": "थीम" },
-  "settingsThemeHint": { "message": "साइडबार के लिए हल्की, डार्क या ऑटो थीम चुनें।" },
-  "settingsThemeAuto": { "message": "ऑटो (सिस्टम जैसा)" },
-  "settingsThemeLight": { "message": "हल्की" },
-  "settingsThemeDark": { "message": "डार्क" }
+  "settingsTitle": {
+    "message": "सेटिंग्स"
+  },
+  "settingsCloseLabel": {
+    "message": "साइडबार बंद करें"
+  },
+  "settingsExtensionLanguageTitle": {
+    "message": "एक्सटेंशन भाषा"
+  },
+  "settingsExtensionLanguageHint": {
+    "message": "Sidely इंटरफ़ेस की भाषा तुरंत बदलें।"
+  },
+  "settingsLanguageEnglish": {
+    "message": "अंग्रेज़ी"
+  },
+  "settingsLanguageChineseChina": {
+    "message": "चीनी (चीन)"
+  },
+  "settingsLanguageFrench": {
+    "message": "फ़्रेंच"
+  },
+  "settingsLanguageHindi": {
+    "message": "हिंदी"
+  },
+  "settingsLanguagePortugueseBrazil": {
+    "message": "पुर्तगाली (ब्राज़ील)"
+  },
+  "settingsLanguageRussian": {
+    "message": "रूसी"
+  },
+  "settingsLanguageSpanish": {
+    "message": "स्पैनिश"
+  },
+  "settingsDomainTitle": {
+    "message": "ChatGPT डोमेन"
+  },
+  "settingsDomainHint": {
+    "message": "चुनें कि Sidely कौन‑सा ChatGPT डोमेन खोले।"
+  },
+  "settingsDomainAuto": {
+    "message": "ऑटो (अनुशंसित)"
+  },
+  "settingsDomainChatgptCom": {
+    "message": "chatgpt.com"
+  },
+  "settingsDomainChatOpenaiCom": {
+    "message": "chat.openai.com"
+  },
+  "settingsThemeTitle": {
+    "message": "थीम"
+  },
+  "settingsThemeHint": {
+    "message": "साइडबार के लिए हल्की, डार्क या ऑटो थीम चुनें।"
+  },
+  "settingsThemeAuto": {
+    "message": "ऑटो (सिस्टम जैसा)"
+  },
+  "settingsThemeLight": {
+    "message": "हल्की"
+  },
+  "settingsThemeDark": {
+    "message": "डार्क"
+  }
 }

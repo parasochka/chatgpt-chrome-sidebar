@@ -38,27 +38,67 @@
     "message": "Не удалось подтвердить сессию. Обнови страницу или войди через __PORTAL__.",
     "description": "__PORTAL__ будет заменён на домен ChatGPT."
   },
-  "headerHomeLabel": { "message": "Главная" },
-  "headerSettingsLabel": { "message": "Настройки" },
-  "settingsTitle": { "message": "Настройки" },
-  "settingsCloseLabel": { "message": "Закрыть боковую панель" },
-  "settingsExtensionLanguageTitle": { "message": "Язык расширения" },
-  "settingsExtensionLanguageHint": { "message": "Мгновенно переключай язык интерфейса Sidely." },
-  "settingsLanguageEnglish": { "message": "Английский" },
-  "settingsLanguageChineseChina": { "message": "Китайский (Китай)" },
-  "settingsLanguageFrench": { "message": "Французский" },
-  "settingsLanguageHindi": { "message": "Хинди" },
-  "settingsLanguagePortugueseBrazil": { "message": "Португальский (Бразилия)" },
-  "settingsLanguageRussian": { "message": "Русский" },
-  "settingsLanguageSpanish": { "message": "Испанский" },
-  "settingsDomainTitle": { "message": "Домен ChatGPT" },
-  "settingsDomainHint": { "message": "Выбери, какой домен ChatGPT открывать." },
-  "settingsDomainAuto": { "message": "Авто (рекомендуется)" },
-  "settingsDomainChatgptCom": { "message": "chatgpt.com" },
-  "settingsDomainChatOpenaiCom": { "message": "chat.openai.com" },
-  "settingsThemeTitle": { "message": "Тема" },
-  "settingsThemeHint": { "message": "Выбери светлую, тёмную или автоматическую тему для сайдбара." },
-  "settingsThemeAuto": { "message": "Авто (как в системе)" },
-  "settingsThemeLight": { "message": "Светлая" },
-  "settingsThemeDark": { "message": "Тёмная" }
+  "settingsTitle": {
+    "message": "Настройки"
+  },
+  "settingsCloseLabel": {
+    "message": "Закрыть боковую панель"
+  },
+  "settingsExtensionLanguageTitle": {
+    "message": "Язык расширения"
+  },
+  "settingsExtensionLanguageHint": {
+    "message": "Мгновенно переключай язык интерфейса Sidely."
+  },
+  "settingsLanguageEnglish": {
+    "message": "Английский"
+  },
+  "settingsLanguageChineseChina": {
+    "message": "Китайский (Китай)"
+  },
+  "settingsLanguageFrench": {
+    "message": "Французский"
+  },
+  "settingsLanguageHindi": {
+    "message": "Хинди"
+  },
+  "settingsLanguagePortugueseBrazil": {
+    "message": "Португальский (Бразилия)"
+  },
+  "settingsLanguageRussian": {
+    "message": "Русский"
+  },
+  "settingsLanguageSpanish": {
+    "message": "Испанский"
+  },
+  "settingsDomainTitle": {
+    "message": "Домен ChatGPT"
+  },
+  "settingsDomainHint": {
+    "message": "Выбери, какой домен ChatGPT открывать."
+  },
+  "settingsDomainAuto": {
+    "message": "Авто (рекомендуется)"
+  },
+  "settingsDomainChatgptCom": {
+    "message": "chatgpt.com"
+  },
+  "settingsDomainChatOpenaiCom": {
+    "message": "chat.openai.com"
+  },
+  "settingsThemeTitle": {
+    "message": "Тема"
+  },
+  "settingsThemeHint": {
+    "message": "Выбери светлую, тёмную или автоматическую тему для сайдбара."
+  },
+  "settingsThemeAuto": {
+    "message": "Авто (как в системе)"
+  },
+  "settingsThemeLight": {
+    "message": "Светлая"
+  },
+  "settingsThemeDark": {
+    "message": "Тёмная"
+  }
 }
