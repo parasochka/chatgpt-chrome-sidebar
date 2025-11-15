@@ -2,12 +2,10 @@
 
 const FALLBACK_MESSAGES = {
   appTitle: 'Sidely - ChatGPT Sidebar',
-  headerHomeLabel: 'Home',
   refreshButtonAriaLabel: 'Refresh chats',
   refreshButtonDefaultLabel: 'Update Chats',
   refreshButtonLoadingLabel: 'Updating...',
   refreshButtonTooltip: 'Reload sidebar to show new chats.',
-  headerSettingsLabel: 'Settings',
   settingsCloseLabel: 'Close sidebar',
   settingsTitle: 'Settings',
   settingsExtensionLanguageTitle: 'Extension language',
@@ -50,12 +48,10 @@ let activeLocaleId = null;
 let activeLocaleMessages = null;
 
 let APP_TITLE = FALLBACK_MESSAGES.appTitle;
-let HEADER_HOME_LABEL = FALLBACK_MESSAGES.headerHomeLabel;
 let REFRESH_LABEL_DEFAULT = FALLBACK_MESSAGES.refreshButtonDefaultLabel;
 let REFRESH_LABEL_LOADING = FALLBACK_MESSAGES.refreshButtonLoadingLabel;
 let REFRESH_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.refreshButtonAriaLabel;
 let REFRESH_BUTTON_TOOLTIP = FALLBACK_MESSAGES.refreshButtonTooltip;
-let HEADER_SETTINGS_LABEL = FALLBACK_MESSAGES.headerSettingsLabel;
 let SETTINGS_CLOSE_LABEL = FALLBACK_MESSAGES.settingsCloseLabel;
 let SETTINGS_TITLE = FALLBACK_MESSAGES.settingsTitle;
 
@@ -126,12 +122,10 @@ function getLocalizedString(key, fallback, substitutions) {
 
 function refreshCachedLocaleStrings() {
   APP_TITLE = getLocalizedString('appTitle', FALLBACK_MESSAGES.appTitle);
-  HEADER_HOME_LABEL = getLocalizedString('headerHomeLabel', FALLBACK_MESSAGES.headerHomeLabel);
   REFRESH_LABEL_DEFAULT = getLocalizedString('refreshButtonDefaultLabel', FALLBACK_MESSAGES.refreshButtonDefaultLabel);
   REFRESH_LABEL_LOADING = getLocalizedString('refreshButtonLoadingLabel', FALLBACK_MESSAGES.refreshButtonLoadingLabel);
   REFRESH_BUTTON_ARIA_LABEL = getLocalizedString('refreshButtonAriaLabel', FALLBACK_MESSAGES.refreshButtonAriaLabel);
   REFRESH_BUTTON_TOOLTIP = getLocalizedString('refreshButtonTooltip', FALLBACK_MESSAGES.refreshButtonTooltip);
-  HEADER_SETTINGS_LABEL = getLocalizedString('headerSettingsLabel', FALLBACK_MESSAGES.headerSettingsLabel);
   SETTINGS_CLOSE_LABEL = getLocalizedString('settingsCloseLabel', FALLBACK_MESSAGES.settingsCloseLabel);
   SETTINGS_TITLE = getLocalizedString('settingsTitle', FALLBACK_MESSAGES.settingsTitle);
 }
@@ -400,15 +394,6 @@ function applyLocalization() {
 
   document.title = APP_TITLE;
 
-  const homeButton = document.getElementById('home-button');
-  if (homeButton) {
-    homeButton.setAttribute('aria-label', HEADER_HOME_LABEL);
-    const homeLabel = homeButton.querySelector('.toolbar-btn__label-content');
-    if (homeLabel) {
-      homeLabel.textContent = HEADER_HOME_LABEL;
-    }
-  }
-
   const refreshButton = getRefreshButton();
   if (refreshButton) {
     refreshButton.setAttribute('aria-label', REFRESH_BUTTON_ARIA_LABEL);
@@ -428,15 +413,6 @@ function applyLocalization() {
   const tooltip = document.getElementById('refresh-chat-tooltip');
   if (tooltip) {
     tooltip.textContent = REFRESH_BUTTON_TOOLTIP;
-  }
-
-  const settingsButton = document.getElementById('settings-button');
-  if (settingsButton) {
-    settingsButton.setAttribute('aria-label', HEADER_SETTINGS_LABEL);
-    const settingsLabel = settingsButton.querySelector('.toolbar-btn__label-content');
-    if (settingsLabel) {
-      settingsLabel.textContent = HEADER_SETTINGS_LABEL;
-    }
   }
 
   const settingsCloseButton = document.getElementById('settings-close-button');
