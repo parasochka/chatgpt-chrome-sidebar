@@ -125,22 +125,21 @@ body {
   appearance: none;
   border: 0;
   margin: 0;
-  padding: 0 10px;
+  padding: 0 12px;
   height: 32px;
   border-radius: 8px;
   background: transparent;
   color: inherit;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   font-size: 14px;
   line-height: 1.2;
   font-weight: 600;
   font-family: inherit;
   white-space: nowrap;
   cursor: pointer;
-  min-width: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -183,7 +182,6 @@ body {
   justify-items: center;
   font-weight: 400;
   white-space: nowrap;
-  min-width: 0;
 }
 
 .toolbar-btn__label::before,
@@ -205,37 +203,6 @@ body {
 
 .toolbar-btn__label-content {
   grid-area: 1 / 1 / 2 / 2;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@media (max-width: 420px) {
-  .frame-toolbar {
-    gap: 4px;
-  }
-
-  .toolbar-btn {
-    padding: 0 8px;
-    font-size: 13px;
-    gap: 4px;
-  }
-}
-
-@media (max-width: 360px) {
-  .frame-toolbar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 6px;
-  }
-
-  .frame-toolbar__zone--center {
-    grid-column: 1 / -1;
-    justify-content: center;
-  }
-
-  .frame-toolbar__zone--right {
-    justify-content: flex-start;
-  }
 }
 
 .frame-body {
