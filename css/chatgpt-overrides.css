@@ -27,3 +27,14 @@ html, body, main, article, section {
   -webkit-user-select: text !important;
   user-select: text !important;
 }
+
+/* Hide voice input related controls */
+button[aria-label="Dictate button"].composer-btn,
+button[data-testid="composer-speech-button"][aria-label="Start voice mode"] {
+  display: none !important;
+}
+
+/* Hide the "Add from Google Drive" menu item */
+div[role="menuitem"].__menu-item:has(svg path[d="M3.51105 18.4269L4.39307 19.9615C4.57634 20.2846 4.8398 20.5384 5.14908 20.723L8.29914 15.2307H1.99902C1.99902 15.5884 2.09066 15.9461 2.27394 16.2692L3.51105 18.4269Z"]) {
+  display: none !important;
+}
