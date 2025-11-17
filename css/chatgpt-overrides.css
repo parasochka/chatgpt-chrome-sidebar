@@ -27,3 +27,23 @@ html, body, main, article, section {
   -webkit-user-select: text !important;
   user-select: text !important;
 }
+
+/* Hide "Add from Google Drive" menu option within the composer */
+.\_\_menu-item:has(svg path[d^="M3.51105 18.4269"]) {
+  display: none !important;
+}
+
+/* Hide dictate/voice buttons in the composer footer */
+button[aria-label="Dictate button"],
+[data-testid="composer-speech-button"],
+[data-testid="composer-speech-button-container"] {
+  display: none !important;
+}
+
+/* Hide every disabled state of the send button so it only appears when active */
+button[data-testid="send-button"][aria-disabled="true"],
+button[data-testid="send-button"][disabled],
+button[data-testid="send-button"][data-state~="disabled"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
