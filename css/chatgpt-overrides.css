@@ -37,22 +37,5 @@ html, body, main, article, section {
 button[aria-label="Dictate button"],
 [data-testid="composer-speech-button"],
 [data-testid="composer-speech-button-container"] {
-  /*
-    Removing the controls entirely (display: none) makes ChatGPT re-render
-    the whole footer which in turn causes the send button to flicker between
-    enabled/disabled states. Instead we visually hide them by collapsing
-    their box model while keeping the DOM nodes alive so the React tree stays
-    stable.
-  */
-  width: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  overflow: hidden !important;
-  clip-path: inset(50%) !important;
-  clip: rect(0 0 0 0) !important;
-  white-space: nowrap !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+  display: none !important;
 }
