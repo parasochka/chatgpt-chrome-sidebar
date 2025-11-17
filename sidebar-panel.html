@@ -19,9 +19,11 @@
       background: #f5f6f8;
       font-family: "Söhne", "Helvetica Neue", Helvetica, Arial, sans-serif;
       color: #222;
+      --frame-max-width: none;
     }
     .frame-wrap {
-      width: min(100%, 450px);
+      width: 100%;
+      max-width: var(--frame-max-width, none);
       height: 100%;
       margin: 0 auto;
       border-radius: 12px;
@@ -29,6 +31,7 @@
       background: #fff;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
     .frame-header {
       display: flex;
@@ -552,6 +555,29 @@
                 </label>
               </div>
             </fieldset>
+          </section>
+          <section class="settings-section" aria-labelledby="settings-width-title">
+            <h3
+              id="settings-width-title"
+              class="settings-section__title"
+              data-i18n-key="settingsWidthTitle"
+            >__MSG_settingsWidthTitle__</h3>
+            <p
+              id="settings-width-hint"
+              class="settings-section__hint"
+              data-i18n-key="settingsWidthHint"
+            >__MSG_settingsWidthHint__</p>
+            <select
+              id="sidebar-width-select"
+              class="settings-select"
+              aria-labelledby="settings-width-title"
+              aria-describedby="settings-width-hint"
+            >
+              <option value="auto" data-i18n-key="settingsWidthAuto">__MSG_settingsWidthAuto__</option>
+              <option value="compact" data-i18n-key="settingsWidthCompact">__MSG_settingsWidthCompact__</option>
+              <option value="comfortable" data-i18n-key="settingsWidthComfortable">__MSG_settingsWidthComfortable__</option>
+              <option value="expanded" data-i18n-key="settingsWidthExpanded">__MSG_settingsWidthExpanded__</option>
+            </select>
           </section>
           <section class="settings-section" aria-labelledby="settings-theme-title">
             <h3
