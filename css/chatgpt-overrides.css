@@ -27,3 +27,66 @@ html, body, main, article, section {
   -webkit-user-select: text !important;
   user-select: text !important;
 }
+
+/* Hide the ChatGPT mic access error popup without affecting other UI elements */
+[aria-label="Enable mic access to dictate"],
+[role="dialog"][aria-label*="mic access" i],
+[role="dialog"][aria-label*="microphone" i],
+[data-testid="mic-permission-modal"],
+[data-testid="mic-permissions-banner"],
+[data-testid="mic-permissions-toast"] {
+  display: none !important;
+}
+
+/* Also hide every known mic / voice toggle in the composer */
+button:is(
+    [data-testid="dictation-toggle"],
+    [data-testid="composer-dictation-toggle"],
+    [data-testid="composer-voice-toggle"],
+    [data-testid="voice-mode-toggle"],
+    [data-testid="voice-input-toggle"],
+    [data-testid="voice-toggle-button"],
+    [aria-label="Enable dictation"],
+    [aria-label*="voice input" i],
+    [aria-label*="voice message" i],
+    [aria-label*="voice conversation" i],
+    [aria-label*="enable mic" i],
+    [aria-label*="mic access" i],
+    [aria-label*="dictation" i]
+) {
+  display: none !important;
+}
+
+/* Remove the "Use voice mode" CTA buttons that appear outside the composer */
+:is(button, a)[
+    data-testid*="voice-mode" i
+  ],
+:is(button, a)[
+    aria-label*="voice mode" i
+  ] {
+  display: none !important;
+}
+
+/* Hide Google Drive upload entry points */
+[aria-label="Add from Google Drive"],
+[data-testid="drive-upload"],
+[data-testid="drive-upload-option"],
+[data-testid="attachment-google-drive"],
+:is(button, a, [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[
+    aria-label*="google drive" i
+  ],
+:is(button, a, [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"])[
+    data-testid*="drive" i
+  ],
+button[aria-label*="Drive" i][data-testid*="upload" i] {
+  display: none !important;
+}
+
+/* Hide Dictate buttons anywhere in the UI */
+:is(button, a)[data-testid*="dictat" i],
+:is(button, a)[aria-label="Dictate" i],
+:is(button, a)[aria-label*="dictate" i],
+:is(button, a)[aria-label*="dictation" i],
+button[aria-label*="Dictate" i] {
+  display: none !important;
+}
