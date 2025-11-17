@@ -100,23 +100,5 @@
   },
   "settingsThemeDark": {
     "message": "深色"
-  },
-  "settingsWidthTitle": {
-    "message": "侧边栏宽度"
-  },
-  "settingsWidthHint": {
-    "message": "选择 Sidely 面板的默认宽度。"
-  },
-  "settingsWidthAuto": {
-    "message": "自动（适应侧边栏）"
-  },
-  "settingsWidthCompact": {
-    "message": "紧凑"
-  },
-  "settingsWidthComfortable": {
-    "message": "舒适"
-  },
-  "settingsWidthExpanded": {
-    "message": "加宽"
   }
 }

@@ -100,23 +100,5 @@
   },
   "settingsThemeDark": {
     "message": "डार्क"
-  },
-  "settingsWidthTitle": {
-    "message": "साइडबार की चौड़ाई"
-  },
-  "settingsWidthHint": {
-    "message": "तय करें कि Sidely पैनल डिफ़ॉल्ट रूप से कितना चौड़ा हो।"
-  },
-  "settingsWidthAuto": {
-    "message": "ऑटो (साइडबार के अनुसार)"
-  },
-  "settingsWidthCompact": {
-    "message": "कम्पैक्ट"
-  },
-  "settingsWidthComfortable": {
-    "message": "आरामदायक"
-  },
-  "settingsWidthExpanded": {
-    "message": "विस्तृत"
   }
 }
