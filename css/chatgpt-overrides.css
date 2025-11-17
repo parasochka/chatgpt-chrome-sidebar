@@ -37,5 +37,14 @@ html, body, main, article, section {
 button[aria-label="Dictate button"],
 [data-testid="composer-speech-button"],
 [data-testid="composer-speech-button-container"] {
-  display: none !important;
+  /*
+    Using display: none was causing ChatGPT's composer to constantly
+    re-render the footer which made the send button flicker between
+    enabled/disabled states. Instead of removing the nodes from the
+    layout we simply hide them visually while keeping their layout box
+    intact so the surrounding UI remains stable.
+  */
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
