@@ -39,3 +39,9 @@ button[aria-label="Dictate button"],
 [data-testid="composer-speech-button-container"] {
   display: none !important;
 }
+
+/* Hide the disabled (gray) send button state so it only appears when active */
+button[data-testid="send-button"][aria-disabled="true"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
