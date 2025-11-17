@@ -100,23 +100,5 @@
   },
   "settingsThemeDark": {
     "message": "Oscuro"
-  },
-  "settingsWidthTitle": {
-    "message": "Ancho de la barra lateral"
-  },
-  "settingsWidthHint": {
-    "message": "Elige qué tan ancho debe ser el panel de Sidely de forma predeterminada."
-  },
-  "settingsWidthAuto": {
-    "message": "Automático (ajustarse a la barra lateral)"
-  },
-  "settingsWidthCompact": {
-    "message": "Compacto"
-  },
-  "settingsWidthComfortable": {
-    "message": "Cómodo"
-  },
-  "settingsWidthExpanded": {
-    "message": "Ampliado"
   }
 }

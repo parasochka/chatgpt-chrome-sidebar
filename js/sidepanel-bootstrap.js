@@ -27,12 +27,6 @@ const FALLBACK_MESSAGES = {
   settingsThemeAuto: 'Auto (match system)',
   settingsThemeLight: 'Light',
   settingsThemeDark: 'Dark',
-  settingsWidthTitle: 'Sidebar width',
-  settingsWidthHint: 'Choose how wide the Sidely panel should be by default.',
-  settingsWidthAuto: 'Auto (fit sidebar)',
-  settingsWidthCompact: 'Compact',
-  settingsWidthComfortable: 'Comfortable',
-  settingsWidthExpanded: 'Expanded',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
@@ -189,26 +183,17 @@ let refreshButtonResetTimeoutId = null;
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   domainMode: 'sidelyPortalDomainMode',
-  themeMode: 'sidelyThemeMode',
-  frameWidthMode: 'sidelyFrameWidthMode'
+  themeMode: 'sidelyThemeMode'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
 const THEME_MODES = ['auto', 'light', 'dark'];
 const THEME_MESSAGE_TYPE = 'sidely-theme-change';
-const FRAME_WIDTH_PRESETS = {
-  auto: null,
-  compact: '360px',
-  comfortable: '420px',
-  expanded: '560px'
-};
-const FRAME_WIDTH_MODES = Object.keys(FRAME_WIDTH_PRESETS);
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
   domainMode: 'auto',
-  themeMode: 'auto',
-  frameWidthMode: 'auto'
+  themeMode: 'auto'
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -598,8 +583,7 @@ function renderPortalNotice(state) {
   root.style.transform = 'translateX(-50%)';
   root.style.display = 'flex';
   root.style.justifyContent = 'center';
-  root.style.width = 'min(100%, calc(100% - 24px))';
-  root.style.maxWidth = '100%';
+  root.style.width = 'min(520px, calc(100% - 24px))';
   root.style.margin = '0 auto';
   root.style.fontFamily = 'system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif';
   root.style.textAlign = 'center';
@@ -640,12 +624,7 @@ function renderPortalNotice(state) {
 
   box.appendChild(p);
   root.appendChild(box);
-  const frame = document.querySelector('.frame-wrap');
-  if (frame) {
-    frame.appendChild(root);
-  } else {
-    document.body.appendChild(root);
-  }
+  document.body.appendChild(root);
 }
 
 function clearPortalNotice() {
@@ -755,14 +734,6 @@ function normalizeThemeMode(value) {
   return THEME_MODES.includes(normalized) ? normalized : SETTINGS_DEFAULTS.themeMode;
 }
 
-function normalizeFrameWidthMode(value) {
-  if (typeof value !== 'string') {
-    return SETTINGS_DEFAULTS.frameWidthMode;
-  }
-  const normalized = value.toLowerCase();
-  return FRAME_WIDTH_MODES.includes(normalized) ? normalized : SETTINGS_DEFAULTS.frameWidthMode;
-}
-
 function applyThemeMode(mode) {
   const body = getBodyElement();
   if (!body) return;
@@ -776,21 +747,6 @@ function applyThemeMode(mode) {
   }
   syncDocumentColorScheme(effectiveTheme);
   syncChatIframeTheme(effectiveTheme);
-}
-
-function applyFrameWidthMode(mode) {
-  const body = getBodyElement();
-  if (!body) return;
-  const resolved = normalizeFrameWidthMode(mode);
-  const widthValue = FRAME_WIDTH_PRESETS[resolved];
-  if (widthValue) {
-    body.style.setProperty('--frame-max-width', widthValue);
-  } else {
-    body.style.removeProperty('--frame-max-width');
-  }
-  if (body.dataset) {
-    body.dataset.frameWidthMode = resolved;
-  }
 }
 
 async function loadSettingsFromStorage() {
@@ -814,13 +770,8 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
-  if (typeof stored[STORAGE_KEYS.frameWidthMode] === 'string') {
-    nextState.frameWidthMode = normalizeFrameWidthMode(stored[STORAGE_KEYS.frameWidthMode]);
-  }
-
   settingsState = nextState;
   applyThemeMode(settingsState.themeMode);
-  applyFrameWidthMode(settingsState.frameWidthMode);
 }
 
 function syncSettingsUI() {
@@ -838,11 +789,6 @@ function syncSettingsUI() {
   themeInputs.forEach(input => {
     input.checked = input.value === settingsState.themeMode;
   });
-
-  const widthSelect = document.getElementById('sidebar-width-select');
-  if (widthSelect) {
-    widthSelect.value = settingsState.frameWidthMode;
-  }
 }
 
 async function setExtensionLanguage(value) {
@@ -902,19 +848,6 @@ function setupSettingsControls() {
       }
     });
   });
-
-  const widthSelect = document.getElementById('sidebar-width-select');
-  if (widthSelect) {
-    widthSelect.addEventListener('change', event => {
-      if (!(event.target instanceof HTMLSelectElement)) {
-        return;
-      }
-      const value = normalizeFrameWidthMode(event.target.value);
-      settingsState.frameWidthMode = value;
-      applyFrameWidthMode(value);
-      storageSet({ [STORAGE_KEYS.frameWidthMode]: value });
-    });
-  }
 }
 
 function showSettingsPanel() {
