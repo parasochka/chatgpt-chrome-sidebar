@@ -40,8 +40,10 @@ button[aria-label="Dictate button"],
   display: none !important;
 }
 
-/* Hide the disabled (gray) send button state so it only appears when active */
-button[data-testid="send-button"][aria-disabled="true"] {
+/* Hide every disabled state of the send button so it only appears when active */
+button[data-testid="send-button"][aria-disabled="true"],
+button[data-testid="send-button"][disabled],
+button[data-testid="send-button"][data-state~="disabled"] {
   opacity: 0 !important;
   pointer-events: none !important;
 }
