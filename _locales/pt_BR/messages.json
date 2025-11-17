@@ -100,5 +100,23 @@
   },
   "settingsThemeDark": {
     "message": "Escuro"
+  },
+  "settingsWidthTitle": {
+    "message": "Largura da barra lateral"
+  },
+  "settingsWidthHint": {
+    "message": "Escolha a largura padrão do painel do Sidely."
+  },
+  "settingsWidthAuto": {
+    "message": "Automático (ajustar à barra lateral)"
+  },
+  "settingsWidthCompact": {
+    "message": "Compacta"
+  },
+  "settingsWidthComfortable": {
+    "message": "Confortável"
+  },
+  "settingsWidthExpanded": {
+    "message": "Ampla"
   }
 }

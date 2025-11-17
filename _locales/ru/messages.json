@@ -100,5 +100,23 @@
   },
   "settingsThemeDark": {
     "message": "Тёмная"
+  },
+  "settingsWidthTitle": {
+    "message": "Ширина боковой панели"
+  },
+  "settingsWidthHint": {
+    "message": "Выберите ширину панели Sidely по умолчанию."
+  },
+  "settingsWidthAuto": {
+    "message": "Авто (по ширине боковой панели)"
+  },
+  "settingsWidthCompact": {
+    "message": "Компактная"
+  },
+  "settingsWidthComfortable": {
+    "message": "Комфортная"
+  },
+  "settingsWidthExpanded": {
+    "message": "Расширенная"
   }
 }

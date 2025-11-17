@@ -100,5 +100,23 @@
   },
   "settingsThemeDark": {
     "message": "Dark"
+  },
+  "settingsWidthTitle": {
+    "message": "Sidebar width"
+  },
+  "settingsWidthHint": {
+    "message": "Choose how wide the Sidely panel should be by default."
+  },
+  "settingsWidthAuto": {
+    "message": "Auto (fit sidebar)"
+  },
+  "settingsWidthCompact": {
+    "message": "Compact"
+  },
+  "settingsWidthComfortable": {
+    "message": "Comfortable"
+  },
+  "settingsWidthExpanded": {
+    "message": "Expanded"
   }
 }
