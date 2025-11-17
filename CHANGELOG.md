@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7
+- Button and UI tweaks
+- Bug fixes
+
 ## 0.6
 New settings menu:
 - Manage dark/light themes
