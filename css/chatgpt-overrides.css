@@ -39,3 +39,14 @@ button[aria-label="Dictate button"],
 [data-testid="composer-speech-button-container"] {
   display: none !important;
 }
+
+/* send animations */
+button[data-testid="send-button"] {
+  transition: none !important;
+}
+
+/* disabled same like enabled */
+button[data-testid="send-button"][disabled] {
+  opacity: 1 !important;
+  filter: none !important;
+}
