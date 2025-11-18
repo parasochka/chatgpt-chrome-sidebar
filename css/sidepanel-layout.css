@@ -342,7 +342,8 @@ body {
   border: 1px solid rgba(15, 23, 42, 0.2);
   background: #fff;
   font-size: 14px;
-  padding: 10px 12px;
+  padding: 10px 16px;
+  padding-right: 24px;
   font-family: inherit;
   color: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
