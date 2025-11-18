@@ -51,25 +51,25 @@
     "message": "立即切换 Sidely 界面的显示语言。"
   },
   "settingsLanguageEnglish": {
-    "message": "英语"
+    "message": "English"
   },
   "settingsLanguageChineseChina": {
-    "message": "中文"
+    "message": "中文（简体）"
   },
   "settingsLanguageFrench": {
-    "message": "法语"
+    "message": "Français"
   },
   "settingsLanguageHindi": {
-    "message": "印地语"
+    "message": "हिन्दी"
   },
   "settingsLanguagePortugueseBrazil": {
-    "message": "葡萄牙语"
+    "message": "Português"
   },
   "settingsLanguageRussian": {
-    "message": "俄语"
+    "message": "Русский"
   },
   "settingsLanguageSpanish": {
-    "message": "西班牙语"
+    "message": "Español"
   },
   "settingsDomainTitle": {
     "message": "ChatGPT 域名"

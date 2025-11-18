@@ -51,25 +51,25 @@
     "message": "Мгновенно переключай язык интерфейса Sidely."
   },
   "settingsLanguageEnglish": {
-    "message": "Английский"
+    "message": "English"
   },
   "settingsLanguageChineseChina": {
-    "message": "Китайский"
+    "message": "中文（简体）"
   },
   "settingsLanguageFrench": {
-    "message": "Французский"
+    "message": "Français"
   },
   "settingsLanguageHindi": {
-    "message": "Хинди"
+    "message": "हिन्दी"
   },
   "settingsLanguagePortugueseBrazil": {
-    "message": "Португальский"
+    "message": "Português"
   },
   "settingsLanguageRussian": {
     "message": "Русский"
   },
   "settingsLanguageSpanish": {
-    "message": "Испанский"
+    "message": "Español"
   },
   "settingsDomainTitle": {
     "message": "Домен ChatGPT"

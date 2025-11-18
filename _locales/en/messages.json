@@ -54,22 +54,22 @@
     "message": "English"
   },
   "settingsLanguageChineseChina": {
-    "message": "Chinese"
+    "message": "中文（简体）"
   },
   "settingsLanguageFrench": {
-    "message": "French"
+    "message": "Français"
   },
   "settingsLanguageHindi": {
-    "message": "Hindi"
+    "message": "हिन्दी"
   },
   "settingsLanguagePortugueseBrazil": {
-    "message": "Portuguese"
+    "message": "Português"
   },
   "settingsLanguageRussian": {
-    "message": "Russian"
+    "message": "Русский"
   },
   "settingsLanguageSpanish": {
-    "message": "Spanish"
+    "message": "Español"
   },
   "settingsDomainTitle": {
     "message": "ChatGPT domain"
