@@ -11,7 +11,7 @@ const FALLBACK_MESSAGES = {
   settingsExtensionLanguageTitle: 'Extension language',
   settingsExtensionLanguageHint: 'Switch the Sidely interface language instantly.',
   settingsLanguageEnglish: 'English',
-  settingsLanguageChineseChina: '中文（简体）',
+  settingsLanguageChineseChina: '中文',
   settingsLanguageFrench: 'Français',
   settingsLanguageHindi: 'हिन्दी',
   settingsLanguagePortugueseBrazil: 'Português',
