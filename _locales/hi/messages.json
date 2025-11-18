@@ -51,25 +51,25 @@
     "message": "Sidely इंटरफ़ेस की भाषा तुरंत बदलें।"
   },
   "settingsLanguageEnglish": {
-    "message": "अंग्रेज़ी"
+    "message": "English"
   },
   "settingsLanguageChineseChina": {
-    "message": "चीनी"
+    "message": "中文（简体）"
   },
   "settingsLanguageFrench": {
-    "message": "फ़्रेंच"
+    "message": "Français"
   },
   "settingsLanguageHindi": {
-    "message": "हिंदी"
+    "message": "हिन्दी"
   },
   "settingsLanguagePortugueseBrazil": {
-    "message": "पुर्तगाली"
+    "message": "Português"
   },
   "settingsLanguageRussian": {
-    "message": "रूसी"
+    "message": "Русский"
   },
   "settingsLanguageSpanish": {
-    "message": "स्पैनिश"
+    "message": "Español"
   },
   "settingsDomainTitle": {
     "message": "ChatGPT डोमेन"
