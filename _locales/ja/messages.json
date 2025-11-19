@@ -14,6 +14,12 @@
   "actionTitle": {
     "message": "Sidely - ChatGPTサイドバー"
   },
+  "homeButtonAriaLabel": {
+    "message": "ホーム"
+  },
+  "settingsButtonAriaLabel": {
+    "message": "設定"
+  },
   "refreshButtonAriaLabel": {
     "message": "チャットを更新"
   },

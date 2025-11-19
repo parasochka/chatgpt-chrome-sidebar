@@ -14,6 +14,12 @@
   "actionTitle": {
     "message": "Sidely - ChatGPT 侧边栏"
   },
+  "homeButtonAriaLabel": {
+    "message": "主页"
+  },
+  "settingsButtonAriaLabel": {
+    "message": "设置"
+  },
   "refreshButtonAriaLabel": {
     "message": "刷新聊天"
   },
