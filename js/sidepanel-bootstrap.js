@@ -828,7 +828,6 @@ function setupSettingsControls() {
       const value = normalizeDomainMode(event.target.value);
       settingsState.domainMode = value;
       storageSet({ [STORAGE_KEYS.domainMode]: value });
-      hideSettingsPanel();
       loadPortalAccordingToSettings();
     });
   });
