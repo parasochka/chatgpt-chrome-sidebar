@@ -1,0 +1,113 @@
+{
+  "appName": {
+    "message": "Sidely – ChatGPT-Seitenleiste"
+  },
+  "appShortName": {
+    "message": "Sidely"
+  },
+  "appDescription": {
+    "message": "Nutze ChatGPT direkt in Chromes Seitenleiste mit Sidely – einer sicheren, schnellen ChatGPT-Seitenleisten-Erweiterung mit deinem eigenen Konto."
+  },
+  "appTitle": {
+    "message": "Sidely – ChatGPT-Seitenleiste"
+  },
+  "actionTitle": {
+    "message": "Sidely – ChatGPT-Seitenleiste"
+  },
+  "refreshButtonAriaLabel": {
+    "message": "Chats aktualisieren"
+  },
+  "refreshButtonDefaultLabel": {
+    "message": "Chats aktualisieren"
+  },
+  "refreshButtonLoadingLabel": {
+    "message": "Aktualisieren..."
+  },
+  "refreshButtonTooltip": {
+    "message": "Lade die Seitenleiste neu, um neue Chats anzuzeigen."
+  },
+  "noticeCloudflare": {
+    "message": "Du musst die Cloudflare-Prüfung abschließen. Öffne __PORTAL__ in einem Tab, melde dich an und kehre dann zurück.",
+    "description": "__PORTAL__ wird durch den ChatGPT-Hostnamen ersetzt."
+  },
+  "noticeUnauthorized": {
+    "message": "Du musst dich bei deinem ChatGPT-Konto anmelden. Öffne __PORTAL__ in einem Tab, melde dich an und kehre dann zurück.",
+    "description": "__PORTAL__ wird durch den ChatGPT-Hostnamen ersetzt."
+  },
+  "noticeError": {
+    "message": "Die Sitzungsprüfung ist fehlgeschlagen. Lade die Seite neu oder melde dich bei __PORTAL__ an.",
+    "description": "__PORTAL__ wird durch den ChatGPT-Hostnamen ersetzt."
+  },
+  "settingsTitle": {
+    "message": "Einstellungen"
+  },
+  "settingsCloseLabel": {
+    "message": "Seitenleiste schließen"
+  },
+  "settingsExtensionLanguageTitle": {
+    "message": "Erweiterungssprache"
+  },
+  "settingsExtensionLanguageHint": {
+    "message": "Wechsle die Sprache der Sidely-Oberfläche sofort."
+  },
+  "settingsLanguageEnglish": {
+    "message": "English"
+  },
+  "settingsLanguageChineseChina": {
+    "message": "中文"
+  },
+  "settingsLanguageFrench": {
+    "message": "Français"
+  },
+  "settingsLanguageHindi": {
+    "message": "हिन्दी"
+  },
+  "settingsLanguagePortugueseBrazil": {
+    "message": "Português"
+  },
+  "settingsLanguageRussian": {
+    "message": "Русский"
+  },
+  "settingsLanguageSpanish": {
+    "message": "Español"
+  },
+  "settingsLanguageGerman": {
+    "message": "Deutsch"
+  },
+  "settingsLanguageItalian": {
+    "message": "Italiano"
+  },
+  "settingsLanguageJapanese": {
+    "message": "日本語"
+  },
+  "settingsDomainTitle": {
+    "message": "ChatGPT-Domain"
+  },
+  "settingsDomainHint": {
+    "message": "Wähle, welche ChatGPT-Domain Sidely öffnen soll."
+  },
+  "settingsDomainAuto": {
+    "message": "Auto (empfohlen)"
+  },
+  "settingsDomainChatgptCom": {
+    "message": "chatgpt.com"
+  },
+  "settingsDomainChatOpenaiCom": {
+    "message": "chat.openai.com"
+  },
+  "settingsThemeTitle": {
+    "message": "Design"
+  },
+  "settingsThemeHint": {
+    "message": "Wähle ein helles, dunkles oder automatisches Design für die Seitenleiste."
+  },
+  "settingsThemeAuto": {
+    "message": "Auto (System folgen)"
+  },
+  "settingsThemeLight": {
+    "message": "Hell"
+  },
+  "settingsThemeDark": {
+    "message": "Dunkel"
+  }
+}

@@ -1,54 +1,54 @@
 {
   "appName": {
-    "message": "Sidely - sidebar do ChatGPT"
+    "message": "Sidely - barra laterale ChatGPT"
   },
   "appShortName": {
     "message": "Sidely"
   },
   "appDescription": {
-    "message": "Use o ChatGPT direto na barra lateral do Chrome. Extensão leve, rápida e segura que usa sua própria conta do ChatGPT."
+    "message": "Usa ChatGPT nella barra laterale di Chrome con Sidely: un'estensione per ChatGPT sicura e veloce che utilizza il tuo account."
   },
   "appTitle": {
-    "message": "Sidely - sidebar do ChatGPT"
+    "message": "Sidely - barra laterale ChatGPT"
   },
   "actionTitle": {
-    "message": "Sidely - sidebar do ChatGPT"
+    "message": "Sidely - barra laterale ChatGPT"
   },
   "refreshButtonAriaLabel": {
-    "message": "Atualizar chats"
+    "message": "Aggiorna chat"
   },
   "refreshButtonDefaultLabel": {
-    "message": "Atualizar"
+    "message": "Aggiorna chat"
   },
   "refreshButtonLoadingLabel": {
-    "message": "Atualizando..."
+    "message": "Aggiornamento..."
   },
   "refreshButtonTooltip": {
-    "message": "Recarregue a sidebar para ver novos chats."
+    "message": "Ricarica la barra laterale per mostrare le nuove chat."
   },
   "noticeCloudflare": {
-    "message": "Você precisa passar pela verificação do Cloudflare. Abra o __PORTAL__, faça login e volte.",
-    "description": "__PORTAL__ será substituído pelo domínio do ChatGPT."
+    "message": "Devi completare il controllo di Cloudflare. Apri __PORTAL__ in una scheda, accedi e poi torna qui.",
+    "description": "__PORTAL__ verrà sostituito con il dominio di ChatGPT."
   },
   "noticeUnauthorized": {
-    "message": "Faça login na sua conta do ChatGPT. Abra o __PORTAL__, faça login e volte.",
-    "description": "__PORTAL__ será substituído pelo domínio do ChatGPT."
+    "message": "Devi accedere al tuo account ChatGPT. Apri __PORTAL__ in una scheda, accedi e poi torna qui.",
+    "description": "__PORTAL__ verrà sostituito con il dominio di ChatGPT."
   },
   "noticeError": {
-    "message": "Falha ao verificar a sessão. Recarregue a página ou faça login no __PORTAL__.",
-    "description": "__PORTAL__ será substituído pelo domínio do ChatGPT."
+    "message": "Verifica della sessione non riuscita. Ricarica la pagina oppure accedi su __PORTAL__.",
+    "description": "__PORTAL__ verrà sostituito con il dominio di ChatGPT."
   },
   "settingsTitle": {
-    "message": "Configurações"
+    "message": "Impostazioni"
   },
   "settingsCloseLabel": {
-    "message": "Fechar barra lateral"
+    "message": "Chiudi barra laterale"
   },
   "settingsExtensionLanguageTitle": {
-    "message": "Idioma da extensão"
+    "message": "Lingua dell'estensione"
   },
   "settingsExtensionLanguageHint": {
-    "message": "Troque instantaneamente o idioma da interface do Sidely."
+    "message": "Cambia all'istante la lingua dell'interfaccia di Sidely."
   },
   "settingsLanguageEnglish": {
     "message": "English"
@@ -81,13 +81,13 @@
     "message": "日本語"
   },
   "settingsDomainTitle": {
-    "message": "Domínio do ChatGPT"
+    "message": "Dominio di ChatGPT"
   },
   "settingsDomainHint": {
-    "message": "Escolha qual domínio do ChatGPT o Sidely deve abrir."
+    "message": "Scegli quale dominio di ChatGPT deve aprire Sidely."
   },
   "settingsDomainAuto": {
-    "message": "Automático (recomendado)"
+    "message": "Automatico (consigliato)"
   },
   "settingsDomainChatgptCom": {
     "message": "chatgpt.com"
@@ -99,15 +99,15 @@
     "message": "Tema"
   },
   "settingsThemeHint": {
-    "message": "Escolha um tema claro, escuro ou automático para a barra lateral."
+    "message": "Scegli un tema chiaro, scuro o automatico per la barra laterale."
   },
   "settingsThemeAuto": {
-    "message": "Automático (como o sistema)"
+    "message": "Automatico (come il sistema)"
   },
   "settingsThemeLight": {
-    "message": "Claro"
+    "message": "Chiaro"
   },
   "settingsThemeDark": {
-    "message": "Escuro"
+    "message": "Scuro"
   }
 }
