@@ -8,6 +8,8 @@ const FALLBACK_MESSAGES = {
   refreshButtonTooltip: 'Reload sidebar to show new chats.',
   settingsCloseLabel: 'Close sidebar',
   settingsTitle: 'Settings',
+  homeButtonAriaLabel: 'Home',
+  settingsButtonAriaLabel: 'Settings',
   settingsExtensionLanguageTitle: 'Extension language',
   settingsExtensionLanguageHint: 'Switch the Sidely interface language instantly.',
   settingsLanguageEnglish: 'English',
@@ -60,6 +62,8 @@ let REFRESH_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.refreshButtonAriaLabel;
 let REFRESH_BUTTON_TOOLTIP = FALLBACK_MESSAGES.refreshButtonTooltip;
 let SETTINGS_CLOSE_LABEL = FALLBACK_MESSAGES.settingsCloseLabel;
 let SETTINGS_TITLE = FALLBACK_MESSAGES.settingsTitle;
+let HOME_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.homeButtonAriaLabel;
+let SETTINGS_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.settingsButtonAriaLabel;
 
 function getRuntimeAssetURL(path) {
   if (typeof chrome !== 'undefined' && chrome?.runtime?.getURL) {
@@ -134,6 +138,8 @@ function refreshCachedLocaleStrings() {
   REFRESH_BUTTON_TOOLTIP = getLocalizedString('refreshButtonTooltip', FALLBACK_MESSAGES.refreshButtonTooltip);
   SETTINGS_CLOSE_LABEL = getLocalizedString('settingsCloseLabel', FALLBACK_MESSAGES.settingsCloseLabel);
   SETTINGS_TITLE = getLocalizedString('settingsTitle', FALLBACK_MESSAGES.settingsTitle);
+  HOME_BUTTON_ARIA_LABEL = getLocalizedString('homeButtonAriaLabel', FALLBACK_MESSAGES.homeButtonAriaLabel);
+  SETTINGS_BUTTON_ARIA_LABEL = getLocalizedString('settingsButtonAriaLabel', FALLBACK_MESSAGES.settingsButtonAriaLabel);
 }
 
 function getLocaleFolderFromLanguage(language) {
@@ -429,6 +435,16 @@ function applyLocalization() {
   const settingsTitle = document.querySelector('.settings-panel__title');
   if (settingsTitle) {
     settingsTitle.textContent = SETTINGS_TITLE;
+  }
+
+  const homeButton = document.getElementById('home-button');
+  if (homeButton) {
+    homeButton.setAttribute('aria-label', HOME_BUTTON_ARIA_LABEL);
+  }
+
+  const settingsButton = document.getElementById('settings-button');
+  if (settingsButton) {
+    settingsButton.setAttribute('aria-label', SETTINGS_BUTTON_ARIA_LABEL);
   }
 
   document.querySelectorAll('[data-i18n-key]').forEach(node => {

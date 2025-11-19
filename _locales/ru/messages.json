@@ -14,6 +14,12 @@
   "actionTitle": {
     "message": "Sidely - сайдбар с ChatGPT"
   },
+  "homeButtonAriaLabel": {
+    "message": "Главная"
+  },
+  "settingsButtonAriaLabel": {
+    "message": "Настройки"
+  },
   "refreshButtonAriaLabel": {
     "message": "Обновить чаты"
   },

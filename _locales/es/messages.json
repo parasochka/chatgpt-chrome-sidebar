@@ -14,6 +14,12 @@
   "actionTitle": {
     "message": "Sidely - barra lateral con ChatGPT"
   },
+  "homeButtonAriaLabel": {
+    "message": "Inicio"
+  },
+  "settingsButtonAriaLabel": {
+    "message": "Configuración"
+  },
   "refreshButtonAriaLabel": {
     "message": "Actualizar chats"
   },
