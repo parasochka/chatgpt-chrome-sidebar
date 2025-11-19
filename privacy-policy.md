@@ -6,7 +6,7 @@
 Sidely does not collect, store, or share any personal information.
 All interactions take place directly between your browser and the official ChatGPT websites
 ([chat.openai.com](https://chat.openai.com) and [chatgpt.com](https://chatgpt.com)).
-The extension does not track browsing activity, record usage data, or communicate with any external servers. To decide which site to load, it makes a single authenticated request to ChatGPT using your existing session cookies.
+The extension does not track browsing activity, record usage data, or communicate with any external servers. To decide which site to load, it makes a single authenticated request to ChatGPT using your existing session cookies. Localization strings for the bundled languages are stored offline with the extension and never transmitted.
 
 The only data Sidely keeps is three UI preferences (language, ChatGPT domain choice, and theme). They remain inside Chrome's extension storage and are never uploaded.
 
@@ -14,6 +14,7 @@ The only data Sidely keeps is three UI preferences (language, ChatGPT domain cho
 - ❌ No user data is collected.
 - ⚠️ Session cookies are sent to ChatGPT once to check whether you are already signed in. They are never stored or transmitted anywhere else.
 - 🗂️ UI preferences (language, theme, domain) stay on your device only.
+- 🌐 Localization selections only reference the translated strings packaged with Sidely; no translation service is contacted.
 - ❌ No analytics or third-party services are used.
 
 ## Permissions explanation
