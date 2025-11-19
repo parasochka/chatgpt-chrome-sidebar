@@ -17,6 +17,9 @@ const FALLBACK_MESSAGES = {
   settingsLanguagePortugueseBrazil: 'Português',
   settingsLanguageRussian: 'Русский',
   settingsLanguageSpanish: 'Español',
+  settingsLanguageGerman: 'Deutsch',
+  settingsLanguageItalian: 'Italiano',
+  settingsLanguageJapanese: '日本語',
   settingsDomainTitle: 'ChatGPT domain',
   settingsDomainHint: 'Pick which ChatGPT domain Sidely should open.',
   settingsDomainAuto: 'Auto (recommended)',
@@ -41,7 +44,10 @@ const LOCALE_FOLDER_BY_LANGUAGE = {
   hi: 'hi',
   'pt-BR': 'pt_BR',
   ru: 'ru',
-  'zh-CN': 'zh_CN'
+  'zh-CN': 'zh_CN',
+  de: 'de',
+  it: 'it',
+  ja: 'ja'
 };
 
 let activeLocaleId = null;

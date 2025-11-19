@@ -1,0 +1,113 @@
+{
+  "appName": {
+    "message": "Sidely - ChatGPTサイドバー"
+  },
+  "appShortName": {
+    "message": "Sidely"
+  },
+  "appDescription": {
+    "message": "Sidely を使えば Chrome のサイドバーで ChatGPT を利用できます。自分のアカウントで動作する安全で高速な ChatGPT サイドバー拡張機能です。"
+  },
+  "appTitle": {
+    "message": "Sidely - ChatGPTサイドバー"
+  },
+  "actionTitle": {
+    "message": "Sidely - ChatGPTサイドバー"
+  },
+  "refreshButtonAriaLabel": {
+    "message": "チャットを更新"
+  },
+  "refreshButtonDefaultLabel": {
+    "message": "チャットを更新"
+  },
+  "refreshButtonLoadingLabel": {
+    "message": "更新中..."
+  },
+  "refreshButtonTooltip": {
+    "message": "新しいチャットを表示するにはサイドバーを再読み込みしてください。"
+  },
+  "noticeCloudflare": {
+    "message": "Cloudflare の確認を完了する必要があります。__PORTAL__ をタブで開いてサインインし、戻ってください。",
+    "description": "__PORTAL__ は ChatGPT のホスト名に置き換えられます。"
+  },
+  "noticeUnauthorized": {
+    "message": "ChatGPT アカウントにサインインする必要があります。__PORTAL__ をタブで開いてサインインし、戻ってください。",
+    "description": "__PORTAL__ は ChatGPT のホスト名に置き換えられます。"
+  },
+  "noticeError": {
+    "message": "セッションの確認に失敗しました。ページを再読み込みするか、__PORTAL__ でサインインしてください。",
+    "description": "__PORTAL__ は ChatGPT のホスト名に置き換えられます。"
+  },
+  "settingsTitle": {
+    "message": "設定"
+  },
+  "settingsCloseLabel": {
+    "message": "サイドバーを閉じる"
+  },
+  "settingsExtensionLanguageTitle": {
+    "message": "拡張機能の言語"
+  },
+  "settingsExtensionLanguageHint": {
+    "message": "Sidely のインターフェース言語をすぐに切り替えます。"
+  },
+  "settingsLanguageEnglish": {
+    "message": "English"
+  },
+  "settingsLanguageChineseChina": {
+    "message": "中文"
+  },
+  "settingsLanguageFrench": {
+    "message": "Français"
+  },
+  "settingsLanguageHindi": {
+    "message": "हिन्दी"
+  },
+  "settingsLanguagePortugueseBrazil": {
+    "message": "Português"
+  },
+  "settingsLanguageRussian": {
+    "message": "Русский"
+  },
+  "settingsLanguageSpanish": {
+    "message": "Español"
+  },
+  "settingsLanguageGerman": {
+    "message": "Deutsch"
+  },
+  "settingsLanguageItalian": {
+    "message": "Italiano"
+  },
+  "settingsLanguageJapanese": {
+    "message": "日本語"
+  },
+  "settingsDomainTitle": {
+    "message": "ChatGPT ドメイン"
+  },
+  "settingsDomainHint": {
+    "message": "Sidely が開く ChatGPT ドメインを選択します。"
+  },
+  "settingsDomainAuto": {
+    "message": "自動 (推奨)"
+  },
+  "settingsDomainChatgptCom": {
+    "message": "chatgpt.com"
+  },
+  "settingsDomainChatOpenaiCom": {
+    "message": "chat.openai.com"
+  },
+  "settingsThemeTitle": {
+    "message": "テーマ"
+  },
+  "settingsThemeHint": {
+    "message": "サイドバーのライト、ダーク、自動テーマを選択します。"
+  },
+  "settingsThemeAuto": {
+    "message": "自動 (システムと同じ)"
+  },
+  "settingsThemeLight": {
+    "message": "ライト"
+  },
+  "settingsThemeDark": {
+    "message": "ダーク"
+  }
+}

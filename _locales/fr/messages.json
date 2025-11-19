@@ -71,6 +71,15 @@
   "settingsLanguageSpanish": {
     "message": "Español"
   },
+  "settingsLanguageGerman": {
+    "message": "Deutsch"
+  },
+  "settingsLanguageItalian": {
+    "message": "Italiano"
+  },
+  "settingsLanguageJapanese": {
+    "message": "日本語"
+  },
   "settingsDomainTitle": {
     "message": "Domaine ChatGPT"
   },
