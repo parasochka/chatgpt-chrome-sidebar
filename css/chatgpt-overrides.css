@@ -34,16 +34,17 @@ html, body, main, article, section {
 }
 
 /* Hide dictate/voice buttons in the composer footer */
-button[aria-label="Dictate button"],
 [data-testid="composer-speech-button"],
-[data-testid="composer-speech-button-container"] {
+[data-testid="composer-speech-button-container"],
+button[data-testid][data-testid*="speech" i],
+button:has(svg path[d^="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z"]) {
   display: none !important;
 }
 
 /* Hide every disabled state of the send button so it only appears when active */
-button[data-testid="send-button"][aria-disabled="true"],
-button[data-testid="send-button"][disabled],
-button[data-testid="send-button"][data-state~="disabled"] {
+[data-testid="send-button"][aria-disabled="true"],
+[data-testid="send-button"][disabled],
+[data-testid="send-button"][data-state]:not([data-state~="enabled"]) {
   opacity: 0 !important;
   pointer-events: none !important;
 }
