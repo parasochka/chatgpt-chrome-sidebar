@@ -37,7 +37,9 @@ html, body, main, article, section {
 [data-testid="composer-speech-button"],
 [data-testid="composer-speech-button-container"],
 button[data-testid][data-testid*="speech" i],
-button:has(svg path[d^="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z"]) {
+button.composer-btn,
+button:has(svg path[d^="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z"]),
+button:has(svg path[d^="M15.7806 10.1963"]) {
   display: none !important;
 }
 
