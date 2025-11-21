@@ -40,10 +40,14 @@ button.composer-btn:has(svg path[d^="M15.7806 10.1963"]),
   display: none !important;
 }
 
-/* Hide every disabled state of the send button so it only appears when active */
+/* Keep send button visible in both enabled/disabled states without flicker */
+button[data-testid="send-button"] {
+  transition: none !important;
+}
+
 button[data-testid="send-button"][aria-disabled="true"],
 button[data-testid="send-button"][disabled],
 button[data-testid="send-button"][data-state~="disabled"] {
-  opacity: 0 !important;
+  opacity: 0.35 !important;
   pointer-events: none !important;
 }
