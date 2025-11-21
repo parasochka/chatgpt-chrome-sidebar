@@ -115,5 +115,26 @@
   },
   "settingsThemeDark": {
     "message": "Тёмная"
+  },
+  "homeButtonTooltip": {
+    "message": "Домой"
+  },
+  "settingsButtonTooltip": {
+    "message": "Настройки"
+  },
+  "donateButtonAriaLabel": {
+    "message": "Поддержать разработчика"
+  },
+  "donateButtonTooltip": {
+    "message": "Поддержать разработчика"
+  },
+  "settingsDonateTitle": {
+    "message": "Поддержите Sidely"
+  },
+  "settingsDonateHint": {
+    "message": "Нравится боковая панель? Поддержите будущие обновления, угостив кофе."
+  },
+  "settingsDonationAcknowledgedLabel": {
+    "message": "Спасибо, я уже задонатил или не хочу донатить."
   }
 }

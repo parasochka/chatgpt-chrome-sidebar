@@ -115,5 +115,26 @@
   },
   "settingsThemeDark": {
     "message": "ダーク"
+  },
+  "homeButtonTooltip": {
+    "message": "ホーム"
+  },
+  "settingsButtonTooltip": {
+    "message": "設定"
+  },
+  "donateButtonAriaLabel": {
+    "message": "開発者を支援する"
+  },
+  "donateButtonTooltip": {
+    "message": "開発者を支援する"
+  },
+  "settingsDonateTitle": {
+    "message": "Sidely を支援する"
+  },
+  "settingsDonateHint": {
+    "message": "サイドバーを気に入っていますか？ 今後のアップデートのためにコーヒーをご支援ください。"
+  },
+  "settingsDonationAcknowledgedLabel": {
+    "message": "ありがとうございます。すでに寄付しました、または寄付を希望しません。"
   }
 }

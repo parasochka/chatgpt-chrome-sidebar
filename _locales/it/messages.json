@@ -115,5 +115,26 @@
   },
   "settingsThemeDark": {
     "message": "Scuro"
+  },
+  "homeButtonTooltip": {
+    "message": "Home"
+  },
+  "settingsButtonTooltip": {
+    "message": "Impostazioni"
+  },
+  "donateButtonAriaLabel": {
+    "message": "Supporta lo sviluppatore"
+  },
+  "donateButtonTooltip": {
+    "message": "Supporta lo sviluppatore"
+  },
+  "settingsDonateTitle": {
+    "message": "Supporta Sidely"
+  },
+  "settingsDonateHint": {
+    "message": "Ti piace la sidebar? Offri un caffè per supportare i prossimi aggiornamenti."
+  },
+  "settingsDonationAcknowledgedLabel": {
+    "message": "Grazie, ho già donato o preferisco non farlo."
   }
 }

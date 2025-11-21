@@ -115,5 +115,26 @@
   },
   "settingsThemeDark": {
     "message": "深色"
+  },
+  "homeButtonTooltip": {
+    "message": "首页"
+  },
+  "settingsButtonTooltip": {
+    "message": "设置"
+  },
+  "donateButtonAriaLabel": {
+    "message": "支持开发者"
+  },
+  "donateButtonTooltip": {
+    "message": "支持开发者"
+  },
+  "settingsDonateTitle": {
+    "message": "支持 Sidely"
+  },
+  "settingsDonateHint": {
+    "message": "喜欢这个侧边栏吗？请请我喝杯咖啡支持后续更新。"
+  },
+  "settingsDonationAcknowledgedLabel": {
+    "message": "谢谢，我已经捐赠过或不想捐赠。"
   }
 }

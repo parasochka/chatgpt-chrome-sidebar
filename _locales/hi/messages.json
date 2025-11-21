@@ -115,5 +115,26 @@
   },
   "settingsThemeDark": {
     "message": "डार्क"
+  },
+  "homeButtonTooltip": {
+    "message": "होम"
+  },
+  "settingsButtonTooltip": {
+    "message": "सेटिंग्स"
+  },
+  "donateButtonAriaLabel": {
+    "message": "डेवलपर का समर्थन करें"
+  },
+  "donateButtonTooltip": {
+    "message": "डेवलपर का समर्थन करें"
+  },
+  "settingsDonateTitle": {
+    "message": "Sidely का समर्थन करें"
+  },
+  "settingsDonateHint": {
+    "message": "साइडबार पसंद है? भविष्य के अपडेट के लिए समर्थन में एक कॉफी खरीदें।"
+  },
+  "settingsDonationAcknowledgedLabel": {
+    "message": "धन्यवाद, मैंने पहले ही दान किया है या दान नहीं करना चाहता।"
   }
 }

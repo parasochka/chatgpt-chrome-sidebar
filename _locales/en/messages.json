@@ -17,8 +17,20 @@
   "homeButtonAriaLabel": {
     "message": "Home"
   },
+  "homeButtonTooltip": {
+    "message": "Home"
+  },
   "settingsButtonAriaLabel": {
     "message": "Settings"
+  },
+  "settingsButtonTooltip": {
+    "message": "Settings"
+  },
+  "donateButtonAriaLabel": {
+    "message": "Support developer"
+  },
+  "donateButtonTooltip": {
+    "message": "Support developer"
   },
   "refreshButtonAriaLabel": {
     "message": "Refresh chats"
@@ -115,5 +127,14 @@
   },
   "settingsThemeDark": {
     "message": "Dark"
+  },
+  "settingsDonateTitle": {
+    "message": "Support Sidely"
+  },
+  "settingsDonateHint": {
+    "message": "Enjoying the sidebar? Buy a coffee to support future updates."
+  },
+  "settingsDonationAcknowledgedLabel": {
+    "message": "Thanks, I've already donated or prefer not to."
   }
 }

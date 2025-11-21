@@ -9,7 +9,11 @@ const FALLBACK_MESSAGES = {
   settingsCloseLabel: 'Close sidebar',
   settingsTitle: 'Settings',
   homeButtonAriaLabel: 'Home',
+  homeButtonTooltip: 'Home',
   settingsButtonAriaLabel: 'Settings',
+  settingsButtonTooltip: 'Settings',
+  donateButtonAriaLabel: 'Support developer',
+  donateButtonTooltip: 'Support developer',
   settingsExtensionLanguageTitle: 'Extension language',
   settingsExtensionLanguageHint: 'Switch the Sidely interface language instantly.',
   settingsLanguageEnglish: 'English',
@@ -32,6 +36,9 @@ const FALLBACK_MESSAGES = {
   settingsThemeAuto: 'Auto (match system)',
   settingsThemeLight: 'Light',
   settingsThemeDark: 'Dark',
+  settingsDonateTitle: 'Support Sidely',
+  settingsDonateHint: 'Enjoying the sidebar? Buy a coffee to support future updates.',
+  settingsDonationAcknowledgedLabel: "Thanks, I've already donated or prefer not to.",
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
@@ -64,6 +71,10 @@ let SETTINGS_CLOSE_LABEL = FALLBACK_MESSAGES.settingsCloseLabel;
 let SETTINGS_TITLE = FALLBACK_MESSAGES.settingsTitle;
 let HOME_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.homeButtonAriaLabel;
 let SETTINGS_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.settingsButtonAriaLabel;
+let HOME_BUTTON_TOOLTIP = FALLBACK_MESSAGES.homeButtonTooltip;
+let SETTINGS_BUTTON_TOOLTIP = FALLBACK_MESSAGES.settingsButtonTooltip;
+let DONATE_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.donateButtonAriaLabel;
+let DONATE_BUTTON_TOOLTIP = FALLBACK_MESSAGES.donateButtonTooltip;
 
 function getRuntimeAssetURL(path) {
   if (typeof chrome !== 'undefined' && chrome?.runtime?.getURL) {
@@ -140,6 +151,10 @@ function refreshCachedLocaleStrings() {
   SETTINGS_TITLE = getLocalizedString('settingsTitle', FALLBACK_MESSAGES.settingsTitle);
   HOME_BUTTON_ARIA_LABEL = getLocalizedString('homeButtonAriaLabel', FALLBACK_MESSAGES.homeButtonAriaLabel);
   SETTINGS_BUTTON_ARIA_LABEL = getLocalizedString('settingsButtonAriaLabel', FALLBACK_MESSAGES.settingsButtonAriaLabel);
+  HOME_BUTTON_TOOLTIP = getLocalizedString('homeButtonTooltip', FALLBACK_MESSAGES.homeButtonTooltip);
+  SETTINGS_BUTTON_TOOLTIP = getLocalizedString('settingsButtonTooltip', FALLBACK_MESSAGES.settingsButtonTooltip);
+  DONATE_BUTTON_ARIA_LABEL = getLocalizedString('donateButtonAriaLabel', FALLBACK_MESSAGES.donateButtonAriaLabel);
+  DONATE_BUTTON_TOOLTIP = getLocalizedString('donateButtonTooltip', FALLBACK_MESSAGES.donateButtonTooltip);
 }
 
 function getLocaleFolderFromLanguage(language) {
@@ -195,7 +210,8 @@ let refreshButtonResetTimeoutId = null;
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   domainMode: 'sidelyPortalDomainMode',
-  themeMode: 'sidelyThemeMode'
+  themeMode: 'sidelyThemeMode',
+  donationAcknowledged: 'sidelyDonationAcknowledged'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
@@ -205,7 +221,8 @@ const THEME_MESSAGE_TYPE = 'sidely-theme-change';
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
   domainMode: 'auto',
-  themeMode: 'auto'
+  themeMode: 'auto',
+  donationAcknowledged: false
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -233,6 +250,19 @@ function getPortalContainer() {
 
 function getBodyElement() {
   return document.body || document.querySelector('body');
+}
+
+function syncDonationIconVisibility() {
+  const donateButton = document.getElementById('donate-button');
+  if (donateButton) {
+    const hide = Boolean(settingsState.donationAcknowledged);
+    const wrapper = donateButton.closest('.toolbar-tooltip');
+    if (wrapper) {
+      wrapper.hidden = hide;
+    } else {
+      donateButton.hidden = hide;
+    }
+  }
 }
 
 function initializeSystemThemeWatcher() {
@@ -440,11 +470,34 @@ function applyLocalization() {
   const homeButton = document.getElementById('home-button');
   if (homeButton) {
     homeButton.setAttribute('aria-label', HOME_BUTTON_ARIA_LABEL);
+    homeButton.setAttribute('aria-describedby', 'home-button-tooltip');
   }
 
   const settingsButton = document.getElementById('settings-button');
   if (settingsButton) {
     settingsButton.setAttribute('aria-label', SETTINGS_BUTTON_ARIA_LABEL);
+    settingsButton.setAttribute('aria-describedby', 'settings-button-tooltip');
+  }
+
+  const donateButton = document.getElementById('donate-button');
+  if (donateButton) {
+    donateButton.setAttribute('aria-label', DONATE_BUTTON_ARIA_LABEL);
+    donateButton.setAttribute('aria-describedby', 'donate-button-tooltip');
+  }
+
+  const homeTooltip = document.getElementById('home-button-tooltip');
+  if (homeTooltip) {
+    homeTooltip.textContent = HOME_BUTTON_TOOLTIP;
+  }
+
+  const settingsTooltip = document.getElementById('settings-button-tooltip');
+  if (settingsTooltip) {
+    settingsTooltip.textContent = SETTINGS_BUTTON_TOOLTIP;
+  }
+
+  const donateTooltip = document.getElementById('donate-button-tooltip');
+  if (donateTooltip) {
+    donateTooltip.textContent = DONATE_BUTTON_TOOLTIP;
   }
 
   document.querySelectorAll('[data-i18n-key]').forEach(node => {
@@ -514,6 +567,7 @@ function setupToolbarInteractions() {
 
   const settingsButton = document.getElementById('settings-button');
   const closeButton = document.getElementById('settings-close-button');
+  const donateButton = document.getElementById('donate-button');
 
   if (settingsButton) {
     settingsButton.addEventListener('click', () => {
@@ -528,6 +582,18 @@ function setupToolbarInteractions() {
   if (closeButton) {
     closeButton.addEventListener('click', () => {
       hideSettingsPanel();
+    });
+  }
+
+  if (donateButton) {
+    donateButton.addEventListener('click', () => {
+      const url = 'https://buymeacoffee.com/sidely';
+      try {
+        window.open(url, '_blank', 'noreferrer');
+      } catch (error) {
+        console.warn('Failed to open donation page', error);
+        window.location.href = url;
+      }
     });
   }
 
@@ -792,6 +858,17 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
+  if (typeof stored[STORAGE_KEYS.donationAcknowledged] !== 'undefined') {
+    const rawValue = stored[STORAGE_KEYS.donationAcknowledged];
+    if (typeof rawValue === 'boolean') {
+      nextState.donationAcknowledged = rawValue;
+    } else if (typeof rawValue === 'string') {
+      nextState.donationAcknowledged = rawValue === 'true';
+    } else {
+      nextState.donationAcknowledged = Boolean(rawValue);
+    }
+  }
+
   settingsState = nextState;
   applyThemeMode(settingsState.themeMode);
 }
@@ -811,6 +888,11 @@ function syncSettingsUI() {
   themeInputs.forEach(input => {
     input.checked = input.value === settingsState.themeMode;
   });
+
+  const donationCheckbox = document.getElementById('donation-acknowledged');
+  if (donationCheckbox) {
+    donationCheckbox.checked = Boolean(settingsState.donationAcknowledged);
+  }
 }
 
 async function setExtensionLanguage(value) {
@@ -869,6 +951,16 @@ function setupSettingsControls() {
       }
     });
   });
+
+  const donationCheckbox = document.getElementById('donation-acknowledged');
+  if (donationCheckbox) {
+    donationCheckbox.addEventListener('change', event => {
+      const checked = Boolean(event.target?.checked);
+      settingsState.donationAcknowledged = checked;
+      storageSet({ [STORAGE_KEYS.donationAcknowledged]: checked });
+      syncDonationIconVisibility();
+    });
+  }
 }
 
 function showSettingsPanel() {
@@ -952,6 +1044,7 @@ async function bootstrapSidepanel() {
   await ensureActiveLocaleMessages(settingsState.language);
   applyLocalization();
   syncSettingsUI();
+  syncDonationIconVisibility();
   setupSettingsControls();
   hideSettingsPanel();
   setupToolbarInteractions();

@@ -115,5 +115,26 @@
   },
   "settingsThemeDark": {
     "message": "Dunkel"
+  },
+  "homeButtonTooltip": {
+    "message": "Startseite"
+  },
+  "settingsButtonTooltip": {
+    "message": "Einstellungen"
+  },
+  "donateButtonAriaLabel": {
+    "message": "Entwickler unterstützen"
+  },
+  "donateButtonTooltip": {
+    "message": "Entwickler unterstützen"
+  },
+  "settingsDonateTitle": {
+    "message": "Sidely unterstützen"
+  },
+  "settingsDonateHint": {
+    "message": "Dir gefällt die Sidebar? Spendiere einen Kaffee, um zukünftige Updates zu unterstützen."
+  },
+  "settingsDonationAcknowledgedLabel": {
+    "message": "Danke, ich habe bereits gespendet oder möchte nicht spenden."
   }
 }
