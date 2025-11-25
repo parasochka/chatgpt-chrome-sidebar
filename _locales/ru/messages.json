@@ -17,7 +17,13 @@
   "homeButtonAriaLabel": {
     "message": "Главная"
   },
+  "homeButtonTooltip": {
+    "message": "Домой"
+  },
   "settingsButtonAriaLabel": {
+    "message": "Настройки"
+  },
+  "settingsButtonTooltip": {
     "message": "Настройки"
   },
   "refreshButtonAriaLabel": {
