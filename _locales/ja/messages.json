@@ -17,7 +17,13 @@
   "homeButtonAriaLabel": {
     "message": "ホーム"
   },
+  "homeButtonTooltip": {
+    "message": "ホーム"
+  },
   "settingsButtonAriaLabel": {
+    "message": "設定"
+  },
+  "settingsButtonTooltip": {
     "message": "設定"
   },
   "refreshButtonAriaLabel": {
