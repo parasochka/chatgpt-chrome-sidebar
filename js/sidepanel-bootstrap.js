@@ -6,6 +6,8 @@ const FALLBACK_MESSAGES = {
   refreshButtonDefaultLabel: 'Update Chats',
   refreshButtonLoadingLabel: 'Updating...',
   refreshButtonTooltip: 'Reload sidebar to show new chats.',
+  homeButtonTooltip: 'Home',
+  settingsButtonTooltip: 'Settings',
   settingsCloseLabel: 'Close sidebar',
   settingsTitle: 'Settings',
   homeButtonAriaLabel: 'Home',
@@ -60,6 +62,8 @@ let REFRESH_LABEL_DEFAULT = FALLBACK_MESSAGES.refreshButtonDefaultLabel;
 let REFRESH_LABEL_LOADING = FALLBACK_MESSAGES.refreshButtonLoadingLabel;
 let REFRESH_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.refreshButtonAriaLabel;
 let REFRESH_BUTTON_TOOLTIP = FALLBACK_MESSAGES.refreshButtonTooltip;
+let HOME_BUTTON_TOOLTIP = FALLBACK_MESSAGES.homeButtonTooltip;
+let SETTINGS_BUTTON_TOOLTIP = FALLBACK_MESSAGES.settingsButtonTooltip;
 let SETTINGS_CLOSE_LABEL = FALLBACK_MESSAGES.settingsCloseLabel;
 let SETTINGS_TITLE = FALLBACK_MESSAGES.settingsTitle;
 let HOME_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.homeButtonAriaLabel;
@@ -136,6 +140,8 @@ function refreshCachedLocaleStrings() {
   REFRESH_LABEL_LOADING = getLocalizedString('refreshButtonLoadingLabel', FALLBACK_MESSAGES.refreshButtonLoadingLabel);
   REFRESH_BUTTON_ARIA_LABEL = getLocalizedString('refreshButtonAriaLabel', FALLBACK_MESSAGES.refreshButtonAriaLabel);
   REFRESH_BUTTON_TOOLTIP = getLocalizedString('refreshButtonTooltip', FALLBACK_MESSAGES.refreshButtonTooltip);
+  HOME_BUTTON_TOOLTIP = getLocalizedString('homeButtonTooltip', FALLBACK_MESSAGES.homeButtonTooltip);
+  SETTINGS_BUTTON_TOOLTIP = getLocalizedString('settingsButtonTooltip', FALLBACK_MESSAGES.settingsButtonTooltip);
   SETTINGS_CLOSE_LABEL = getLocalizedString('settingsCloseLabel', FALLBACK_MESSAGES.settingsCloseLabel);
   SETTINGS_TITLE = getLocalizedString('settingsTitle', FALLBACK_MESSAGES.settingsTitle);
   HOME_BUTTON_ARIA_LABEL = getLocalizedString('homeButtonAriaLabel', FALLBACK_MESSAGES.homeButtonAriaLabel);
@@ -425,6 +431,16 @@ function applyLocalization() {
   const tooltip = document.getElementById('refresh-chat-tooltip');
   if (tooltip) {
     tooltip.textContent = REFRESH_BUTTON_TOOLTIP;
+  }
+
+  const homeTooltip = document.getElementById('home-button-tooltip');
+  if (homeTooltip) {
+    homeTooltip.textContent = HOME_BUTTON_TOOLTIP;
+  }
+
+  const settingsTooltip = document.getElementById('settings-button-tooltip');
+  if (settingsTooltip) {
+    settingsTooltip.textContent = SETTINGS_BUTTON_TOOLTIP;
   }
 
   const settingsCloseButton = document.getElementById('settings-close-button');
