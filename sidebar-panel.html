@@ -65,11 +65,6 @@
       display: inline-flex;
       align-items: center;
     }
-    .toolbar-tooltip--align-left .toolbar-tooltip__bubble {
-      left: 0;
-      right: auto;
-      transform-origin: top left;
-    }
     .toolbar-tooltip__bubble {
       position: absolute;
       top: calc(100% + 8px);
@@ -81,9 +76,7 @@
       padding: 10px 14px;
       border-radius: 12px;
       font: 400 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      letter-spacing: 0.01em;
-      white-space: pre-line;
-      word-break: break-word;
+      white-space: normal;
       max-width: min(70vw, 320px);
       text-align: left;
       box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.14);
@@ -91,7 +84,7 @@
       visibility: hidden;
       transition: opacity 0.16s ease, transform 0.18s ease;
       pointer-events: none;
-      z-index: 4;
+      z-index: 2;
     }
     .toolbar-tooltip:hover .toolbar-tooltip__bubble,
     .toolbar-tooltip:focus-within .toolbar-tooltip__bubble {
@@ -432,20 +425,16 @@
     <div class="frame-header">
       <div class="frame-toolbar" role="toolbar" aria-label="__MSG_appTitle__">
         <div class="frame-toolbar__zone frame-toolbar__zone--left">
-          <div class="toolbar-tooltip toolbar-tooltip--align-left">
-            <button
-              id="home-button"
-              class="toolbar-btn"
-              type="button"
-              aria-describedby="home-button-tooltip"
-              aria-label="__MSG_homeButtonAriaLabel__"
-            >
-              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                <path d="M16 8.5l1.53 1.53-1.06 1.06L10 4.62l-6.47 6.47-1.06-1.06L10 2.5l4 4v-2h2v4zm-6-2.46l6 5.99V18H4v-5.97zM12 17v-5H8v5h4z"></path>
-              </svg>
-            </button>
-            <span id="home-button-tooltip" role="tooltip" class="toolbar-tooltip__bubble">__MSG_homeButtonTooltip__</span>
-          </div>
+          <button
+            id="home-button"
+            class="toolbar-btn"
+            type="button"
+            aria-label="__MSG_homeButtonAriaLabel__"
+          >
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M16 8.5l1.53 1.53-1.06 1.06L10 4.62l-6.47 6.47-1.06-1.06L10 2.5l4 4v-2h2v4zm-6-2.46l6 5.99V18H4v-5.97zM12 17v-5H8v5h4z"></path>
+            </svg>
+          </button>
         </div>
         <div class="frame-toolbar__zone frame-toolbar__zone--center">
           <div class="toolbar-tooltip">
@@ -472,21 +461,17 @@
           </div>
         </div>
         <div class="frame-toolbar__zone frame-toolbar__zone--right">
-          <div class="toolbar-tooltip">
-            <button
-              id="settings-button"
-              class="toolbar-btn"
-              type="button"
-              aria-describedby="settings-button-tooltip"
-              aria-expanded="false"
-              aria-label="__MSG_settingsButtonAriaLabel__"
-            >
-              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                <path d="M18 12h-2.18c-.17.7-.44 1.35-.81 1.93l1.54 1.54-2.1 2.1-1.54-1.54c-.58.36-1.23.63-1.91.79V19H8v-2.18c-.68-.16-1.33-.43-1.91-.79l-1.54 1.54-2.12-2.12 1.54-1.54c-.36-.58-.63-1.23-.79-1.91H1V9.03h2.17c.16-.7.44-1.35.8-1.94L2.43 5.55l2.1-2.1 1.54 1.54c.58-.37 1.24-.64 1.93-.81V2h3v2.18c.68.16 1.33.43 1.91.79l1.54-1.54 2.12 2.12-1.54 1.54c.36.59.64 1.24.8 1.94H18V12zm-8.5 1.5c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3z"></path>
-              </svg>
-            </button>
-            <span id="settings-button-tooltip" role="tooltip" class="toolbar-tooltip__bubble">__MSG_settingsButtonTooltip__</span>
-          </div>
+          <button
+            id="settings-button"
+            class="toolbar-btn"
+            type="button"
+            aria-expanded="false"
+            aria-label="__MSG_settingsButtonAriaLabel__"
+          >
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M18 12h-2.18c-.17.7-.44 1.35-.81 1.93l1.54 1.54-2.1 2.1-1.54-1.54c-.58.36-1.23.63-1.91.79V19H8v-2.18c-.68-.16-1.33-.43-1.91-.79l-1.54 1.54-2.12-2.12 1.54-1.54c-.36-.58-.63-1.23-.79-1.91H1V9.03h2.17c.16-.7.44-1.35.8-1.94L2.43 5.55l2.1-2.1 1.54 1.54c.58-.37 1.24-.64 1.93-.81V2h3v2.18c.68.16 1.33.43 1.91.79l1.54-1.54 2.12 2.12-1.54 1.54c.36.59.64 1.24.8 1.94H18V12zm-8.5 1.5c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3z"></path>
+            </svg>
+          </button>
         </div>
       </div>
     </div>

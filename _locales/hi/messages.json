@@ -17,13 +17,7 @@
   "homeButtonAriaLabel": {
     "message": "मुख्य पृष्ठ"
   },
-  "homeButtonTooltip": {
-    "message": "होम"
-  },
   "settingsButtonAriaLabel": {
-    "message": "सेटिंग्स"
-  },
-  "settingsButtonTooltip": {
     "message": "सेटिंग्स"
   },
   "refreshButtonAriaLabel": {

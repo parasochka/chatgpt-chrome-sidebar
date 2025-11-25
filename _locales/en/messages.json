@@ -17,13 +17,7 @@
   "homeButtonAriaLabel": {
     "message": "Home"
   },
-  "homeButtonTooltip": {
-    "message": "Home"
-  },
   "settingsButtonAriaLabel": {
-    "message": "Settings"
-  },
-  "settingsButtonTooltip": {
     "message": "Settings"
   },
   "refreshButtonAriaLabel": {
