@@ -17,14 +17,8 @@
   "homeButtonAriaLabel": {
     "message": "Inicio"
   },
-  "homeButtonTooltip": {
-    "message": "Inicio"
-  },
   "settingsButtonAriaLabel": {
     "message": "Configuración"
-  },
-  "settingsButtonTooltip": {
-    "message": "Ajustes"
   },
   "refreshButtonAriaLabel": {
     "message": "Actualizar chats"
