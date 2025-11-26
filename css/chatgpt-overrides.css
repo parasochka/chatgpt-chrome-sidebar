@@ -48,3 +48,9 @@ button[data-testid="send-button"][data-state~="disabled"] {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* Hide the blue notification dot on the hamburger/sidebar toggle */
+button[data-testid="open-sidebar-button"] svg circle,
+button[aria-controls="stage-popover-sidebar"] svg circle {
+  display: none !important;
+}
