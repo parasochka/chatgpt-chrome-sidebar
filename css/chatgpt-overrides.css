@@ -36,7 +36,8 @@ html, body, main, article, section {
 /* Hide dictate/voice buttons in the composer footer */
 button.composer-btn:has(svg path[d^="M15.7806 10.1963"]),
 [data-testid="composer-speech-button"],
-[data-testid="composer-speech-button-container"] {
+[data-testid="composer-speech-button-container"],
+button:has(svg path[d^="M7.91667 3.33331"]) {
   display: none !important;
 }
 
