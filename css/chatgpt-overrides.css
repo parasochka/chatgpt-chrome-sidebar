@@ -49,8 +49,19 @@ button[data-testid="send-button"][data-state~="disabled"] {
   pointer-events: none !important;
 }
 
-/* Hide the blue notification dot on the hamburger/sidebar toggle */
-button[data-testid="open-sidebar-button"] svg circle,
-button[aria-controls="stage-popover-sidebar"] svg circle {
+/* Normalize the hamburger/sidebar toggle to two equal bars */
+button[data-testid="open-sidebar-button"],
+button[aria-controls="stage-popover-sidebar"] {
+  width: 32px !important;
+  height: 32px !important;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-size: 16px 2px, 16px 2px;
+  background-position: center 11px, center 19px;
+}
+
+button[data-testid="open-sidebar-button"] svg,
+button[aria-controls="stage-popover-sidebar"] svg {
   display: none !important;
 }
