@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9
+- minor changes
+
 ## 0.8
 - Fixed the settings menu controls so the toolbar buttons stay localized and accessible
 - Small translation fixes
