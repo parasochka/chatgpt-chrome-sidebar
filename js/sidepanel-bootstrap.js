@@ -22,11 +22,6 @@ const FALLBACK_MESSAGES = {
   settingsLanguageGerman: 'Deutsch',
   settingsLanguageItalian: 'Italiano',
   settingsLanguageJapanese: '日本語',
-  settingsDomainTitle: 'ChatGPT domain',
-  settingsDomainHint: 'Pick which ChatGPT domain Sidely should open.',
-  settingsDomainAuto: 'Auto (recommended)',
-  settingsDomainChatgptCom: 'chatgpt.com',
-  settingsDomainChatOpenaiCom: 'chat.openai.com',
   settingsThemeTitle: 'Theme',
   settingsThemeHint: 'Choose a light, dark, or auto theme for the sidebar.',
   settingsThemeAuto: 'Auto (match system)',
@@ -182,10 +177,7 @@ async function ensureActiveLocaleMessages(language) {
   }
 }
 
-const CHATGPT_PORTALS = [
-  'https://chat.openai.com',
-  'https://chatgpt.com'
-];
+const CHATGPT_PORTAL = 'https://chatgpt.com';
 const PORTAL_PROBE_TIMEOUT_MS = 8000;
 
 let lastRequestedIframeSrc = '';
@@ -194,7 +186,6 @@ const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
-  domainMode: 'sidelyPortalDomainMode',
   themeMode: 'sidelyThemeMode'
 };
 
@@ -204,12 +195,11 @@ const THEME_MESSAGE_TYPE = 'sidely-theme-change';
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
-  domainMode: 'auto',
   themeMode: 'auto'
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
-let portalSelectionRunId = 0;
+let portalLoadRunId = 0;
 let languageSelectionRunId = 0;
 let settingsControlsInitialized = false;
 let systemColorSchemeMediaQuery = null;
@@ -508,7 +498,7 @@ function setupToolbarInteractions() {
   if (homeButton) {
     homeButton.addEventListener('click', () => {
       hideSettingsPanel();
-      loadPortalAccordingToSettings();
+      loadChatPortal();
     });
   }
 
@@ -567,17 +557,6 @@ async function fetchPortalAuthState(base) {
       clearTimeout(timeoutId);
     }
   }
-}
-
-function selectBestPortalCandidate(states) {
-  // 1) look for an authorized session
-  const ok = states.find(s => s.state === 'authorized');
-  if (ok) return ok;
-  // 2) if not found, take the first Cloudflare entry (the user must pass the check)
-  const cf = states.find(s => s.state === 'cloudflare');
-  if (cf) return cf;
-  // 3) otherwise pick the first unauthorized/error entry
-  return states[0] || { state: 'error', base: CHATGPT_PORTALS[0] };
 }
 
 function mountPortalIntoIframe(base) {
@@ -743,11 +722,6 @@ function normalizeLanguage(value) {
   return SETTINGS_DEFAULTS.language;
 }
 
-function normalizeDomainMode(value) {
-  const allowed = ['auto', 'chatgpt.com', 'chat.openai.com'];
-  return allowed.includes(value) ? value : SETTINGS_DEFAULTS.domainMode;
-}
-
 function normalizeThemeMode(value) {
   if (typeof value !== 'string') {
     return SETTINGS_DEFAULTS.themeMode;
@@ -784,10 +758,6 @@ async function loadSettingsFromStorage() {
     }
   }
 
-  if (typeof stored[STORAGE_KEYS.domainMode] === 'string') {
-    nextState.domainMode = normalizeDomainMode(stored[STORAGE_KEYS.domainMode]);
-  }
-
   if (typeof stored[STORAGE_KEYS.themeMode] === 'string') {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
@@ -801,11 +771,6 @@ function syncSettingsUI() {
   if (languageSelect && settingsState.language) {
     languageSelect.value = settingsState.language;
   }
-
-  const domainInputs = document.querySelectorAll('input[name="domain-mode"]');
-  domainInputs.forEach(input => {
-    input.checked = input.value === settingsState.domainMode;
-  });
 
   const themeInputs = document.querySelectorAll('input[name="theme-mode"]');
   themeInputs.forEach(input => {
@@ -840,19 +805,6 @@ function setupSettingsControls() {
       await setExtensionLanguage(value);
     });
   }
-
-  const domainInputs = document.querySelectorAll('input[name="domain-mode"]');
-  domainInputs.forEach(input => {
-    input.addEventListener('change', event => {
-      if (!event.target.checked) {
-        return;
-      }
-      const value = normalizeDomainMode(event.target.value);
-      settingsState.domainMode = value;
-      storageSet({ [STORAGE_KEYS.domainMode]: value });
-      loadPortalAccordingToSettings();
-    });
-  });
 
   const themeInputs = document.querySelectorAll('input[name="theme-mode"]');
   themeInputs.forEach(input => {
@@ -907,34 +859,20 @@ function isSettingsPanelVisible() {
   return Boolean(panel && panel.hidden === false);
 }
 
-function getExplicitPortalBaseFromMode(mode) {
-  if (!mode || mode === 'auto') {
-    return null;
-  }
-  const sanitized = mode.replace(/^https?:\/\//i, '');
-  return `https://${sanitized}`;
-}
-
-async function loadPortalAccordingToSettings() {
-  const mode = settingsState.domainMode || SETTINGS_DEFAULTS.domainMode;
-  const runId = ++portalSelectionRunId;
+async function loadChatPortal() {
+  const runId = ++portalLoadRunId;
   setRefreshButtonLoading(true);
 
-  let chosen;
-  const explicitBase = getExplicitPortalBaseFromMode(mode);
-
-  if (explicitBase) {
-    chosen = await fetchPortalAuthState(explicitBase);
-  } else {
-    const checks = await Promise.all(CHATGPT_PORTALS.map(fetchPortalAuthState));
-    chosen = selectBestPortalCandidate(checks);
+  let state;
+  try {
+    state = await fetchPortalAuthState(CHATGPT_PORTAL);
+  } catch (err) {
+    console.warn('Failed to check ChatGPT session', err);
   }
 
-  if (!chosen) {
-    chosen = { state: 'error', base: explicitBase || CHATGPT_PORTALS[0] };
-  }
+  const chosen = state || { state: 'error', base: CHATGPT_PORTAL };
 
-  if (runId !== portalSelectionRunId) {
+  if (runId !== portalLoadRunId) {
     return;
   }
 
@@ -955,7 +893,7 @@ async function bootstrapSidepanel() {
   setupSettingsControls();
   hideSettingsPanel();
   setupToolbarInteractions();
-  await loadPortalAccordingToSettings();
+  await loadChatPortal();
 }
 
 document.addEventListener('DOMContentLoaded', bootstrapSidepanel);
