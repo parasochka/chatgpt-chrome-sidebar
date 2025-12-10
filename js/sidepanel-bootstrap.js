@@ -187,6 +187,7 @@ const CHATGPT_PORTALS = [
   'https://chatgpt.com'
 ];
 const PORTAL_PROBE_TIMEOUT_MS = 8000;
+const PORTAL_CACHE_TTL_MS = 5 * 60 * 1000;
 
 let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
@@ -195,7 +196,8 @@ let refreshButtonResetTimeoutId = null;
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   domainMode: 'sidelyPortalDomainMode',
-  themeMode: 'sidelyThemeMode'
+  themeMode: 'sidelyThemeMode',
+  portalCache: 'sidelyPortalCache'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
@@ -728,6 +730,41 @@ function storageSet(items) {
   });
 }
 
+async function loadPortalCache() {
+  const items = await storageGet([STORAGE_KEYS.portalCache]);
+  const raw = items?.[STORAGE_KEYS.portalCache];
+  if (typeof raw !== 'string') {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    const timestamp = typeof parsed?.timestamp === 'number' ? parsed.timestamp : Number(parsed?.timestamp);
+
+    if (!parsed?.base || !parsed?.mode || Number.isNaN(timestamp)) {
+      return null;
+    }
+
+    if (Date.now() - timestamp > PORTAL_CACHE_TTL_MS) {
+      return null;
+    }
+
+    return { base: parsed.base, mode: parsed.mode, timestamp };
+  } catch (err) {
+    console.warn('Unable to parse portal cache', err);
+    return null;
+  }
+}
+
+async function savePortalCache(base, mode) {
+  if (typeof base !== 'string' || typeof mode !== 'string') {
+    return;
+  }
+
+  const payload = JSON.stringify({ base, mode, timestamp: Date.now() });
+  await storageSet({ [STORAGE_KEYS.portalCache]: payload });
+}
+
 function normalizeLanguage(value) {
   if (typeof value !== 'string') {
     return SETTINGS_DEFAULTS.language;
@@ -920,6 +957,16 @@ async function loadPortalAccordingToSettings() {
   const runId = ++portalSelectionRunId;
   setRefreshButtonLoading(true);
 
+  const cached = await loadPortalCache();
+  if (cached && cached.mode === mode) {
+    if (runId !== portalSelectionRunId) {
+      return;
+    }
+
+    mountPortalIntoIframe(cached.base);
+    return;
+  }
+
   let chosen;
   const explicitBase = getExplicitPortalBaseFromMode(mode);
 
@@ -938,6 +985,7 @@ async function loadPortalAccordingToSettings() {
     return;
   }
 
+  await savePortalCache(chosen.base, mode);
   mountPortalIntoIframe(chosen.base);
 
   if (chosen.state !== 'authorized') {
