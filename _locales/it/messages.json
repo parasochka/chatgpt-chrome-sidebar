@@ -86,21 +86,6 @@
   "settingsLanguageJapanese": {
     "message": "日本語"
   },
-  "settingsDomainTitle": {
-    "message": "Dominio di ChatGPT"
-  },
-  "settingsDomainHint": {
-    "message": "Scegli quale dominio di ChatGPT deve aprire Sidely."
-  },
-  "settingsDomainAuto": {
-    "message": "Automatico (consigliato)"
-  },
-  "settingsDomainChatgptCom": {
-    "message": "chatgpt.com"
-  },
-  "settingsDomainChatOpenaiCom": {
-    "message": "chat.openai.com"
-  },
   "settingsThemeTitle": {
     "message": "Tema"
   },
