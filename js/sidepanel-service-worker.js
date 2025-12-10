@@ -1,7 +1,7 @@
 // Rule IDs so they can be reused and removed easily
-const SIDEPANEL_RULE_IDS = [1, 2];
+const SIDEPANEL_RULE_IDS = [1];
 
-// Rule set for both domains
+// Rule set for the active ChatGPT domain
 const SIDEPANEL_DNR_RULES = [
   {
     id: 1,
@@ -15,21 +15,6 @@ const SIDEPANEL_DNR_RULES = [
     },
     condition: {
       urlFilter: "||chatgpt.com/*",
-      resourceTypes: ["sub_frame"]
-    }
-  },
-  {
-    id: 2,
-    priority: 1,
-    action: {
-      type: "modifyHeaders",
-      responseHeaders: [
-        { header: "content-security-policy", operation: "remove" },
-        { header: "x-frame-options", operation: "remove" }
-      ]
-    },
-    condition: {
-      urlFilter: "||chat.openai.com/*",
       resourceTypes: ["sub_frame"]
     }
   }

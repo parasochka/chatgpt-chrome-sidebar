@@ -86,21 +86,6 @@
   "settingsLanguageJapanese": {
     "message": "日本語"
   },
-  "settingsDomainTitle": {
-    "message": "ChatGPT डोमेन"
-  },
-  "settingsDomainHint": {
-    "message": "चुनें कि Sidely कौन‑सा ChatGPT डोमेन खोले।"
-  },
-  "settingsDomainAuto": {
-    "message": "ऑटो (अनुशंसित)"
-  },
-  "settingsDomainChatgptCom": {
-    "message": "chatgpt.com"
-  },
-  "settingsDomainChatOpenaiCom": {
-    "message": "chat.openai.com"
-  },
   "settingsThemeTitle": {
     "message": "थीम"
   },

@@ -86,21 +86,6 @@
   "settingsLanguageJapanese": {
     "message": "日本語"
   },
-  "settingsDomainTitle": {
-    "message": "Домен ChatGPT"
-  },
-  "settingsDomainHint": {
-    "message": "Выбери, какой домен ChatGPT открывать."
-  },
-  "settingsDomainAuto": {
-    "message": "Авто (рекомендуется)"
-  },
-  "settingsDomainChatgptCom": {
-    "message": "chatgpt.com"
-  },
-  "settingsDomainChatOpenaiCom": {
-    "message": "chat.openai.com"
-  },
   "settingsThemeTitle": {
     "message": "Тема"
   },
