@@ -91,9 +91,9 @@ body {
 .toolbar-tooltip__bubble {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
-  transform: translate3d(0, 10px, 0);
-  transform-origin: top right;
+  left: 50%;
+  transform: translate3d(-50%, 10px, 0);
+  transform-origin: top center;
   background: rgba(15, 23, 42, 0.96);
   color: #f8fafc;
   padding: 10px 14px;
@@ -115,7 +115,7 @@ body {
 .toolbar-tooltip:focus-within .toolbar-tooltip__bubble {
   opacity: 1;
   visibility: visible;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(-50%, 0, 0);
 }
 
 .toolbar-btn {
@@ -166,6 +166,23 @@ body {
 .toolbar-btn svg path {
   fill: currentColor;
   stroke: none;
+}
+
+.toolbar-btn--donate .donate-icon__outline {
+  fill: #0d0c22;
+}
+
+.toolbar-btn--donate .donate-icon__fill {
+  fill: #ffdd00;
+}
+
+.toolbar-btn--donate {
+  color: #ffb300;
+}
+
+.toolbar-btn--donate:hover,
+.toolbar-btn--donate:focus-visible {
+  color: #ffb300;
 }
 
 .toolbar-btn.is-loading svg {
@@ -469,6 +486,12 @@ body.theme-dark .toolbar-btn.is-loading {
   color: #f7f7f8;
 }
 
+body.theme-dark .toolbar-btn--donate,
+body.theme-dark .toolbar-btn--donate:hover,
+body.theme-dark .toolbar-btn--donate:focus-visible {
+  color: #ffb300;
+}
+
 body.theme-dark .toolbar-tooltip__bubble {
   background: #3f4151;
   color: #f7f7f8;
@@ -566,6 +589,12 @@ body.theme-dark .settings-close-btn:focus-visible {
 
   body.theme-auto .toolbar-btn.is-loading {
     color: #f7f7f8;
+  }
+
+  body.theme-auto .toolbar-btn--donate,
+  body.theme-auto .toolbar-btn--donate:hover,
+  body.theme-auto .toolbar-btn--donate:focus-visible {
+    color: #ffb300;
   }
 
   body.theme-auto .toolbar-tooltip__bubble {
