@@ -9,7 +9,7 @@ Use ChatGPT inside Chrome's sidebar with Sidely – a lightweight, secure sideba
 - 🧠 Quick access to ChatGPT in Chrome's native sidebar
 - 🔐 Uses your existing ChatGPT session (no login inside the extension)
 - ⚙️ Always loads `chatgpt.com` for the fastest possible startup
-- 🌍 Localized interface: English, Chinese (China), Spanish, Hindi, French, Portuguese (Brazil), Russian, German, Italian, and Japanese
+- 🌍 Localized interface: en, zh, es, hi, fr, pt, ru, de, it, ja
 - 🎛️ Quick settings menu for picking your preferred theme and UI language
 - 🎨 Light, dark, or auto theme selector that stays in sync with ChatGPT inside the iframe
 - 📋 Reliable copy buttons for code blocks thanks to a clipboard fallback helper
