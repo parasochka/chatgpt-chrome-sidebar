@@ -17,6 +17,9 @@
   "homeButtonAriaLabel": {
     "message": "主页"
   },
+  "donateButtonAriaLabel": {
+    "message": "支持 Sidely"
+  },
   "settingsButtonAriaLabel": {
     "message": "设置"
   },

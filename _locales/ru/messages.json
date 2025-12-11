@@ -17,6 +17,9 @@
   "homeButtonAriaLabel": {
     "message": "Главная"
   },
+  "donateButtonAriaLabel": {
+    "message": "Поддержать Sidely"
+  },
   "settingsButtonAriaLabel": {
     "message": "Настройки"
   },

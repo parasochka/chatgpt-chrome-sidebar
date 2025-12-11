@@ -17,6 +17,9 @@
   "homeButtonAriaLabel": {
     "message": "Accueil"
   },
+  "donateButtonAriaLabel": {
+    "message": "Soutenir Sidely"
+  },
   "settingsButtonAriaLabel": {
     "message": "Paramètres"
   },

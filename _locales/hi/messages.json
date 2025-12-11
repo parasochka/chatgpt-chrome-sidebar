@@ -17,6 +17,9 @@
   "homeButtonAriaLabel": {
     "message": "मुख्य पृष्ठ"
   },
+  "donateButtonAriaLabel": {
+    "message": "Sidely का समर्थन करें"
+  },
   "settingsButtonAriaLabel": {
     "message": "सेटिंग्स"
   },
