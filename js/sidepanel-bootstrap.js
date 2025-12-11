@@ -435,10 +435,18 @@ function applyLocalization() {
     homeButton.setAttribute('aria-label', HOME_BUTTON_ARIA_LABEL);
   }
 
+  const donateTooltip = document.getElementById('donate-button-tooltip');
+  if (donateTooltip) {
+    donateTooltip.textContent = DONATE_BUTTON_ARIA_LABEL;
+  }
+
   const donateButton = document.getElementById('donate-button');
   if (donateButton) {
     donateButton.setAttribute('aria-label', DONATE_BUTTON_ARIA_LABEL);
     donateButton.setAttribute('title', DONATE_BUTTON_ARIA_LABEL);
+    if (donateTooltip) {
+      donateButton.setAttribute('aria-describedby', donateTooltip.id);
+    }
   }
 
   const settingsButton = document.getElementById('settings-button');
