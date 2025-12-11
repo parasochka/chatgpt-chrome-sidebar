@@ -136,6 +136,7 @@ body {
   font-weight: 600;
   font-family: inherit;
   white-space: nowrap;
+  text-decoration: none;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
 }

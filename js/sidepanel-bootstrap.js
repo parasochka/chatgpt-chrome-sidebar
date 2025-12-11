@@ -9,6 +9,7 @@ const FALLBACK_MESSAGES = {
   settingsCloseLabel: 'Close sidebar',
   settingsTitle: 'Settings',
   homeButtonAriaLabel: 'Home',
+  donateButtonAriaLabel: 'Support Sidely',
   settingsButtonAriaLabel: 'Settings',
   settingsExtensionLanguageTitle: 'Extension language',
   settingsExtensionLanguageHint: 'Switch the Sidely interface language instantly.',
@@ -58,6 +59,7 @@ let REFRESH_BUTTON_TOOLTIP = FALLBACK_MESSAGES.refreshButtonTooltip;
 let SETTINGS_CLOSE_LABEL = FALLBACK_MESSAGES.settingsCloseLabel;
 let SETTINGS_TITLE = FALLBACK_MESSAGES.settingsTitle;
 let HOME_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.homeButtonAriaLabel;
+let DONATE_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.donateButtonAriaLabel;
 let SETTINGS_BUTTON_ARIA_LABEL = FALLBACK_MESSAGES.settingsButtonAriaLabel;
 
 function getRuntimeAssetURL(path) {
@@ -134,6 +136,7 @@ function refreshCachedLocaleStrings() {
   SETTINGS_CLOSE_LABEL = getLocalizedString('settingsCloseLabel', FALLBACK_MESSAGES.settingsCloseLabel);
   SETTINGS_TITLE = getLocalizedString('settingsTitle', FALLBACK_MESSAGES.settingsTitle);
   HOME_BUTTON_ARIA_LABEL = getLocalizedString('homeButtonAriaLabel', FALLBACK_MESSAGES.homeButtonAriaLabel);
+  DONATE_BUTTON_ARIA_LABEL = getLocalizedString('donateButtonAriaLabel', FALLBACK_MESSAGES.donateButtonAriaLabel);
   SETTINGS_BUTTON_ARIA_LABEL = getLocalizedString('settingsButtonAriaLabel', FALLBACK_MESSAGES.settingsButtonAriaLabel);
 }
 
@@ -430,6 +433,12 @@ function applyLocalization() {
   const homeButton = document.getElementById('home-button');
   if (homeButton) {
     homeButton.setAttribute('aria-label', HOME_BUTTON_ARIA_LABEL);
+  }
+
+  const donateButton = document.getElementById('donate-button');
+  if (donateButton) {
+    donateButton.setAttribute('aria-label', DONATE_BUTTON_ARIA_LABEL);
+    donateButton.setAttribute('title', DONATE_BUTTON_ARIA_LABEL);
   }
 
   const settingsButton = document.getElementById('settings-button');

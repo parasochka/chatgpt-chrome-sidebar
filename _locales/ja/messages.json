@@ -17,6 +17,9 @@
   "homeButtonAriaLabel": {
     "message": "ホーム"
   },
+  "donateButtonAriaLabel": {
+    "message": "Sidely を支援する"
+  },
   "settingsButtonAriaLabel": {
     "message": "設定"
   },
