@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0
+- Improved sidebar content loading speed
+- Removed active domain selection options
+
 ## 0.9
 - minor changes
 
