@@ -24,16 +24,16 @@ const SIDELY_SECTION_LABELS = {
     '项目'
   ],
   expandCharts: [
-    'your charts',
-    'charts',
-    'ваши диаграммы',
-    'диаграммы',
-    'vos graphiques',
-    'tus gráficos',
-    'seus gráficos',
-    'あなたのグラフ',
-    '차트',
-    '图表'
+    'your chats',
+    'ваши чаты',
+    'vos discussions',
+    'tus conversaciones',
+    'suas conversas',
+    'deine chats',
+    'le tue chat',
+    'あなたのチャット',
+    '내 채팅',
+    '你的聊天'
   ],
   expandChats: [
     'chats',
@@ -117,9 +117,10 @@ function applySectionToggle(key) {
   const shouldExpand = Boolean(sidelyToggleState[key]);
   const labels = SIDELY_SECTION_LABELS[key] || [];
   const buttons = getCandidateToggleButtons().filter(btn => matchesSectionLabel(btn, labels));
+  const desiredState = shouldExpand ? 'true' : 'false';
 
   buttons.forEach(button => {
-    if (button.dataset.sidelyDefaultApplied === 'true') {
+    if (button.dataset.sidelyDefaultApplied === desiredState) {
       return;
     }
     const expanded = button.getAttribute('aria-expanded');
@@ -129,7 +130,7 @@ function applySectionToggle(key) {
     } else if (!shouldExpand && expanded === 'true') {
       button.click();
     }
-    button.dataset.sidelyDefaultApplied = 'true';
+    button.dataset.sidelyDefaultApplied = desiredState;
   });
 }
 
