@@ -559,12 +559,21 @@ async function fetchPortalAuthState(base) {
       return { state: 'cloudflare', base };
     }
 
+    if (res.status === 401 || res.status === 403) {
+      return { state: 'unauthorized', base };
+    }
+
     if (!res.ok) {
       return { state: 'unauthorized', base };
     }
 
     const data = await res.json().catch(() => ({}));
-    if (data && data.accessToken) {
+    const hasSession =
+      Boolean(data?.accessToken) ||
+      Boolean(data?.user?.id) ||
+      Boolean(data?.user?.email) ||
+      Boolean(data?.user?.name);
+    if (hasSession) {
       return { state: 'authorized', base };
     }
     return { state: 'unauthorized', base };
