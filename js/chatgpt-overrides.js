@@ -36,16 +36,16 @@ const SIDELY_SECTION_LABELS = {
     '你的聊天'
   ],
   expandChats: [
-    'chats',
-    'chat',
-    'общие чаты',
-    'чаты',
-    'conversas',
-    'conversaciones',
-    'discussions',
-    '会話',
-    '채팅',
-    '对话'
+    'group chats',
+    'gruppenchats',
+    'chats de groupe',
+    'chats de grupo',
+    'chat di gruppo',
+    'chats em grupo',
+    'групповые чаты',
+    'グループチャット',
+    '그룹 채팅',
+    '群聊'
   ]
 };
 
@@ -107,10 +107,24 @@ function getCandidateToggleButtons() {
   return Array.from(document.querySelectorAll('button[aria-expanded]'));
 }
 
+function getLabelCandidates(element) {
+  if (!element) return [];
+  return [
+    element.textContent,
+    element.getAttribute?.('aria-label'),
+    element.getAttribute?.('title')
+  ].filter(Boolean);
+}
+
 function matchesSectionLabel(element, labels) {
-  const text = normalizeLabelText(element?.textContent);
-  if (!text) return false;
-  return labels.some(label => text.includes(normalizeLabelText(label)));
+  const candidates = getLabelCandidates(element)
+    .map(text => normalizeLabelText(text))
+    .filter(Boolean);
+  if (candidates.length === 0) return false;
+  return labels.some(label => {
+    const normalized = normalizeLabelText(label);
+    return candidates.some(text => text.includes(normalized));
+  });
 }
 
 function applySectionToggle(key) {
@@ -120,17 +134,21 @@ function applySectionToggle(key) {
   const desiredState = shouldExpand ? 'true' : 'false';
 
   buttons.forEach(button => {
-    if (button.dataset.sidelyDefaultApplied === desiredState) {
-      return;
-    }
     const expanded = button.getAttribute('aria-expanded');
     if (expanded === null) return;
-    if (shouldExpand && expanded === 'false') {
-      button.click();
-    } else if (!shouldExpand && expanded === 'true') {
+    if (expanded !== desiredState) {
       button.click();
     }
-    button.dataset.sidelyDefaultApplied = desiredState;
+    if (button.getAttribute('aria-expanded') === desiredState) {
+      button.dataset.sidelyDefaultApplied = desiredState;
+    } else {
+      delete button.dataset.sidelyDefaultApplied;
+      setTimeout(() => {
+        if (button.getAttribute('aria-expanded') === desiredState) {
+          button.dataset.sidelyDefaultApplied = desiredState;
+        }
+      }, 150);
+    }
   });
 }
 

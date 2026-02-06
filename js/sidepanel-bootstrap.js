@@ -31,7 +31,7 @@ const FALLBACK_MESSAGES = {
   settingsSidebarDefaultsHint: 'Control which sections start expanded in the ChatGPT sidebar.',
   settingsExpandProjectsLabel: 'Projects expanded by default',
   settingsExpandChartsLabel: 'Your chats expanded by default',
-  settingsExpandChatsLabel: 'General chats expanded by default',
+  settingsExpandChatsLabel: 'Group chats expanded by default',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'

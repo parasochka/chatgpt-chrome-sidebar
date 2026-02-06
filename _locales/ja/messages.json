@@ -114,6 +114,6 @@
     "message": "あなたのチャットを既定で展開"
   },
   "settingsExpandChatsLabel": {
-    "message": "一般チャットを既定で展開"
+    "message": "グループチャットを既定で展開"
   }
 }
