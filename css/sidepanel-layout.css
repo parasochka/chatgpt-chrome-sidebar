@@ -145,6 +145,11 @@ body {
   background: var(--interactive-hover-bg);
 }
 
+.toolbar-btn[aria-pressed="true"],
+.toolbar-btn[aria-expanded="true"] {
+  background: var(--interactive-hover-bg);
+}
+
 .toolbar-btn[aria-disabled="true"] {
   cursor: default;
   opacity: 0.55;

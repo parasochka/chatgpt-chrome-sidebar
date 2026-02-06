@@ -909,6 +909,7 @@ function showSettingsPanel() {
   const portal = getPortalContainer();
   const panel = getSettingsPanel();
   const settingsButton = document.getElementById('settings-button');
+  const homeButton = document.getElementById('home-button');
   if (portal) {
     portal.hidden = true;
   }
@@ -917,6 +918,10 @@ function showSettingsPanel() {
   }
   if (settingsButton) {
     settingsButton.setAttribute('aria-expanded', 'true');
+    settingsButton.setAttribute('aria-pressed', 'true');
+  }
+  if (homeButton) {
+    homeButton.setAttribute('aria-pressed', 'false');
   }
   syncSettingsUI();
 }
@@ -925,6 +930,7 @@ function hideSettingsPanel() {
   const portal = getPortalContainer();
   const panel = getSettingsPanel();
   const settingsButton = document.getElementById('settings-button');
+  const homeButton = document.getElementById('home-button');
   if (portal) {
     portal.hidden = false;
   }
@@ -933,6 +939,10 @@ function hideSettingsPanel() {
   }
   if (settingsButton) {
     settingsButton.setAttribute('aria-expanded', 'false');
+    settingsButton.setAttribute('aria-pressed', 'false');
+  }
+  if (homeButton) {
+    homeButton.setAttribute('aria-pressed', 'true');
   }
 }
 
