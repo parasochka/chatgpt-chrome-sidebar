@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "深色"
+  },
+  "settingsSidebarDefaultsTitle": {
+    "message": "侧边栏默认设置"
+  },
+  "settingsSidebarDefaultsHint": {
+    "message": "选择 ChatGPT 侧边栏默认展开的板块。"
+  },
+  "settingsExpandProjectsLabel": {
+    "message": "默认展开项目"
+  },
+  "settingsExpandChartsLabel": {
+    "message": "默认展开你的图表"
+  },
+  "settingsExpandChatsLabel": {
+    "message": "默认展开常规聊天"
   }
 }

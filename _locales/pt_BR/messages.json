@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Escuro"
+  },
+  "settingsSidebarDefaultsTitle": {
+    "message": "Padrões da barra lateral"
+  },
+  "settingsSidebarDefaultsHint": {
+    "message": "Escolha quais seções devem começar abertas na barra lateral do ChatGPT."
+  },
+  "settingsExpandProjectsLabel": {
+    "message": "Projetos abertos por padrão"
+  },
+  "settingsExpandChartsLabel": {
+    "message": "Seus gráficos abertos por padrão"
+  },
+  "settingsExpandChatsLabel": {
+    "message": "Chats gerais abertos por padrão"
   }
 }

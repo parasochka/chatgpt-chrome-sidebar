@@ -1,4 +1,159 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
+const SIDELY_TOGGLE_KEYS = {
+  expandProjects: 'sidelyExpandProjects',
+  expandCharts: 'sidelyExpandCharts',
+  expandChats: 'sidelyExpandChats'
+};
+
+const SIDELY_TOGGLE_DEFAULTS = {
+  expandProjects: true,
+  expandCharts: true,
+  expandChats: true
+};
+
+const SIDELY_SECTION_LABELS = {
+  expandProjects: [
+    'projects',
+    'project',
+    'проекты',
+    'projets',
+    'proyecto',
+    'projetos',
+    'プロジェクト',
+    '프로젝트',
+    '项目'
+  ],
+  expandCharts: [
+    'your charts',
+    'charts',
+    'ваши диаграммы',
+    'диаграммы',
+    'vos graphiques',
+    'tus gráficos',
+    'seus gráficos',
+    'あなたのグラフ',
+    '차트',
+    '图表'
+  ],
+  expandChats: [
+    'chats',
+    'chat',
+    'общие чаты',
+    'чаты',
+    'conversas',
+    'conversaciones',
+    'discussions',
+    '会話',
+    '채팅',
+    '对话'
+  ]
+};
+
+function getSidelyStorageArea() {
+  if (typeof chrome !== 'undefined' && chrome?.storage?.sync) {
+    return chrome.storage.sync;
+  }
+  if (typeof chrome !== 'undefined' && chrome?.storage?.local) {
+    return chrome.storage.local;
+  }
+  return null;
+}
+
+function sidelyStorageGet(keys) {
+  return new Promise(resolve => {
+    const storageArea = getSidelyStorageArea();
+    if (!storageArea) {
+      const results = {};
+      if (Array.isArray(keys) && typeof window !== 'undefined' && window?.localStorage) {
+        keys.forEach(key => {
+          const value = window.localStorage.getItem(key);
+          if (value !== null) {
+            results[key] = value;
+          }
+        });
+      }
+      resolve(results);
+      return;
+    }
+
+    try {
+      storageArea.get(keys, items => resolve(items || {}));
+    } catch (_) {
+      resolve({});
+    }
+  });
+}
+
+function normalizeToggleValue(value, fallback) {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    if (value.toLowerCase() === 'true') return true;
+    if (value.toLowerCase() === 'false') return false;
+  }
+  return fallback;
+}
+
+let sidelyToggleState = { ...SIDELY_TOGGLE_DEFAULTS };
+let sidelySidebarObserver = null;
+
+function normalizeLabelText(text) {
+  return (text || '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getCandidateToggleButtons() {
+  return Array.from(document.querySelectorAll('button[aria-expanded]'));
+}
+
+function matchesSectionLabel(element, labels) {
+  const text = normalizeLabelText(element?.textContent);
+  if (!text) return false;
+  return labels.some(label => text.includes(normalizeLabelText(label)));
+}
+
+function applySectionToggle(key) {
+  const shouldExpand = Boolean(sidelyToggleState[key]);
+  const labels = SIDELY_SECTION_LABELS[key] || [];
+  const buttons = getCandidateToggleButtons().filter(btn => matchesSectionLabel(btn, labels));
+
+  buttons.forEach(button => {
+    if (button.dataset.sidelyDefaultApplied === 'true') {
+      return;
+    }
+    const expanded = button.getAttribute('aria-expanded');
+    if (expanded === null) return;
+    if (shouldExpand && expanded === 'false') {
+      button.click();
+    } else if (!shouldExpand && expanded === 'true') {
+      button.click();
+    }
+    button.dataset.sidelyDefaultApplied = 'true';
+  });
+}
+
+function applySidelySidebarDefaults() {
+  Object.keys(SIDELY_SECTION_LABELS).forEach(key => applySectionToggle(key));
+}
+
+async function loadSidelySidebarDefaults() {
+  const keys = Object.values(SIDELY_TOGGLE_KEYS);
+  const stored = await sidelyStorageGet(keys);
+  sidelyToggleState = {
+    expandProjects: normalizeToggleValue(stored[SIDELY_TOGGLE_KEYS.expandProjects], SIDELY_TOGGLE_DEFAULTS.expandProjects),
+    expandCharts: normalizeToggleValue(stored[SIDELY_TOGGLE_KEYS.expandCharts], SIDELY_TOGGLE_DEFAULTS.expandCharts),
+    expandChats: normalizeToggleValue(stored[SIDELY_TOGGLE_KEYS.expandChats], SIDELY_TOGGLE_DEFAULTS.expandChats)
+  };
+  applySidelySidebarDefaults();
+  if (!sidelySidebarObserver && typeof MutationObserver !== 'undefined') {
+    sidelySidebarObserver = new MutationObserver(() => applySidelySidebarDefaults());
+    sidelySidebarObserver.observe(document.documentElement || document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+}
 
 function canUseAsyncClipboard() {
   try {
@@ -132,3 +287,21 @@ window.addEventListener('message', event => {
   }
   applySidelyInjectedTheme(event.data.theme);
 });
+
+if (typeof chrome !== 'undefined' && chrome?.storage?.onChanged) {
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'sync' && areaName !== 'local') {
+      return;
+    }
+    const relevant = Object.values(SIDELY_TOGGLE_KEYS).some(key => key in changes);
+    if (relevant) {
+      loadSidelySidebarDefaults();
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadSidelySidebarDefaults, { once: true });
+} else {
+  loadSidelySidebarDefaults();
+}
