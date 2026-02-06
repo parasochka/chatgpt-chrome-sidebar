@@ -27,6 +27,11 @@ const FALLBACK_MESSAGES = {
   settingsThemeAuto: 'Auto (match system)',
   settingsThemeLight: 'Light',
   settingsThemeDark: 'Dark',
+  settingsSidebarDefaultsTitle: 'Sidebar defaults',
+  settingsSidebarDefaultsHint: 'Control which sections start expanded in the ChatGPT sidebar.',
+  settingsExpandProjectsLabel: 'Projects expanded by default',
+  settingsExpandChartsLabel: 'Your charts expanded by default',
+  settingsExpandChatsLabel: 'General chats expanded by default',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
@@ -186,7 +191,10 @@ const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
-  themeMode: 'sidelyThemeMode'
+  themeMode: 'sidelyThemeMode',
+  expandProjects: 'sidelyExpandProjects',
+  expandCharts: 'sidelyExpandCharts',
+  expandChats: 'sidelyExpandChats'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
@@ -195,7 +203,10 @@ const THEME_MESSAGE_TYPE = 'sidely-theme-change';
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
-  themeMode: 'auto'
+  themeMode: 'auto',
+  expandProjects: true,
+  expandCharts: true,
+  expandChats: true
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -444,6 +455,16 @@ function applyLocalization() {
     const message = getLocalizedString(key, fallback);
     if (typeof message === 'string' && message.length) {
       node.textContent = message;
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-aria]').forEach(node => {
+    const key = node.getAttribute('data-i18n-aria');
+    if (!key) return;
+    const fallback = FALLBACK_MESSAGES[key] || node.getAttribute('aria-label') || '';
+    const message = getLocalizedString(key, fallback);
+    if (typeof message === 'string' && message.length) {
+      node.setAttribute('aria-label', message);
     }
   });
 }
@@ -730,6 +751,17 @@ function normalizeThemeMode(value) {
   return THEME_MODES.includes(normalized) ? normalized : SETTINGS_DEFAULTS.themeMode;
 }
 
+function normalizeToggleValue(value, fallback) {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  if (typeof value === 'string') {
+    if (value.toLowerCase() === 'true') return true;
+    if (value.toLowerCase() === 'false') return false;
+  }
+  return fallback;
+}
+
 function applyThemeMode(mode) {
   const body = getBodyElement();
   if (!body) return;
@@ -762,6 +794,19 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
+  nextState.expandProjects = normalizeToggleValue(
+    stored[STORAGE_KEYS.expandProjects],
+    SETTINGS_DEFAULTS.expandProjects
+  );
+  nextState.expandCharts = normalizeToggleValue(
+    stored[STORAGE_KEYS.expandCharts],
+    SETTINGS_DEFAULTS.expandCharts
+  );
+  nextState.expandChats = normalizeToggleValue(
+    stored[STORAGE_KEYS.expandChats],
+    SETTINGS_DEFAULTS.expandChats
+  );
+
   settingsState = nextState;
   applyThemeMode(settingsState.themeMode);
 }
@@ -776,6 +821,19 @@ function syncSettingsUI() {
   themeInputs.forEach(input => {
     input.checked = input.value === settingsState.themeMode;
   });
+
+  const projectsToggle = document.getElementById('toggle-expand-projects');
+  if (projectsToggle) {
+    projectsToggle.checked = Boolean(settingsState.expandProjects);
+  }
+  const chartsToggle = document.getElementById('toggle-expand-charts');
+  if (chartsToggle) {
+    chartsToggle.checked = Boolean(settingsState.expandCharts);
+  }
+  const chatsToggle = document.getElementById('toggle-expand-chats');
+  if (chatsToggle) {
+    chatsToggle.checked = Boolean(settingsState.expandChats);
+  }
 }
 
 async function setExtensionLanguage(value) {
@@ -821,6 +879,30 @@ function setupSettingsControls() {
       }
     });
   });
+
+  const expandProjectsToggle = document.getElementById('toggle-expand-projects');
+  if (expandProjectsToggle) {
+    expandProjectsToggle.addEventListener('change', event => {
+      settingsState.expandProjects = Boolean(event.target.checked);
+      storageSet({ [STORAGE_KEYS.expandProjects]: settingsState.expandProjects });
+    });
+  }
+
+  const expandChartsToggle = document.getElementById('toggle-expand-charts');
+  if (expandChartsToggle) {
+    expandChartsToggle.addEventListener('change', event => {
+      settingsState.expandCharts = Boolean(event.target.checked);
+      storageSet({ [STORAGE_KEYS.expandCharts]: settingsState.expandCharts });
+    });
+  }
+
+  const expandChatsToggle = document.getElementById('toggle-expand-chats');
+  if (expandChatsToggle) {
+    expandChatsToggle.addEventListener('change', event => {
+      settingsState.expandChats = Boolean(event.target.checked);
+      storageSet({ [STORAGE_KEYS.expandChats]: settingsState.expandChats });
+    });
+  }
 }
 
 function showSettingsPanel() {

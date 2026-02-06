@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Dark"
+  },
+  "settingsSidebarDefaultsTitle": {
+    "message": "Sidebar defaults"
+  },
+  "settingsSidebarDefaultsHint": {
+    "message": "Control which sections start expanded in the ChatGPT sidebar."
+  },
+  "settingsExpandProjectsLabel": {
+    "message": "Projects expanded by default"
+  },
+  "settingsExpandChartsLabel": {
+    "message": "Your charts expanded by default"
+  },
+  "settingsExpandChatsLabel": {
+    "message": "General chats expanded by default"
   }
 }

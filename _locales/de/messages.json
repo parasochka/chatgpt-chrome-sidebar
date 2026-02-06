@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Dunkel"
+  },
+  "settingsSidebarDefaultsTitle": {
+    "message": "Standardwerte der Seitenleiste"
+  },
+  "settingsSidebarDefaultsHint": {
+    "message": "Lege fest, welche Bereiche in der ChatGPT-Seitenleiste standardmäßig geöffnet sind."
+  },
+  "settingsExpandProjectsLabel": {
+    "message": "Projekte standardmäßig geöffnet"
+  },
+  "settingsExpandChartsLabel": {
+    "message": "Deine Diagramme standardmäßig geöffnet"
+  },
+  "settingsExpandChatsLabel": {
+    "message": "Allgemeine Chats standardmäßig geöffnet"
   }
 }
