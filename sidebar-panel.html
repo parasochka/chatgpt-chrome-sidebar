@@ -124,6 +124,10 @@
     .toolbar-btn:focus-visible {
       background: rgba(15, 23, 42, 0.08);
     }
+    .toolbar-btn[aria-pressed="true"],
+    .toolbar-btn[aria-expanded="true"] {
+      background: rgba(15, 23, 42, 0.08);
+    }
     .toolbar-btn.is-loading svg {
       animation: toolbar-spin 1.2s linear infinite;
     }
@@ -429,6 +433,7 @@
             id="home-button"
             class="toolbar-btn"
             type="button"
+            aria-pressed="true"
             aria-label="__MSG_homeButtonAriaLabel__"
           >
             <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
@@ -466,6 +471,7 @@
             class="toolbar-btn"
             type="button"
             aria-expanded="false"
+            aria-pressed="false"
             aria-label="__MSG_settingsButtonAriaLabel__"
           >
             <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
