@@ -104,16 +104,35 @@ function normalizeLabelText(text) {
 }
 
 function getCandidateToggleButtons() {
-  return Array.from(document.querySelectorAll('button[aria-expanded]'));
+  return Array.from(document.querySelectorAll('[aria-expanded]')).filter(el => {
+    if (!(el instanceof Element)) return false;
+    return el.matches('button,[role="button"],[data-testid]');
+  });
 }
 
 function getLabelCandidates(element) {
   if (!element) return [];
+  const container = element.closest?.('li, [role="treeitem"], [data-testid], nav, aside');
   return [
     element.textContent,
     element.getAttribute?.('aria-label'),
-    element.getAttribute?.('title')
+    element.getAttribute?.('title'),
+    container?.textContent,
+    container?.getAttribute?.('aria-label'),
+    container?.getAttribute?.('title')
   ].filter(Boolean);
+}
+
+function triggerClick(element) {
+  if (!element) return;
+  try {
+    element.click();
+    return;
+  } catch (_) {}
+  try {
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+    element.dispatchEvent(event);
+  } catch (_) {}
 }
 
 function matchesSectionLabel(element, labels) {
@@ -137,7 +156,7 @@ function applySectionToggle(key) {
     const expanded = button.getAttribute('aria-expanded');
     if (expanded === null) return;
     if (expanded !== desiredState) {
-      button.click();
+      triggerClick(button);
     }
     if (button.getAttribute('aria-expanded') === desiredState) {
       button.dataset.sidelyDefaultApplied = desiredState;
