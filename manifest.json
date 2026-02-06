@@ -12,6 +12,7 @@
   ],
   "host_permissions": [
     "https://chatgpt.com/*",
+    "https://*.chatgpt.com/*",
     "https://*.openai.com/*"
   ],
   "background": {

@@ -10,12 +10,14 @@ const SIDEPANEL_DNR_RULES = [
       type: "modifyHeaders",
       responseHeaders: [
         { header: "content-security-policy", operation: "remove" },
+        { header: "content-security-policy-report-only", operation: "remove" },
+        { header: "frame-options", operation: "remove" },
         { header: "x-frame-options", operation: "remove" }
       ]
     },
     condition: {
       urlFilter: "||chatgpt.com/*",
-      resourceTypes: ["sub_frame"]
+      resourceTypes: ["main_frame", "sub_frame"]
     }
   }
 ];
