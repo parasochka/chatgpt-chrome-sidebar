@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1
+- Added new settings menu toggles to control default expansion/collapse behavior for sidebar sections.
+- You can now choose whether **Your chats**, **Group chats**, and **Projects** are expanded by default when the ChatGPT sidebar opens.
+
 ## 1.0
 - Improved sidebar content loading speed
 - Removed active domain selection options
