@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Group chats डिफ़ॉल्ट रूप से खुले"
+  },
+  "featureNoticeChatState": {
+    "message": "नया: चैट स्थिति संभालें, सेक्शन संक्षिप्त या विस्तृत रखें।"
+  },
+  "featureNoticeCloseLabel": {
+    "message": "नई सुविधा सूचना बंद करें"
   }
 }

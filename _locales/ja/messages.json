@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "グループチャットを既定で展開する"
+  },
+  "featureNoticeChatState": {
+    "message": "新機能: チャット状態を管理し、セクションを折りたたみ・展開できます。"
+  },
+  "featureNoticeCloseLabel": {
+    "message": "新機能のお知らせを閉じる"
   }
 }

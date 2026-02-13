@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Gruppenchats standardmäßig erweitert"
+  },
+  "featureNoticeChatState": {
+    "message": "Neu: Chatstatus steuern, Bereiche eingeklappt oder ausgeklappt nutzen."
+  },
+  "featureNoticeCloseLabel": {
+    "message": "Hinweis zur neuen Funktion schließen"
   }
 }

@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "默认展开“群组聊天”"
+  },
+  "featureNoticeChatState": {
+    "message": "新功能：可管理聊天状态，分区支持折叠或展开。"
+  },
+  "featureNoticeCloseLabel": {
+    "message": "关闭新功能提示"
   }
 }

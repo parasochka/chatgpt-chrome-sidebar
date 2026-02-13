@@ -202,6 +202,56 @@ body {
   grid-area: 1 / 1 / 2 / 2;
 }
 
+.feature-update-notice {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(16, 163, 127, 0.1);
+  color: #0f172a;
+}
+
+.feature-update-notice[hidden] {
+  display: none;
+}
+
+.feature-update-notice__text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.feature-update-notice__close {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(15, 23, 42, 0.72);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.feature-update-notice__close svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.feature-update-notice__close:hover,
+.feature-update-notice__close:focus-visible {
+  background: rgba(15, 23, 42, 0.08);
+  color: rgba(15, 23, 42, 0.92);
+  outline: none;
+}
+
 .frame-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -475,6 +525,22 @@ body.theme-dark .toolbar-tooltip__bubble {
   box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 6px 18px rgba(15, 23, 42, 0.45);
 }
 
+body.theme-dark .feature-update-notice {
+  background: rgba(16, 163, 127, 0.18);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  color: #f0fdf9;
+}
+
+body.theme-dark .feature-update-notice__close {
+  color: rgba(248, 250, 252, 0.85);
+}
+
+body.theme-dark .feature-update-notice__close:hover,
+body.theme-dark .feature-update-notice__close:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
 body.theme-dark .settings-panel {
   background: #202123;
   color: #ececf1;
@@ -572,6 +638,22 @@ body.theme-dark .settings-close-btn:focus-visible {
     color: #f7f7f8;
     border: 1px solid rgba(86, 88, 105, 0.85);
     box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 6px 18px rgba(15, 23, 42, 0.45);
+  }
+
+  body.theme-auto .feature-update-notice {
+    background: rgba(16, 163, 127, 0.18);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    color: #f0fdf9;
+  }
+
+  body.theme-auto .feature-update-notice__close {
+    color: rgba(248, 250, 252, 0.85);
+  }
+
+  body.theme-auto .feature-update-notice__close:hover,
+  body.theme-auto .feature-update-notice__close:focus-visible {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
   }
 
   body.theme-auto .settings-panel {

@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Chat di gruppo espanse per impostazione predefinita"
+  },
+  "featureNoticeChatState": {
+    "message": "Novità: gestisci stati chat con sezioni compresse o espanse."
+  },
+  "featureNoticeCloseLabel": {
+    "message": "Chiudi avviso nuova funzione"
   }
 }

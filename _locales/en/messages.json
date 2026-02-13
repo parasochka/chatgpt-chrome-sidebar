@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Group chats expanded by default"
+  },
+  "featureNoticeChatState": {
+    "message": "New: manage chat states with collapsed or expanded sections."
+  },
+  "featureNoticeCloseLabel": {
+    "message": "Close new feature notice"
   }
 }

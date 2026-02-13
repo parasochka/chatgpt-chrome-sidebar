@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Групповые чаты развернуты по умолчанию"
+  },
+  "featureNoticeChatState": {
+    "message": "Новое: управляйте чатами, сворачивайте и разворачивайте разделы."
+  },
+  "featureNoticeCloseLabel": {
+    "message": "Закрыть уведомление о новой функции"
   }
 }
