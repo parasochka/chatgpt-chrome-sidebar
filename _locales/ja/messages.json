@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "ダーク"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "ChatGPT サイドバーのセクション"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "ChatGPT サイドバーが表示されたときに、どのセクションを既定で展開するかを選択します。"
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "プロジェクトを既定で展開する"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "あなたのチャットを既定で展開する"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "グループチャットを既定で展開する"
   }
 }
