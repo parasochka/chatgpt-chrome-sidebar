@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Discussions de groupe développées par défaut"
+  },
+  "featureNoticeChatState": {
+    "message": "Nouveau : gérez les chats, sections réduites ou développées."
+  },
+  "featureNoticeCloseLabel": {
+    "message": "Fermer l'avis de nouveauté"
   }
 }

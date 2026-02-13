@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Conversas em grupo expandidas por padrão"
+  },
+  "featureNoticeChatState": {
+    "message": "Novo: gerencie chats com seções recolhidas ou expandidas."
+  },
+  "featureNoticeCloseLabel": {
+    "message": "Fechar aviso de novo recurso"
   }
 }

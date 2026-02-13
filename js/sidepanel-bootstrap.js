@@ -32,6 +32,8 @@ const FALLBACK_MESSAGES = {
   settingsSidebarProjectsToggle: 'Projects expanded by default',
   settingsSidebarYourChatsToggle: 'Your chats expanded by default',
   settingsSidebarGroupChatsToggle: 'Group chats expanded by default',
+  featureNoticeChatState: 'New: manage chat states with collapsed or expanded sections.',
+  featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
@@ -189,12 +191,14 @@ let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
 const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
+const FEATURE_NOTICE_TARGET_VERSION = '1.1';
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   themeMode: 'sidelyThemeMode',
   sidebarProjectsExpanded: 'sidelySidebarProjectsExpanded',
   sidebarYourChatsExpanded: 'sidelySidebarYourChatsExpanded',
-  sidebarGroupChatsExpanded: 'sidelySidebarGroupChatsExpanded'
+  sidebarGroupChatsExpanded: 'sidelySidebarGroupChatsExpanded',
+  featureNoticeDismissedV11: 'sidelyFeatureNoticeDismissedV11'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
@@ -210,6 +214,7 @@ const SETTINGS_DEFAULTS = {
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
+let featureNoticeDismissed = false;
 let portalLoadRunId = 0;
 let languageSelectionRunId = 0;
 let settingsControlsInitialized = false;
@@ -234,6 +239,21 @@ function getPortalContainer() {
 
 function getBodyElement() {
   return document.body || document.querySelector('body');
+}
+
+function getFeatureUpdateNotice() {
+  return document.getElementById('feature-update-notice');
+}
+
+function getFeatureUpdateNoticeCloseButton() {
+  return document.getElementById('feature-update-notice-close');
+}
+
+function getCurrentExtensionVersion() {
+  if (typeof chrome === 'undefined' || !chrome?.runtime?.getManifest) {
+    return '';
+  }
+  return chrome.runtime.getManifest()?.version || '';
 }
 
 function initializeSystemThemeWatcher() {
@@ -448,6 +468,14 @@ function applyLocalization() {
     settingsButton.setAttribute('aria-label', SETTINGS_BUTTON_ARIA_LABEL);
   }
 
+  const featureNoticeCloseButton = getFeatureUpdateNoticeCloseButton();
+  if (featureNoticeCloseButton) {
+    featureNoticeCloseButton.setAttribute(
+      'aria-label',
+      getLocalizedString('featureNoticeCloseLabel', FALLBACK_MESSAGES.featureNoticeCloseLabel)
+    );
+  }
+
   document.querySelectorAll('[data-i18n-key]').forEach(node => {
     const key = node.getAttribute('data-i18n-key');
     if (!key) return;
@@ -659,6 +687,24 @@ function clearPortalNotice() {
   }
 }
 
+function shouldShowFeatureNotice() {
+  return getCurrentExtensionVersion() === FEATURE_NOTICE_TARGET_VERSION && !featureNoticeDismissed;
+}
+
+function syncFeatureNoticeVisibility() {
+  const notice = getFeatureUpdateNotice();
+  if (!notice) {
+    return;
+  }
+  notice.hidden = !shouldShowFeatureNotice();
+}
+
+async function dismissFeatureNotice() {
+  featureNoticeDismissed = true;
+  syncFeatureNoticeVisibility();
+  await storageSet({ [STORAGE_KEYS.featureNoticeDismissedV11]: true });
+}
+
 function getStorageAreasByPriority() {
   const areas = [];
   if (typeof chrome !== 'undefined' && chrome?.storage?.sync) {
@@ -846,6 +892,8 @@ async function loadSettingsFromStorage() {
     SETTINGS_DEFAULTS.sidebarGroupChatsExpanded
   );
 
+  featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissedV11], false);
+
   settingsState = nextState;
   applyThemeMode(settingsState.themeMode);
 }
@@ -955,6 +1003,16 @@ function setupSettingsControls() {
   });
 }
 
+function setupFeatureNoticeControls() {
+  const closeButton = getFeatureUpdateNoticeCloseButton();
+  if (!closeButton) {
+    return;
+  }
+  closeButton.addEventListener('click', () => {
+    dismissFeatureNotice();
+  });
+}
+
 function showSettingsPanel() {
   const portal = getPortalContainer();
   const panel = getSettingsPanel();
@@ -1021,8 +1079,10 @@ async function bootstrapSidepanel() {
   await loadSettingsFromStorage();
   await ensureActiveLocaleMessages(settingsState.language);
   applyLocalization();
+  syncFeatureNoticeVisibility();
   syncSettingsUI();
   setupSettingsControls();
+  setupFeatureNoticeControls();
   hideSettingsPanel();
   setupToolbarInteractions();
   await loadChatPortal();

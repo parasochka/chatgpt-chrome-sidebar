@@ -115,5 +115,11 @@
   },
   "settingsSidebarGroupChatsToggle": {
     "message": "Chats grupales expandidos por defecto"
+  },
+  "featureNoticeChatState": {
+    "message": "Nuevo: controla chats con secciones contraídas o expandidas."
+  },
+  "featureNoticeCloseLabel": {
+    "message": "Cerrar aviso de nueva función"
   }
 }
