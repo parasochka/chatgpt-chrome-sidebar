@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Тёмная"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "Разделы боковой панели"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "Задайте, должны ли разделы быть раскрыты по умолчанию при загрузке ChatGPT."
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Проекты раскрыты по умолчанию"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Ваши чаты раскрыты по умолчанию"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Групповые чаты раскрыты по умолчанию"
   }
 }

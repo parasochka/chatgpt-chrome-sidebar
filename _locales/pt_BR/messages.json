@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Escuro"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "Seções da barra lateral"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "Defina se cada seção começa expandida quando o ChatGPT carregar."
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Projects expandidos por padrão"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Seus chats expandidos por padrão"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Chats em grupo expandidos por padrão"
   }
 }

@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Dunkel"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "Seitenleistenbereiche"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "Lege fest, ob jeder Bereich beim Laden von ChatGPT standardmäßig erweitert ist."
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Projects standardmäßig erweitert"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Ihre Chats standardmäßig erweitert"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Gruppenchats standardmäßig erweitert"
   }
 }

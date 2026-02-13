@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Sombre"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "Sections de la barre latérale"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "Définissez si chaque section démarre développée au chargement de ChatGPT."
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Projects développés par défaut"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Vos chats développés par défaut"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Chats de groupe développés par défaut"
   }
 }

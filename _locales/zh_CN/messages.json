@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "深色"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "侧边栏分区"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "设置 ChatGPT 加载时各分区是否默认展开。"
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Projects 默认展开"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Your chats 默认展开"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Group chats 默认展开"
   }
 }

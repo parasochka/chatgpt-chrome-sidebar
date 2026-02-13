@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "डार्क"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "साइडबार सेक्शन"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "सेट करें कि ChatGPT लोड होने पर हर सेक्शन डिफ़ॉल्ट रूप से विस्तृत रहे या नहीं।"
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Projects डिफ़ॉल्ट रूप से expanded"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Your chats डिफ़ॉल्ट रूप से expanded"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Group chats डिफ़ॉल्ट रूप से expanded"
   }
 }
