@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "Scuro"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "Sezioni della barra laterale di ChatGPT"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "Scegli quali sezioni devono essere espanse per impostazione predefinita quando appare la barra laterale di ChatGPT."
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Progetti espansi per impostazione predefinita"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Le tue chat espanse per impostazione predefinita"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Chat di gruppo espanse per impostazione predefinita"
   }
 }
