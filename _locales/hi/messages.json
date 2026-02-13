@@ -100,5 +100,20 @@
   },
   "settingsThemeDark": {
     "message": "डार्क"
+  },
+  "settingsSidebarSectionsTitle": {
+    "message": "ChatGPT साइडबार सेक्शन"
+  },
+  "settingsSidebarSectionsHint": {
+    "message": "जब ChatGPT साइडबार दिखे, तब कौन-से सेक्शन डिफ़ॉल्ट रूप से खुले रहें यह चुनें।"
+  },
+  "settingsSidebarProjectsToggle": {
+    "message": "Projects डिफ़ॉल्ट रूप से खुले"
+  },
+  "settingsSidebarYourChatsToggle": {
+    "message": "Your chats डिफ़ॉल्ट रूप से खुले"
+  },
+  "settingsSidebarGroupChatsToggle": {
+    "message": "Group chats डिफ़ॉल्ट रूप से खुले"
   }
 }

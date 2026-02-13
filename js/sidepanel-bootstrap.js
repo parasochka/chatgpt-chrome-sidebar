@@ -27,6 +27,11 @@ const FALLBACK_MESSAGES = {
   settingsThemeAuto: 'Auto (match system)',
   settingsThemeLight: 'Light',
   settingsThemeDark: 'Dark',
+  settingsSidebarSectionsTitle: 'ChatGPT sidebar sections',
+  settingsSidebarSectionsHint: 'Choose which sections are expanded by default when the ChatGPT sidebar appears.',
+  settingsSidebarProjectsToggle: 'Projects expanded by default',
+  settingsSidebarYourChatsToggle: 'Your chats expanded by default',
+  settingsSidebarGroupChatsToggle: 'Group chats expanded by default',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
   noticeError: 'Session verification failed. Try refreshing the page or sign in at __PORTAL__.'
@@ -186,7 +191,10 @@ const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
-  themeMode: 'sidelyThemeMode'
+  themeMode: 'sidelyThemeMode',
+  sidebarProjectsExpanded: 'sidelySidebarProjectsExpanded',
+  sidebarYourChatsExpanded: 'sidelySidebarYourChatsExpanded',
+  sidebarGroupChatsExpanded: 'sidelySidebarGroupChatsExpanded'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
@@ -195,7 +203,10 @@ const THEME_MESSAGE_TYPE = 'sidely-theme-change';
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
-  themeMode: 'auto'
+  themeMode: 'auto',
+  sidebarProjectsExpanded: true,
+  sidebarYourChatsExpanded: true,
+  sidebarGroupChatsExpanded: true
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -446,6 +457,19 @@ function applyLocalization() {
       node.textContent = message;
     }
   });
+
+  [
+    ['settings-sidebar-projects-expanded', 'settings-sidebar-projects-expanded-label'],
+    ['settings-sidebar-your-chats-expanded', 'settings-sidebar-your-chats-expanded-label'],
+    ['settings-sidebar-group-chats-expanded', 'settings-sidebar-group-chats-expanded-label']
+  ].forEach(([inputId, labelId]) => {
+    const input = document.getElementById(inputId);
+    const label = document.getElementById(labelId);
+    if (input && label) {
+      const labelText = label.textContent?.trim() || input.getAttribute('aria-label') || '';
+      input.setAttribute('aria-label', labelText);
+    }
+  });
 }
 
 function reloadChatIframe() {
@@ -635,20 +659,34 @@ function clearPortalNotice() {
   }
 }
 
-function getStorageArea() {
+function getStorageAreasByPriority() {
+  const areas = [];
   if (typeof chrome !== 'undefined' && chrome?.storage?.sync) {
-    return chrome.storage.sync;
+    areas.push(chrome.storage.sync);
   }
   if (typeof chrome !== 'undefined' && chrome?.storage?.local) {
-    return chrome.storage.local;
+    areas.push(chrome.storage.local);
   }
-  return null;
+  return areas;
+}
+
+function normalizeBooleanSetting(value, defaultValue = true) {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  if (value === 'true') {
+    return true;
+  }
+  if (value === 'false') {
+    return false;
+  }
+  return defaultValue;
 }
 
 function storageGet(keys) {
   return new Promise(resolve => {
-    const storageArea = getStorageArea();
-    if (!storageArea) {
+    const storageAreas = getStorageAreasByPriority();
+    if (!storageAreas.length) {
       const results = {};
       if (Array.isArray(keys) && typeof window !== 'undefined' && window?.localStorage) {
         keys.forEach(key => {
@@ -662,26 +700,48 @@ function storageGet(keys) {
       return;
     }
 
-    try {
-      storageArea.get(keys, items => {
-        if (chrome?.runtime?.lastError) {
-          console.warn('storage.get failed', chrome.runtime.lastError);
-        }
-        resolve(items || {});
-      });
-    } catch (err) {
-      console.warn('storage.get error', err);
-      resolve({});
-    }
+    const tryGet = index => {
+      if (index >= storageAreas.length) {
+        resolve({});
+        return;
+      }
+      const storageArea = storageAreas[index];
+      try {
+        storageArea.get(keys, items => {
+          if (chrome?.runtime?.lastError) {
+            console.warn('storage.get failed', chrome.runtime.lastError);
+            tryGet(index + 1);
+            return;
+          }
+          resolve(items || {});
+        });
+      } catch (err) {
+        console.warn('storage.get error', err);
+        tryGet(index + 1);
+      }
+    };
+
+    tryGet(0);
   });
 }
 
 function storageSet(items) {
+  const normalizedItems = { ...items };
+  [
+    STORAGE_KEYS.sidebarProjectsExpanded,
+    STORAGE_KEYS.sidebarYourChatsExpanded,
+    STORAGE_KEYS.sidebarGroupChatsExpanded
+  ].forEach(key => {
+    if (Object.prototype.hasOwnProperty.call(normalizedItems, key)) {
+      normalizedItems[key] = normalizeBooleanSetting(normalizedItems[key], SETTINGS_DEFAULTS[key]);
+    }
+  });
+
   return new Promise(resolve => {
-    const storageArea = getStorageArea();
-    if (!storageArea) {
-      if (items && typeof window !== 'undefined' && window?.localStorage) {
-        Object.entries(items).forEach(([key, value]) => {
+    const storageAreas = getStorageAreasByPriority();
+    if (!storageAreas.length) {
+      if (normalizedItems && typeof window !== 'undefined' && window?.localStorage) {
+        Object.entries(normalizedItems).forEach(([key, value]) => {
           try {
             window.localStorage.setItem(key, value);
           } catch (err) {
@@ -693,17 +753,28 @@ function storageSet(items) {
       return;
     }
 
-    try {
-      storageArea.set(items, () => {
-        if (chrome?.runtime?.lastError) {
-          console.warn('storage.set failed', chrome.runtime.lastError);
-        }
+    const trySet = index => {
+      if (index >= storageAreas.length) {
         resolve();
-      });
-    } catch (err) {
-      console.warn('storage.set error', err);
-      resolve();
-    }
+        return;
+      }
+      const storageArea = storageAreas[index];
+      try {
+        storageArea.set(normalizedItems, () => {
+          if (chrome?.runtime?.lastError) {
+            console.warn('storage.set failed', chrome.runtime.lastError);
+            trySet(index + 1);
+            return;
+          }
+          resolve();
+        });
+      } catch (err) {
+        console.warn('storage.set error', err);
+        trySet(index + 1);
+      }
+    };
+
+    trySet(0);
   });
 }
 
@@ -762,6 +833,19 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
+  nextState.sidebarProjectsExpanded = normalizeBooleanSetting(
+    stored[STORAGE_KEYS.sidebarProjectsExpanded],
+    SETTINGS_DEFAULTS.sidebarProjectsExpanded
+  );
+  nextState.sidebarYourChatsExpanded = normalizeBooleanSetting(
+    stored[STORAGE_KEYS.sidebarYourChatsExpanded],
+    SETTINGS_DEFAULTS.sidebarYourChatsExpanded
+  );
+  nextState.sidebarGroupChatsExpanded = normalizeBooleanSetting(
+    stored[STORAGE_KEYS.sidebarGroupChatsExpanded],
+    SETTINGS_DEFAULTS.sidebarGroupChatsExpanded
+  );
+
   settingsState = nextState;
   applyThemeMode(settingsState.themeMode);
 }
@@ -776,6 +860,21 @@ function syncSettingsUI() {
   themeInputs.forEach(input => {
     input.checked = input.value === settingsState.themeMode;
   });
+
+  const sidebarProjectsInput = document.getElementById('settings-sidebar-projects-expanded');
+  if (sidebarProjectsInput) {
+    sidebarProjectsInput.checked = !!settingsState.sidebarProjectsExpanded;
+  }
+
+  const sidebarYourChatsInput = document.getElementById('settings-sidebar-your-chats-expanded');
+  if (sidebarYourChatsInput) {
+    sidebarYourChatsInput.checked = !!settingsState.sidebarYourChatsExpanded;
+  }
+
+  const sidebarGroupChatsInput = document.getElementById('settings-sidebar-group-chats-expanded');
+  if (sidebarGroupChatsInput) {
+    sidebarGroupChatsInput.checked = !!settingsState.sidebarGroupChatsExpanded;
+  }
 }
 
 async function setExtensionLanguage(value) {
@@ -819,6 +918,39 @@ function setupSettingsControls() {
       if (value === 'light' || value === 'dark') {
         reloadChatIframe();
       }
+    });
+  });
+
+  const sidebarBooleanControls = [
+    {
+      id: 'settings-sidebar-projects-expanded',
+      stateKey: 'sidebarProjectsExpanded',
+      storageKey: STORAGE_KEYS.sidebarProjectsExpanded
+    },
+    {
+      id: 'settings-sidebar-your-chats-expanded',
+      stateKey: 'sidebarYourChatsExpanded',
+      storageKey: STORAGE_KEYS.sidebarYourChatsExpanded
+    },
+    {
+      id: 'settings-sidebar-group-chats-expanded',
+      stateKey: 'sidebarGroupChatsExpanded',
+      storageKey: STORAGE_KEYS.sidebarGroupChatsExpanded
+    }
+  ];
+
+  sidebarBooleanControls.forEach(control => {
+    const input = document.getElementById(control.id);
+    if (!input) {
+      return;
+    }
+    input.addEventListener('change', event => {
+      if (!(event.target instanceof HTMLInputElement)) {
+        return;
+      }
+      const value = !!event.target.checked;
+      settingsState[control.stateKey] = value;
+      storageSet({ [control.storageKey]: value });
     });
   });
 }
