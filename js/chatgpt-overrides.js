@@ -16,8 +16,31 @@ function isSidelySidepanelContextByReferrer() {
   return referrer.startsWith(`chrome-extension://${chrome.runtime.id}`);
 }
 
+function isSidelySidepanelContextByAncestorOrigins() {
+  const ancestors = window.location?.ancestorOrigins;
+  if (!ancestors || !ancestors.length) {
+    return false;
+  }
+
+  const extensionAncestor = Array.from(ancestors).find(origin => origin.startsWith('chrome-extension://'));
+  if (!extensionAncestor) {
+    return false;
+  }
+
+  if (typeof chrome === 'undefined' || !chrome?.runtime?.id) {
+    return true;
+  }
+
+  return extensionAncestor === `chrome-extension://${chrome.runtime.id}`;
+}
+
 function markSidelySidepanelContext(force = false) {
-  if (!force && window.name !== SIDELY_IFRAME_WINDOW_NAME && !isSidelySidepanelContextByReferrer()) {
+  if (
+    !force
+    && window.name !== SIDELY_IFRAME_WINDOW_NAME
+    && !isSidelySidepanelContextByReferrer()
+    && !isSidelySidepanelContextByAncestorOrigins()
+  ) {
     return;
   }
 
