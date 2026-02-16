@@ -1,50 +1,4 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
-const SIDELY_CONTEXT_MESSAGE = 'sidely-sidepanel-context';
-const SIDELY_SIDEPANEL_DATASET_FLAG = 'sidelySidepanel';
-const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
-
-function isSidelySidepanelFrame() {
-  const inIframe = window.top !== window;
-  const ancestors = window.location?.ancestorOrigins;
-  const hasExtensionAncestor =
-    ancestors && ancestors.length > 0 && String(ancestors[0]).startsWith('chrome-extension://');
-  const hasExtensionReferrer =
-    typeof document?.referrer === 'string' && document.referrer.startsWith('chrome-extension://');
-  return inIframe && (hasExtensionAncestor || hasExtensionReferrer);
-}
-
-// Mark DOM when ChatGPT is running inside the extension side panel iframe
-(function markSidepanelFrame() {
-  try {
-    if (isSidelySidepanelFrame()) {
-      document.documentElement.setAttribute('data-sidely-sidepanel', '1');
-    }
-  } catch (_) {
-    // do nothing
-  }
-})();
-
-function markSidelySidepanelContext(force = false) {
-  if (!force && !isSidelySidepanelFrame()) {
-    return;
-  }
-
-  const root = document.documentElement;
-  if (!root) {
-    return;
-  }
-
-  root.dataset[SIDELY_SIDEPANEL_DATASET_FLAG] = '1';
-  root.setAttribute('data-sidely-sidepanel', '1');
-}
-
-markSidelySidepanelContext();
-
-document.addEventListener('readystatechange', () => {
-  if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    markSidelySidepanelContext();
-  }
-});
 
 function canUseAsyncClipboard() {
   try {
@@ -170,21 +124,11 @@ function applySidelyInjectedTheme(theme) {
 }
 
 window.addEventListener('message', event => {
-  if (!event || !event.data) {
+  if (!event || !event.data || event.data.type !== SIDELY_THEME_MESSAGE) {
     return;
   }
   if (!event.origin || !event.origin.startsWith('chrome-extension://')) {
     return;
   }
-
-  if (event.data.type === SIDELY_CONTEXT_MESSAGE) {
-    markSidelySidepanelContext(true);
-    return;
-  }
-
-  if (event.data.type !== SIDELY_THEME_MESSAGE) {
-    return;
-  }
-
   applySidelyInjectedTheme(event.data.theme);
 });

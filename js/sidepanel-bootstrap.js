@@ -204,8 +204,6 @@ const STORAGE_KEYS = {
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
 const THEME_MODES = ['auto', 'light', 'dark'];
 const THEME_MESSAGE_TYPE = 'sidely-theme-change';
-const SIDELY_CONTEXT_MESSAGE_TYPE = 'sidely-sidepanel-context';
-const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
@@ -313,7 +311,6 @@ function syncChatIframeTheme(theme, force = false) {
   }
   lastSyncedIframeTheme = resolved;
   try {
-    iframe.contentWindow.postMessage({ type: SIDELY_CONTEXT_MESSAGE_TYPE }, '*');
     iframe.contentWindow.postMessage({ type: THEME_MESSAGE_TYPE, theme: resolved }, '*');
   } catch (err) {
     // Cross-origin iframe might block direct messaging; ignore silently.
@@ -622,12 +619,7 @@ function mountPortalIntoIframe(base) {
   lastRequestedIframeSrc = targetSrc;
   iframe.dataset.currentSrc = targetSrc;
   setRefreshButtonLoading(true);
-  iframe.name = SIDELY_IFRAME_WINDOW_NAME;
-  lastSyncedIframeTheme = null;
   iframe.src = targetSrc;
-  iframe.addEventListener('load', () => {
-    syncChatIframeTheme(getEffectiveTheme(settingsState.themeMode), true);
-  }, { once: true });
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
@@ -754,25 +746,9 @@ function storageGet(keys) {
       return;
     }
 
-    const requestedKeys = Array.isArray(keys)
-      ? keys
-      : typeof keys === 'string'
-        ? [keys]
-        : keys && typeof keys === 'object'
-          ? Object.keys(keys)
-          : null;
-    const accumulated = {};
-
-    const hasAllRequestedKeys = () => {
-      if (!requestedKeys || requestedKeys.length === 0) {
-        return Object.keys(accumulated).length > 0;
-      }
-      return requestedKeys.every(key => Object.prototype.hasOwnProperty.call(accumulated, key));
-    };
-
     const tryGet = index => {
       if (index >= storageAreas.length) {
-        resolve(accumulated);
+        resolve({});
         return;
       }
       const storageArea = storageAreas[index];
@@ -783,21 +759,7 @@ function storageGet(keys) {
             tryGet(index + 1);
             return;
           }
-
-          if (items && typeof items === 'object') {
-            Object.entries(items).forEach(([key, value]) => {
-              if (!Object.prototype.hasOwnProperty.call(accumulated, key)) {
-                accumulated[key] = value;
-              }
-            });
-          }
-
-          if (hasAllRequestedKeys()) {
-            resolve(accumulated);
-            return;
-          }
-
-          tryGet(index + 1);
+          resolve(items || {});
         });
       } catch (err) {
         console.warn('storage.get error', err);

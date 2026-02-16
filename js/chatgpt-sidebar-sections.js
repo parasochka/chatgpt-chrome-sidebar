@@ -18,46 +18,10 @@
     groupChats: true
   };
 
-  const LABEL_KEYWORD_MAP = {
-    projects: [
-      'projects',
-      'proyectos',
-      'projets',
-      'परियोजना',
-      'projetos',
-      'проекты',
-      '项目',
-      'projekte',
-      'progetti',
-      'プロジェクト'
-    ],
-    groupChats: [
-      'group chats',
-      'chats de grupo',
-      'chats grupales',
-      'discussions de groupe',
-      'गुरुप चैट',
-      'conversas em grupo',
-      'групповые чаты',
-      '组聊天',
-      'gruppenchats',
-      'chat di gruppo',
-      'グループチャット'
-    ],
-    yourChats: [
-      'your chats',
-      'tus chats',
-      'vos discussions',
-      'आपके चैट',
-      'seus chats',
-      'ваши чаты',
-      '聊天记录',
-      'deine chats',
-      'le tue chat',
-      'あなたのチャット',
-      'история чатов',
-      'chat history'
-    ]
+  const LABEL_MAP = {
+    projects: ['Projects', 'Проекты'],
+    groupChats: ['Group chats', 'Групповые чаты', 'Группы'],
+    yourChats: ['Your chats', 'Ваши чаты', 'Чаты', 'История', 'История чатов']
   };
 
   const COOLDOWN_MS = 800;
@@ -93,25 +57,9 @@
         return;
       }
 
-      const requestedKeys = Array.isArray(keys)
-        ? keys
-        : typeof keys === 'string'
-          ? [keys]
-          : keys && typeof keys === 'object'
-            ? Object.keys(keys)
-            : null;
-      const accumulated = {};
-
-      const hasAllRequestedKeys = () => {
-        if (!requestedKeys || requestedKeys.length === 0) {
-          return Object.keys(accumulated).length > 0;
-        }
-        return requestedKeys.every(key => Object.prototype.hasOwnProperty.call(accumulated, key));
-      };
-
       const readArea = index => {
         if (index >= areas.length) {
-          resolve(accumulated);
+          resolve({});
           return;
         }
 
@@ -120,21 +68,7 @@
             readArea(index + 1);
             return;
           }
-
-          if (items && typeof items === 'object') {
-            Object.entries(items).forEach(([key, value]) => {
-              if (!Object.prototype.hasOwnProperty.call(accumulated, key)) {
-                accumulated[key] = value;
-              }
-            });
-          }
-
-          if (hasAllRequestedKeys()) {
-            resolve(accumulated);
-            return;
-          }
-
-          readArea(index + 1);
+          resolve(items || {});
         });
       };
 
@@ -169,26 +103,11 @@
     return Array.from(root.querySelectorAll('div[class*="group/sidebar-expando-section"] > button[aria-expanded]'));
   }
 
-  function normalizeLabel(label) {
-    if (!label) return '';
-    return label
-      .trim()
-      .toLowerCase()
-      .replace(/[\s\u00a0]+/g, ' ')
-      .replace(/[.,!?/\\()[\]{}'"`~:;|<>-]/g, '')
-      .trim();
-  }
-
   function detectSectionKeyFromLabel(label) {
     if (!label) return null;
-    const normalized = normalizeLabel(label);
-    for (const [key, keywords] of Object.entries(LABEL_KEYWORD_MAP)) {
-      if (
-        keywords.some(entry => {
-          const keyword = normalizeLabel(entry);
-          return normalized === keyword || normalized.includes(keyword);
-        })
-      ) {
+    const normalized = label.trim().toLowerCase();
+    for (const [key, labels] of Object.entries(LABEL_MAP)) {
+      if (labels.some(entry => entry.toLowerCase() === normalized)) {
         return key;
       }
     }
