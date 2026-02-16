@@ -1,4 +1,41 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
+const SIDELY_CONTEXT_MESSAGE = 'sidely-sidepanel-context';
+const SIDELY_SIDEPANEL_DATASET_FLAG = 'sidelySidepanel';
+const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
+
+function isSidelySidepanelContextByReferrer() {
+  const { referrer } = document;
+  if (!referrer || !referrer.startsWith('chrome-extension://')) {
+    return false;
+  }
+
+  if (typeof chrome === 'undefined' || !chrome?.runtime?.id) {
+    return true;
+  }
+
+  return referrer.startsWith(`chrome-extension://${chrome.runtime.id}`);
+}
+
+function markSidelySidepanelContext(force = false) {
+  if (!force && window.name !== SIDELY_IFRAME_WINDOW_NAME && !isSidelySidepanelContextByReferrer()) {
+    return;
+  }
+
+  const root = document.documentElement;
+  if (!root) {
+    return;
+  }
+
+  root.dataset[SIDELY_SIDEPANEL_DATASET_FLAG] = '1';
+}
+
+markSidelySidepanelContext();
+
+document.addEventListener('readystatechange', () => {
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    markSidelySidepanelContext();
+  }
+});
 
 function canUseAsyncClipboard() {
   try {
@@ -124,11 +161,21 @@ function applySidelyInjectedTheme(theme) {
 }
 
 window.addEventListener('message', event => {
-  if (!event || !event.data || event.data.type !== SIDELY_THEME_MESSAGE) {
+  if (!event || !event.data) {
     return;
   }
   if (!event.origin || !event.origin.startsWith('chrome-extension://')) {
     return;
   }
+
+  if (event.data.type === SIDELY_CONTEXT_MESSAGE) {
+    markSidelySidepanelContext(true);
+    return;
+  }
+
+  if (event.data.type !== SIDELY_THEME_MESSAGE) {
+    return;
+  }
+
   applySidelyInjectedTheme(event.data.theme);
 });
