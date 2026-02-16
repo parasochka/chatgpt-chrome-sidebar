@@ -1,7 +1,13 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 const SIDELY_SIDEPANEL_DATASET_FLAG = 'sidelySidepanel';
+const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
 
 function markSidelySidepanelContext() {
+  if (window.name === SIDELY_IFRAME_WINDOW_NAME) {
+    document.documentElement.dataset[SIDELY_SIDEPANEL_DATASET_FLAG] = '1';
+    return;
+  }
+
   const { referrer } = document;
   if (!referrer || !referrer.startsWith('chrome-extension://')) {
     return;
