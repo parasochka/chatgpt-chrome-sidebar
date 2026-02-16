@@ -204,7 +204,7 @@ body {
 
 .feature-update-notice {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
   padding: 10px 12px;

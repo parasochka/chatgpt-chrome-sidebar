@@ -44,6 +44,16 @@ html[data-sidely-sidepanel="1"] button:has(svg use[href*="#f8aa74"]) {
   display: none !important;
 }
 
+/* Keep composer controls minimal in sidepanel: only send/stop remain visible */
+html[data-sidely-sidepanel="1"] [data-testid="composer-footer"] button:not([data-testid="send-button"]):not([data-testid="stop-button"]),
+html[data-sidely-sidepanel="1"] [data-testid="composer"] [data-testid="composer-footer"] button:not([data-testid="send-button"]):not([data-testid="stop-button"]),
+html[data-sidely-sidepanel="1"] [data-testid="composer-speech-button"],
+html[data-sidely-sidepanel="1"] [data-testid="composer-plus-button"],
+html[data-sidely-sidepanel="1"] [data-testid="composer-attachments-button"],
+html[data-sidely-sidepanel="1"] [data-testid="composer-attachment-button"] {
+  display: none !important;
+}
+
 /* Hide every disabled state of the send button so it only appears when active */
 html[data-sidely-sidepanel="1"] button[data-testid="send-button"][aria-disabled="true"],
 html[data-sidely-sidepanel="1"] button[data-testid="send-button"][disabled],
