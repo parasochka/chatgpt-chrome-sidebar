@@ -1,22 +1,8 @@
-// Mark DOM when ChatGPT is running inside the extension side panel iframe
-(function markSidepanelFrame() {
-  try {
-    const inIframe = window.top !== window;
-    const ancestors = location.ancestorOrigins;
-    const hasExtensionAncestor =
-      ancestors && ancestors.length > 0 && String(ancestors[0]).startsWith('chrome-extension://');
-
-    if (inIframe && hasExtensionAncestor) {
-      document.documentElement.setAttribute('data-sidely-sidepanel', '1');
-    }
-  } catch (_) {
-    // do nothing
-  }
-})();
-
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 const SIDELY_CONTEXT_MESSAGE = 'sidely-sidepanel-context';
 const SIDELY_SIDEPANEL_DATASET_FLAG = 'sidelySidepanel';
+const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
+
 function isSidelySidepanelFrame() {
   const inIframe = window.top !== window;
   const ancestors = window.location?.ancestorOrigins;
@@ -26,6 +12,17 @@ function isSidelySidepanelFrame() {
     typeof document?.referrer === 'string' && document.referrer.startsWith('chrome-extension://');
   return inIframe && (hasExtensionAncestor || hasExtensionReferrer);
 }
+
+// Mark DOM when ChatGPT is running inside the extension side panel iframe
+(function markSidepanelFrame() {
+  try {
+    if (isSidelySidepanelFrame()) {
+      document.documentElement.setAttribute('data-sidely-sidepanel', '1');
+    }
+  } catch (_) {
+    // do nothing
+  }
+})();
 
 function markSidelySidepanelContext(force = false) {
   if (!force && !isSidelySidepanelFrame()) {
@@ -38,6 +35,7 @@ function markSidelySidepanelContext(force = false) {
   }
 
   root.dataset[SIDELY_SIDEPANEL_DATASET_FLAG] = '1';
+  root.setAttribute('data-sidely-sidepanel', '1');
 }
 
 markSidelySidepanelContext();
