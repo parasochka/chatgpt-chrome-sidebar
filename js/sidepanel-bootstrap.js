@@ -204,6 +204,7 @@ const STORAGE_KEYS = {
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
 const THEME_MODES = ['auto', 'light', 'dark'];
 const THEME_MESSAGE_TYPE = 'sidely-theme-change';
+const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
@@ -619,6 +620,7 @@ function mountPortalIntoIframe(base) {
   lastRequestedIframeSrc = targetSrc;
   iframe.dataset.currentSrc = targetSrc;
   setRefreshButtonLoading(true);
+  iframe.name = SIDELY_IFRAME_WINDOW_NAME;
   iframe.src = targetSrc;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
