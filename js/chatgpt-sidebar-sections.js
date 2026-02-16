@@ -18,10 +18,46 @@
     groupChats: true
   };
 
-  const LABEL_MAP = {
-    projects: ['Projects', 'Проекты'],
-    groupChats: ['Group chats', 'Групповые чаты', 'Группы'],
-    yourChats: ['Your chats', 'Ваши чаты', 'Чаты', 'История', 'История чатов']
+  const LABEL_KEYWORD_MAP = {
+    projects: [
+      'projects',
+      'proyectos',
+      'projets',
+      'परियोजना',
+      'projetos',
+      'проекты',
+      '项目',
+      'projekte',
+      'progetti',
+      'プロジェクト'
+    ],
+    groupChats: [
+      'group chats',
+      'chats de grupo',
+      'chats grupales',
+      'discussions de groupe',
+      'गुरुप चैट',
+      'conversas em grupo',
+      'групповые чаты',
+      '组聊天',
+      'gruppenchats',
+      'chat di gruppo',
+      'グループチャット'
+    ],
+    yourChats: [
+      'your chats',
+      'tus chats',
+      'vos discussions',
+      'आपके चैट',
+      'seus chats',
+      'ваши чаты',
+      '聊天记录',
+      'deine chats',
+      'le tue chat',
+      'あなたのチャット',
+      'история чатов',
+      'chat history'
+    ]
   };
 
   const COOLDOWN_MS = 800;
@@ -103,11 +139,26 @@
     return Array.from(root.querySelectorAll('div[class*="group/sidebar-expando-section"] > button[aria-expanded]'));
   }
 
+  function normalizeLabel(label) {
+    if (!label) return '';
+    return label
+      .trim()
+      .toLowerCase()
+      .replace(/[\s\u00a0]+/g, ' ')
+      .replace(/[.,!?/\\()[\]{}'"`~:;|<>-]/g, '')
+      .trim();
+  }
+
   function detectSectionKeyFromLabel(label) {
     if (!label) return null;
-    const normalized = label.trim().toLowerCase();
-    for (const [key, labels] of Object.entries(LABEL_MAP)) {
-      if (labels.some(entry => entry.toLowerCase() === normalized)) {
+    const normalized = normalizeLabel(label);
+    for (const [key, keywords] of Object.entries(LABEL_KEYWORD_MAP)) {
+      if (
+        keywords.some(entry => {
+          const keyword = normalizeLabel(entry);
+          return normalized === keyword || normalized.includes(keyword);
+        })
+      ) {
         return key;
       }
     }
