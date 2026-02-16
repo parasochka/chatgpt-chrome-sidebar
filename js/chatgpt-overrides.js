@@ -1,46 +1,32 @@
+// Mark DOM when ChatGPT is running inside the extension side panel iframe
+(function markSidepanelFrame() {
+  try {
+    const inIframe = window.top !== window;
+    const ancestors = location.ancestorOrigins;
+    const hasExtensionAncestor =
+      ancestors && ancestors.length > 0 && String(ancestors[0]).startsWith('chrome-extension://');
+
+    if (inIframe && hasExtensionAncestor) {
+      document.documentElement.setAttribute('data-sidely-sidepanel', '1');
+    }
+  } catch (_) {
+    // do nothing
+  }
+})();
+
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 const SIDELY_CONTEXT_MESSAGE = 'sidely-sidepanel-context';
 const SIDELY_SIDEPANEL_DATASET_FLAG = 'sidelySidepanel';
-const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
-
-function isSidelySidepanelContextByReferrer() {
-  const { referrer } = document;
-  if (!referrer || !referrer.startsWith('chrome-extension://')) {
-    return false;
-  }
-
-  if (typeof chrome === 'undefined' || !chrome?.runtime?.id) {
-    return true;
-  }
-
-  return referrer.startsWith(`chrome-extension://${chrome.runtime.id}`);
-}
-
-function isSidelySidepanelContextByAncestorOrigins() {
+function isSidelySidepanelFrame() {
+  const inIframe = window.top !== window;
   const ancestors = window.location?.ancestorOrigins;
-  if (!ancestors || !ancestors.length) {
-    return false;
-  }
-
-  const extensionAncestor = Array.from(ancestors).find(origin => origin.startsWith('chrome-extension://'));
-  if (!extensionAncestor) {
-    return false;
-  }
-
-  if (typeof chrome === 'undefined' || !chrome?.runtime?.id) {
-    return true;
-  }
-
-  return extensionAncestor === `chrome-extension://${chrome.runtime.id}`;
+  const hasExtensionAncestor =
+    ancestors && ancestors.length > 0 && String(ancestors[0]).startsWith('chrome-extension://');
+  return inIframe && hasExtensionAncestor;
 }
 
-function markSidelySidepanelContext(force = false) {
-  if (
-    !force
-    && window.name !== SIDELY_IFRAME_WINDOW_NAME
-    && !isSidelySidepanelContextByReferrer()
-    && !isSidelySidepanelContextByAncestorOrigins()
-  ) {
+function markSidelySidepanelContext() {
+  if (!isSidelySidepanelFrame()) {
     return;
   }
 
@@ -192,7 +178,7 @@ window.addEventListener('message', event => {
   }
 
   if (event.data.type === SIDELY_CONTEXT_MESSAGE) {
-    markSidelySidepanelContext(true);
+    markSidelySidepanelContext();
     return;
   }
 

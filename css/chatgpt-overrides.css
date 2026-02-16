@@ -29,7 +29,7 @@ html, body, main, article, section {
 }
 
 /* Hide "Add from Google Drive" menu option within the composer */
-html[data-sidely-sidepanel="1"] .\_\_menu-item:has(svg path[d^="M3.51105 18.4269"]),
+html[data-sidely-sidepanel="1"] .__menu-item:has(svg path[d^="M3.51105 18.4269"]),
 html[data-sidely-sidepanel="1"] .__menu-item:has(svg use[href*="#030f5c"]) {
   display: none !important;
 }
