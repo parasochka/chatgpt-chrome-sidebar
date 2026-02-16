@@ -1,4 +1,20 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
+const SIDELY_SIDEPANEL_DATASET_FLAG = 'sidelySidepanel';
+
+function markSidelySidepanelContext() {
+  const { referrer } = document;
+  if (!referrer || !referrer.startsWith('chrome-extension://')) {
+    return;
+  }
+
+  if (!referrer.includes('sidebar-panel.html')) {
+    return;
+  }
+
+  document.documentElement.dataset[SIDELY_SIDEPANEL_DATASET_FLAG] = '1';
+}
+
+markSidelySidepanelContext();
 
 function canUseAsyncClipboard() {
   try {

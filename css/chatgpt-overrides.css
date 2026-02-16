@@ -29,25 +29,25 @@ html, body, main, article, section {
 }
 
 /* Hide "Add from Google Drive" menu option within the composer */
-.\_\_menu-item:has(svg path[d^="M3.51105 18.4269"]),
-.__menu-item:has(svg use[href*="#030f5c"]) {
+html[data-sidely-sidepanel="1"] .\_\_menu-item:has(svg path[d^="M3.51105 18.4269"]),
+html[data-sidely-sidepanel="1"] .__menu-item:has(svg use[href*="#030f5c"]) {
   display: none !important;
 }
 
 /* Hide dictate/voice buttons in the composer footer */
-button.composer-btn:has(svg path[d^="M15.7806 10.1963"]),
-button.composer-btn:has(svg use[href*="#29f921"]),
-[data-testid="composer-speech-button"],
-[data-testid="composer-speech-button-container"],
-button:has(svg path[d^="M7.91667 3.33331"]),
-button:has(svg use[href*="#f8aa74"]) {
+html[data-sidely-sidepanel="1"] button.composer-btn:has(svg path[d^="M15.7806 10.1963"]),
+html[data-sidely-sidepanel="1"] button.composer-btn:has(svg use[href*="#29f921"]),
+html[data-sidely-sidepanel="1"] [data-testid="composer-speech-button"],
+html[data-sidely-sidepanel="1"] [data-testid="composer-speech-button-container"],
+html[data-sidely-sidepanel="1"] button:has(svg path[d^="M7.91667 3.33331"]),
+html[data-sidely-sidepanel="1"] button:has(svg use[href*="#f8aa74"]) {
   display: none !important;
 }
 
 /* Hide every disabled state of the send button so it only appears when active */
-button[data-testid="send-button"][aria-disabled="true"],
-button[data-testid="send-button"][disabled],
-button[data-testid="send-button"][data-state~="disabled"] {
+html[data-sidely-sidepanel="1"] button[data-testid="send-button"][aria-disabled="true"],
+html[data-sidely-sidepanel="1"] button[data-testid="send-button"][disabled],
+html[data-sidely-sidepanel="1"] button[data-testid="send-button"][data-state~="disabled"] {
   opacity: 0 !important;
   pointer-events: none !important;
 }
