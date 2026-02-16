@@ -22,7 +22,9 @@ function isSidelySidepanelFrame() {
   const ancestors = window.location?.ancestorOrigins;
   const hasExtensionAncestor =
     ancestors && ancestors.length > 0 && String(ancestors[0]).startsWith('chrome-extension://');
-  return inIframe && hasExtensionAncestor;
+  const hasExtensionReferrer =
+    typeof document?.referrer === 'string' && document.referrer.startsWith('chrome-extension://');
+  return inIframe && (hasExtensionAncestor || hasExtensionReferrer);
 }
 
 function markSidelySidepanelContext(force = false) {

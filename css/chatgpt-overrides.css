@@ -47,10 +47,19 @@ html[data-sidely-sidepanel="1"] button:has(svg use[href*="#f8aa74"]) {
 /* Keep composer controls minimal in sidepanel: only send/stop remain visible */
 html[data-sidely-sidepanel="1"] [data-testid="composer-footer"] button:not([data-testid="send-button"]):not([data-testid="stop-button"]),
 html[data-sidely-sidepanel="1"] [data-testid="composer"] [data-testid="composer-footer"] button:not([data-testid="send-button"]):not([data-testid="stop-button"]),
+html[data-sidely-sidepanel="1"] [data-testid="composer-footer"] [role="button"]:not([data-testid="send-button"]):not([data-testid="stop-button"]),
+html[data-sidely-sidepanel="1"] [data-testid="composer"] [data-testid="composer-footer"] [role="button"]:not([data-testid="send-button"]):not([data-testid="stop-button"]),
+html[data-sidely-sidepanel="1"] [data-testid="composer-footer"] [data-testid]:not([data-testid="send-button"]):not([data-testid="stop-button"]):not(textarea),
+html[data-sidely-sidepanel="1"] [data-testid="composer"] [data-testid="composer-footer"] [data-testid]:not([data-testid="send-button"]):not([data-testid="stop-button"]):not(textarea),
 html[data-sidely-sidepanel="1"] [data-testid="composer-speech-button"],
 html[data-sidely-sidepanel="1"] [data-testid="composer-plus-button"],
 html[data-sidely-sidepanel="1"] [data-testid="composer-attachments-button"],
-html[data-sidely-sidepanel="1"] [data-testid="composer-attachment-button"] {
+html[data-sidely-sidepanel="1"] [data-testid="composer-attachment-button"],
+html[data-sidely-sidepanel="1"] [data-testid*="speech" i],
+html[data-sidely-sidepanel="1"] [data-testid*="voice" i],
+html[data-sidely-sidepanel="1"] [data-testid*="attachment" i],
+html[data-sidely-sidepanel="1"] [data-testid*="upload" i],
+html[data-sidely-sidepanel="1"] [data-testid*="plus" i] {
   display: none !important;
 }
 
