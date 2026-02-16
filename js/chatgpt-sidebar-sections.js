@@ -93,9 +93,12 @@
         return;
       }
 
+      const requestedKeys = Array.isArray(keys) ? keys : [];
+      const accumulated = {};
+
       const readArea = index => {
         if (index >= areas.length) {
-          resolve({});
+          resolve(accumulated);
           return;
         }
 
@@ -104,7 +107,18 @@
             readArea(index + 1);
             return;
           }
-          resolve(items || {});
+
+          if (items && typeof items === 'object') {
+            Object.assign(accumulated, items);
+          }
+
+          const hasAllRequestedKeys = requestedKeys.every(key => Object.prototype.hasOwnProperty.call(accumulated, key));
+          if (hasAllRequestedKeys || requestedKeys.length === 0) {
+            resolve(accumulated);
+            return;
+          }
+
+          readArea(index + 1);
         });
       };
 
