@@ -623,7 +623,11 @@ function mountPortalIntoIframe(base) {
   iframe.dataset.currentSrc = targetSrc;
   setRefreshButtonLoading(true);
   iframe.name = SIDELY_IFRAME_WINDOW_NAME;
+  lastSyncedIframeTheme = null;
   iframe.src = targetSrc;
+  iframe.addEventListener('load', () => {
+    syncChatIframeTheme(getEffectiveTheme(settingsState.themeMode), true);
+  }, { once: true });
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }

@@ -25,8 +25,8 @@ function isSidelySidepanelFrame() {
   return inIframe && hasExtensionAncestor;
 }
 
-function markSidelySidepanelContext() {
-  if (!isSidelySidepanelFrame()) {
+function markSidelySidepanelContext(force = false) {
+  if (!force && !isSidelySidepanelFrame()) {
     return;
   }
 
@@ -178,7 +178,7 @@ window.addEventListener('message', event => {
   }
 
   if (event.data.type === SIDELY_CONTEXT_MESSAGE) {
-    markSidelySidepanelContext();
+    markSidelySidepanelContext(true);
     return;
   }
 
