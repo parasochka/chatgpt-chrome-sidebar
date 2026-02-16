@@ -122,7 +122,11 @@
           }
 
           if (items && typeof items === 'object') {
-            Object.assign(accumulated, items);
+            Object.entries(items).forEach(([key, value]) => {
+              if (!Object.prototype.hasOwnProperty.call(accumulated, key)) {
+                accumulated[key] = value;
+              }
+            });
           }
 
           if (hasAllRequestedKeys()) {
