@@ -10,8 +10,7 @@ function isSidelySidepanelFrame() {
     ancestors && ancestors.length > 0 && String(ancestors[0]).startsWith('chrome-extension://');
   const hasExtensionReferrer =
     typeof document?.referrer === 'string' && document.referrer.startsWith('chrome-extension://');
-  const hasSidelyWindowName = typeof window.name === 'string' && window.name === SIDELY_IFRAME_WINDOW_NAME;
-  return inIframe && (hasExtensionAncestor || hasExtensionReferrer || hasSidelyWindowName);
+  return inIframe && (hasExtensionAncestor || hasExtensionReferrer);
 }
 
 // Mark DOM when ChatGPT is running inside the extension side panel iframe
