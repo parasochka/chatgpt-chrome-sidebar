@@ -754,12 +754,9 @@ function storageGet(keys) {
       return;
     }
 
-    const requestedKeys = Array.isArray(keys) ? keys : [];
-    const accumulated = {};
-
     const tryGet = index => {
       if (index >= storageAreas.length) {
-        resolve(accumulated);
+        resolve({});
         return;
       }
       const storageArea = storageAreas[index];
@@ -770,17 +767,7 @@ function storageGet(keys) {
             tryGet(index + 1);
             return;
           }
-          if (items && typeof items === 'object') {
-            Object.assign(accumulated, items);
-          }
-
-          const hasAllRequestedKeys = requestedKeys.every(key => Object.prototype.hasOwnProperty.call(accumulated, key));
-          if (hasAllRequestedKeys || requestedKeys.length === 0) {
-            resolve(accumulated);
-            return;
-          }
-
-          tryGet(index + 1);
+          resolve(items || {});
         });
       } catch (err) {
         console.warn('storage.get error', err);
