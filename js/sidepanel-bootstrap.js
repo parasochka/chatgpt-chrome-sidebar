@@ -204,6 +204,7 @@ const STORAGE_KEYS = {
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
 const THEME_MODES = ['auto', 'light', 'dark'];
 const THEME_MESSAGE_TYPE = 'sidely-theme-change';
+const SIDELY_CONTEXT_MESSAGE_TYPE = 'sidely-sidepanel-context';
 const SIDELY_IFRAME_WINDOW_NAME = 'sidely-sidepanel';
 
 const SETTINGS_DEFAULTS = {
@@ -312,6 +313,7 @@ function syncChatIframeTheme(theme, force = false) {
   }
   lastSyncedIframeTheme = resolved;
   try {
+    iframe.contentWindow.postMessage({ type: SIDELY_CONTEXT_MESSAGE_TYPE }, '*');
     iframe.contentWindow.postMessage({ type: THEME_MESSAGE_TYPE, theme: resolved }, '*');
   } catch (err) {
     // Cross-origin iframe might block direct messaging; ignore silently.
