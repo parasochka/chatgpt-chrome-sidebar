@@ -93,9 +93,25 @@
         return;
       }
 
+      const requestedKeys = Array.isArray(keys)
+        ? keys
+        : typeof keys === 'string'
+          ? [keys]
+          : keys && typeof keys === 'object'
+            ? Object.keys(keys)
+            : null;
+      const accumulated = {};
+
+      const hasAllRequestedKeys = () => {
+        if (!requestedKeys || requestedKeys.length === 0) {
+          return Object.keys(accumulated).length > 0;
+        }
+        return requestedKeys.every(key => Object.prototype.hasOwnProperty.call(accumulated, key));
+      };
+
       const readArea = index => {
         if (index >= areas.length) {
-          resolve({});
+          resolve(accumulated);
           return;
         }
 
@@ -104,7 +120,17 @@
             readArea(index + 1);
             return;
           }
-          resolve(items || {});
+
+          if (items && typeof items === 'object') {
+            Object.assign(accumulated, items);
+          }
+
+          if (hasAllRequestedKeys()) {
+            resolve(accumulated);
+            return;
+          }
+
+          readArea(index + 1);
         });
       };
 
