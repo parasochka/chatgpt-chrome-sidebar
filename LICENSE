@@ -1,6 +1,6 @@
 Sidely - ChatGPT Sidebar for Chrome Commercial License
 ======================================================
-Version 1.2 – October 2025
+Version 1.1 – 16 February 2026
 
 Copyright (c) 2025 Artem Parasochka
 All rights reserved.
@@ -8,8 +8,8 @@ All rights reserved.
 1. Definitions
    ------------
    "Software" refers to the Sidely - ChatGPT Sidebar for Chrome extension,
-   including all accompanying source code, scripts, assets, localization
-   files, and documentation distributed with it.
+   including all accompanying source code, scripts, assets, and
+   documentation distributed with it.
 
 2. License Grant
    -------------
@@ -58,9 +58,7 @@ All rights reserved.
    --------------------
    The Software is provided without any guarantee of updates, maintenance, or
    support. Any updates that may be provided in the future remain subject to
-   this License unless a different license accompanies the update. Localization
-   packs and UI text updates that ship with the Software are treated as
-   updates under this clause.
+   this License unless a different license accompanies the update.
 
 8. Termination
    -----------
@@ -90,17 +88,7 @@ All rights reserved.
     jurisdiction in which the copyright holder resides, without regard to
     conflict of law principles.
 
-12. Localization Contributions
-    --------------------------
-    Translation files and strings provided by contributors are licensed to the
-    copyright holder. Redistribution of individual localization files outside
-    the scope of this License is not permitted without written approval. Users
-    may create private translations for their own deployments, but they may
-    not publish or sell those translations without obtaining a separate
-    license.
-
-13. Contact
+12. Contact
     -------
-    For licensing inquiries, including commercial usage requests or
-    localization contributions, contact: parasochkaartem@gmail.com or via
-    GitHub at https://github.com/parasochka.
+    For licensing inquiries, including commercial usage requests, contact:
+    parasochkaartem@gmail.com or via GitHub at https://github.com/parasochka.

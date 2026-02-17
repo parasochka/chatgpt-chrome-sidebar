@@ -1,38 +1,46 @@
 # Privacy Policy
 
-**Effective date:** October 2025  
+**Effective date:** 17 February 2026
 **Extension name:** Sidely - ChatGPT Sidebar
 
-Sidely does not collect, store, or share any personal information.
-All interactions take place directly between your browser and the official ChatGPT website
-[chatgpt.com](https://chatgpt.com).
-The extension does not track browsing activity, record usage data, or communicate with any external servers. It makes a single authenticated request to chatgpt.com using your existing session cookies to confirm whether you are signed in. Localization strings for the bundled languages are stored offline with the extension and never transmitted.
+Sidely is designed with a privacy-first approach.
+The extension loads the official ChatGPT interface from [chatgpt.com](https://chatgpt.com) directly in Chrome's side panel and does not run any analytics, tracking scripts, or third-party data collection services.
 
-The only data Sidely keeps is two UI preferences (language and theme). They remain inside Chrome's extension storage and are never uploaded.
+Sidely does **not** collect, store, or share:
+- your prompts,
+- your responses,
+- your credentials,
+- your browsing history.
 
-## Data collection
-- ❌ No user data is collected.
-- ⚠️ Session cookies are sent to ChatGPT once to check whether you are already signed in. They are never stored or transmitted anywhere else.
-- 🗂️ UI preferences (language and theme) stay on your device only.
-- 🌐 Localization selections only reference the translated strings packaged with Sidely; no translation service is contacted.
-- ❌ No analytics or third-party services are used.
+Authentication remains between you and OpenAI.
+
+## Data handling summary
+
+- ❌ **No conversation logging** by the extension.
+- ❌ **No third-party analytics**.
+- ❌ **No remote backend controlled by Sidely** for chat data.
+- ⚙️ **Local/Sync settings only:** language, theme, and sidebar layout preferences (Projects, Your chats, Group chats).
+
+These settings are saved via Chrome extension storage APIs and may sync between your devices when Chrome Sync is enabled.
 
 ## Permissions explanation
-The extension requests limited permissions only to enable ChatGPT to load in Chrome's side panel:
-- `sidePanel` - displays ChatGPT in the sidebar.
-- `declarativeNetRequestWithHostAccess` - temporarily removes restrictive headers (CSP / X-Frame-Options) so ChatGPT can be embedded.
-- `clipboardWrite` - allows a local clipboard fallback so ChatGPT code blocks can be copied reliably.
-- `host_permissions` - allows connection to official ChatGPT domains only.
 
-These permissions do **not** provide access to user data, browsing history, or any other websites.
+Sidely requests only the permissions required to run inside the side panel:
 
-The clipboard fallback runs entirely in the context of ChatGPT pages and never uploads, transmits, or stores any copied text.
+- `sidePanel` - display ChatGPT in Chrome sidebar.
+- `declarativeNetRequestWithHostAccess` - adjust restrictive headers (like CSP / X-Frame-Options) so the official ChatGPT page can load in the embedded panel.
+- `clipboardWrite` - provide reliable local copy behavior for code blocks.
+- `storage` - save extension settings.
+- `host_permissions` - access official ChatGPT domains needed for embedding.
+
+These permissions do not grant Sidely access to unrelated websites or private account data outside the extension context.
 
 ## Contact
-If you have questions about privacy or data usage, please contact the developer:  
+
+If you have questions about this policy, contact:
 **Artem Parasochka** - via [GitHub](https://github.com/parasochka/chatgpt-chrome-sidebar) or email [parasochkaartem@gmail.com](mailto:parasochkaartem@gmail.com).
 
 ---
 
 © 2025 Artem Parasochka. All rights reserved.
-This project is distributed under the Sidely - ChatGPT Sidebar for Chrome Commercial License. See the `LICENSE` file for terms.
+This project is distributed under the Sidely - ChatGPT Sidebar for Chrome Commercial License. See the `LICENSE` file for full terms.

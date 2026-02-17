@@ -1,24 +1,35 @@
 # Sidely - ChatGPT Sidebar for Chrome
 
-Use ChatGPT inside Chrome's sidebar with Sidely – a lightweight, secure sidebar that opens the official ChatGPT UI using your own account.
+Sidely is your personal AI assistant inside Chrome. Stop switching tabs or losing focus.
+This lightweight ChatGPT sidebar extension brings the official ChatGPT interface directly into Chrome's side panel - always one click away.
 
 ---
 
-## Features
+## 🧩 What it does
 
-- 🧠 Quick access to ChatGPT in Chrome's native sidebar
-- 🔐 Uses your existing ChatGPT session (no login inside the extension)
-- ⚙️ Always loads `chatgpt.com` for the fastest possible startup
-- 🌍 Localized interface: en, zh, es, hi, fr, pt, ru, de, it, ja
-- 🎛️ Quick settings menu for picking your preferred theme and UI language
-- 🎨 Light, dark, or auto theme selector that stays in sync with ChatGPT inside the iframe
-- 📋 Reliable copy buttons for code blocks thanks to a clipboard fallback helper
-- 🔄 Refresh the chat history to pull in your latest conversations
-- 💾 Language and theme preferences are stored locally in Chrome storage
+Sidely embeds the official ChatGPT interface ([chatgpt.com](https://chatgpt.com)) into the Chrome sidebar (side panel).
+You can chat, brainstorm, summarize text, translate, or generate ideas without leaving the page you are on.
+It works with your existing ChatGPT session, so you do not need extra accounts or third-party logins.
+
+---
+
+## ⚙️ Key features
+
+- Instant access to ChatGPT from any tab via Chrome side panel
+- Uses the official ChatGPT UI inside the sidebar
+- Works with your current ChatGPT session - no extra registration and no third-party logins
+- Fast and lightweight - built for speed and minimal resource use
+- Theme control: light, dark, or auto
+- Extension UI languages: en, zh, es, hi, fr, pt, ru, de, it, ja
+- Sidebar layout control for ChatGPT navigation:
+  - Projects (default collapsed/expanded)
+  - Your chats (default collapsed/expanded)
+  - Group chats (default collapsed/expanded)
+- "Update chats" button to refresh the sidebar and load latest conversations
+- Reliable code copying for code blocks
+- Settings sync across devices via `chrome.storage.sync`
 
 ### Localization coverage
-
-Sidely ships with native translations for:
 
 | Language | Locale folder |
 | --- | --- |
@@ -35,16 +46,24 @@ Sidely ships with native translations for:
 
 ---
 
+## 💡 Why use Sidely?
+
+Whether you are writing emails, coding, researching, or learning something new, Sidely saves you time.
+You do not need to keep chatgpt.com in a separate tab or constantly copy-paste context between tabs.
+Sidely is built as a focused, low-friction productivity tool for people who use ChatGPT regularly.
+
+---
+
 ## Installation
 
 ### From Chrome Web Store
 Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/chatgpt-sidebar/ibgipmeolfponfpmjhflfgkbcecpmcoo).
 
-### Manual Installation
-1. Download the project.
+### Manual installation
+1. Download this project.
 2. Open `chrome://extensions/` in Chrome.
 3. Enable **Developer mode**.
-4. Click **Load unpacked** and select the folder with extension files.
+4. Click **Load unpacked** and select the extension folder.
 
 ---
 
@@ -52,17 +71,30 @@ Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/cha
 
 | Permission | Purpose |
 |-------------|----------|
-| `sidePanel` | Enables display inside Chrome's side panel |
-| `declarativeNetRequestWithHostAccess` | Adjusts headers to allow ChatGPT to load in iframe |
-| `clipboardWrite` | Provides a safe fallback when copying code snippets from ChatGPT |
-| `host_permissions` | Allows access to chatgpt.com |
+| `sidePanel` | Opens ChatGPT inside Chrome's side panel |
+| `declarativeNetRequestWithHostAccess` | Adjusts page headers so the official UI can be embedded |
+| `clipboardWrite` | Provides a local fallback for reliable code copying |
+| `storage` | Saves and syncs extension settings |
+| `host_permissions` | Allows access to official ChatGPT domains |
 
 ---
 
-## Privacy
+## 🔒 Privacy-first design
 
-This extension does **not** collect or share any personal data.
-All communication happens directly between your browser and ChatGPT. Only the two UI preferences noted above stay on your device via Chrome storage.
+Sidely does **not** collect, store, or transmit your conversations or credentials.
+Authentication stays between you and OpenAI.
+Settings (language, theme, and sidebar layout behavior) are stored in Chrome extension storage and can sync through Chrome Sync.
+
+For full details, see [privacy-policy.md](privacy-policy.md).
+
+---
+
+## 🚀 Coming soon
+
+- Pin and unpin chats (favorites)
+- Sync pinned chats across devices
+- Custom shortcuts and prompt templates
+- Optional hotkey activation
 
 ---
 
