@@ -18,48 +18,6 @@
     groupChats: true
   };
 
-  const LABEL_KEYWORD_MAP = {
-    projects: [
-      'projects',
-      'proyectos',
-      'projets',
-      'परियोजना',
-      'projetos',
-      'проекты',
-      '项目',
-      'projekte',
-      'progetti',
-      'プロジェクト'
-    ],
-    groupChats: [
-      'group chats',
-      'chats de grupo',
-      'chats grupales',
-      'discussions de groupe',
-      'गुरुप चैट',
-      'conversas em grupo',
-      'групповые чаты',
-      '组聊天',
-      'gruppenchats',
-      'chat di gruppo',
-      'グループチャット'
-    ],
-    yourChats: [
-      'your chats',
-      'tus chats',
-      'vos discussions',
-      'आपके चैट',
-      'seus chats',
-      'ваши чаты',
-      '聊天记录',
-      'deine chats',
-      'le tue chat',
-      'あなたのチャット',
-      'история чатов',
-      'chat history'
-    ]
-  };
-
   const COOLDOWN_MS = 800;
   const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] > button[aria-expanded]';
   const SECTION_ORDER = ['projects', 'groupChats', 'yourChats'];
@@ -126,11 +84,6 @@
   function getSidebarRoot() {
     const hasSectionToggleButtons = node => !!node?.querySelector(SECTION_TOGGLE_BUTTON_SELECTOR);
 
-    const stagedByLegacyLabel = document.querySelector('#stage-slideover-sidebar nav[aria-label="Chat history"]');
-    if (hasSectionToggleButtons(stagedByLegacyLabel)) {
-      return stagedByLegacyLabel;
-    }
-
     const stageSidebar = document.getElementById('stage-slideover-sidebar');
     if (stageSidebar) {
       const stagedNavs = Array.from(stageSidebar.querySelectorAll('nav'));
@@ -156,69 +109,15 @@
     }
 
     const byKey = new Map();
-    const unlabeledButtons = [];
-
-    buttons.forEach(button => {
-      const label = button.querySelector('h2.__menu-label')?.textContent?.trim() || '';
-      const sectionKey = detectSectionKeyFromLabel(label);
-      if (!sectionKey || byKey.has(sectionKey)) {
-        unlabeledButtons.push(button);
-        return;
-      }
-
-      byKey.set(sectionKey, button);
-    });
-
-    if (byKey.size === SECTION_ORDER.length) {
-      return byKey;
-    }
 
     SECTION_ORDER.forEach((key, index) => {
-      if (byKey.has(key)) {
-        return;
+      const button = buttons[index];
+      if (button) {
+        byKey.set(key, button);
       }
-
-      const button = unlabeledButtons[index] || buttons[index];
-      if (!button || Array.from(byKey.values()).includes(button)) {
-        return;
-      }
-
-      byKey.set(key, button);
     });
 
     return byKey;
-  }
-
-  function normalizeLabel(text) {
-    if (!text) return '';
-    return text
-      .toLowerCase()
-      .normalize('NFKC')
-      .replace(/[\u200B-\u200D\uFEFF]/g, '')
-      .replace(/[\s\p{P}\p{S}]+/gu, ' ')
-      .trim();
-  }
-
-  function detectSectionKeyFromLabel(label) {
-    const normalizedLabel = normalizeLabel(label);
-    if (!normalizedLabel) return null;
-
-    for (const [key, keywords] of Object.entries(LABEL_KEYWORD_MAP)) {
-      if (
-        keywords.some(keyword => {
-          const normalizedKeyword = normalizeLabel(keyword);
-          return (
-            normalizedLabel === normalizedKeyword ||
-            normalizedLabel.includes(normalizedKeyword) ||
-            normalizedKeyword.includes(normalizedLabel)
-          );
-        })
-      ) {
-        return key;
-      }
-    }
-
-    return null;
   }
 
   function scheduleApply(delay = 0) {
