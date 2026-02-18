@@ -65,27 +65,57 @@
       'グループチャット'
     ],
     yourChats: [
+      'chats',
+      'chat',
+      'conversation',
+      'conversations',
+      'recent',
+      'recents',
+      'history',
       'your chats',
       'your chat',
       'chat history',
+      'chats history',
+      'recent chats',
+      'all chats',
       'tus chats',
       'tu chat',
+      'conversaciones',
+      'historial',
       'vos discussions',
       'votre discussion',
+      'conversations',
+      'historique',
       'deine chats',
       'dein chat',
+      'unterhaltungen',
+      'verlauf',
       'le tue chat',
       'la tua chat',
+      'conversazioni',
+      'cronologia',
       'seus chats',
       'seu chat',
+      'conversas',
+      'histórico',
       'ваши чаты',
       'ваш чат',
       'история чатов',
+      'чаты',
+      'чат',
+      'история',
       'आपके चैट',
       'आपका चैट',
+      'चैट',
+      'चैट्स',
+      'इतिहास',
       '聊天记录',
       '你的聊天',
-      'あなたのチャット'
+      '聊天',
+      '历史记录',
+      'あなたのチャット',
+      'チャット',
+      '履歴'
     ]
   };
   const lastApplied = new Map();
@@ -283,7 +313,11 @@
 
     const labelCandidates = [
       button.querySelector('h2.__menu-label')?.textContent,
+      button.querySelector('h2, h3, h4, [role="heading"]')?.textContent,
       button.getAttribute('aria-label'),
+      button.getAttribute('aria-labelledby')
+        ? document.getElementById(button.getAttribute('aria-labelledby'))?.textContent
+        : null,
       button.getAttribute('data-testid'),
       button.textContent
     ];
