@@ -156,27 +156,34 @@
     }
 
     const byKey = new Map();
-
-    if (buttons.length >= SECTION_ORDER.length) {
-      SECTION_ORDER.forEach((key, index) => {
-        if (buttons[index]) {
-          byKey.set(key, buttons[index]);
-        }
-      });
-    }
-
-    if (byKey.size === SECTION_ORDER.length) {
-      return byKey;
-    }
+    const unlabeledButtons = [];
 
     buttons.forEach(button => {
       const label = button.querySelector('h2.__menu-label')?.textContent?.trim() || '';
       const sectionKey = detectSectionKeyFromLabel(label);
       if (!sectionKey || byKey.has(sectionKey)) {
+        unlabeledButtons.push(button);
         return;
       }
 
       byKey.set(sectionKey, button);
+    });
+
+    if (byKey.size === SECTION_ORDER.length) {
+      return byKey;
+    }
+
+    SECTION_ORDER.forEach((key, index) => {
+      if (byKey.has(key)) {
+        return;
+      }
+
+      const button = unlabeledButtons[index] || buttons[index];
+      if (!button || Array.from(byKey.values()).includes(button)) {
+        return;
+      }
+
+      byKey.set(key, button);
     });
 
     return byKey;
