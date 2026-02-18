@@ -61,6 +61,8 @@
   };
 
   const COOLDOWN_MS = 800;
+  const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] > button[aria-expanded]';
+  const SECTION_ORDER = ['projects', 'groupChats', 'yourChats'];
   const lastApplied = new Map();
   const userTouched = new Set();
   let desiredState = { ...DEFAULTS };
@@ -122,21 +124,62 @@
   }
 
   function getSidebarRoot() {
-    const staged = document.querySelector('#stage-slideover-sidebar nav[aria-label="Chat history"]');
-    if (staged) return staged;
+    const hasSectionToggleButtons = node => !!node?.querySelector(SECTION_TOGGLE_BUTTON_SELECTOR);
+
+    const stagedByLegacyLabel = document.querySelector('#stage-slideover-sidebar nav[aria-label="Chat history"]');
+    if (hasSectionToggleButtons(stagedByLegacyLabel)) {
+      return stagedByLegacyLabel;
+    }
 
     const stageSidebar = document.getElementById('stage-slideover-sidebar');
     if (stageSidebar) {
-      const nav = stageSidebar.querySelector('nav[aria-label="Chat history"]');
-      if (nav) return nav;
+      const stagedNavs = Array.from(stageSidebar.querySelectorAll('nav'));
+      const stagedMatch = stagedNavs.find(hasSectionToggleButtons);
+      if (stagedMatch) {
+        return stagedMatch;
+      }
     }
 
-    return document.querySelector('nav[aria-label="Chat history"]');
+    const allNavs = Array.from(document.querySelectorAll('nav'));
+    return allNavs.find(hasSectionToggleButtons) || null;
   }
 
-  function getExpandoButtons(root) {
+  function getSectionToggleButtons(root) {
     if (!root) return [];
-    return Array.from(root.querySelectorAll('div[class*="group/sidebar-expando-section"] > button[aria-expanded]'));
+    return Array.from(root.querySelectorAll(SECTION_TOGGLE_BUTTON_SELECTOR));
+  }
+
+  function getSectionButtons(root) {
+    const buttons = getSectionToggleButtons(root);
+    if (!buttons.length) {
+      return new Map();
+    }
+
+    const byKey = new Map();
+
+    if (buttons.length >= SECTION_ORDER.length) {
+      SECTION_ORDER.forEach((key, index) => {
+        if (buttons[index]) {
+          byKey.set(key, buttons[index]);
+        }
+      });
+    }
+
+    if (byKey.size === SECTION_ORDER.length) {
+      return byKey;
+    }
+
+    buttons.forEach(button => {
+      const label = button.querySelector('h2.__menu-label')?.textContent?.trim() || '';
+      const sectionKey = detectSectionKeyFromLabel(label);
+      if (!sectionKey || byKey.has(sectionKey)) {
+        return;
+      }
+
+      byKey.set(sectionKey, button);
+    });
+
+    return byKey;
   }
 
   function normalizeLabel(text) {
@@ -188,17 +231,16 @@
       return;
     }
 
-    const buttons = getExpandoButtons(root);
-    if (!buttons.length) {
+    const sectionButtons = getSectionButtons(root);
+    if (!sectionButtons.size) {
       return;
     }
 
     const now = Date.now();
 
-    buttons.forEach(button => {
-      const label = button.querySelector('h2.__menu-label')?.textContent?.trim() || '';
-      const sectionKey = detectSectionKeyFromLabel(label);
-      if (!sectionKey || userTouched.has(sectionKey)) {
+    SECTION_ORDER.forEach(sectionKey => {
+      const button = sectionButtons.get(sectionKey);
+      if (!button || userTouched.has(sectionKey)) {
         return;
       }
 
@@ -247,7 +289,7 @@
         }
 
         const button = target.closest(
-          'button[aria-label="Open sidebar"][aria-controls="stage-slideover-sidebar"], button[data-testid="close-sidebar-button"]'
+          'button[aria-controls="stage-slideover-sidebar"], button[data-testid="close-sidebar-button"]'
         );
 
         if (!button) {
@@ -268,13 +310,18 @@
           return;
         }
 
-        const sectionButton = target.closest('div[class*="group/sidebar-expando-section"] > button[aria-expanded]');
+        const sectionButton = target.closest(SECTION_TOGGLE_BUTTON_SELECTOR);
         if (!sectionButton) {
           return;
         }
 
-        const label = sectionButton.querySelector('h2.__menu-label')?.textContent?.trim() || '';
-        const sectionKey = detectSectionKeyFromLabel(label);
+        const root = sectionButton.closest('nav') || getSidebarRoot();
+        if (!root) {
+          return;
+        }
+
+        const sectionButtons = getSectionButtons(root);
+        const sectionKey = SECTION_ORDER.find(key => sectionButtons.get(key) === sectionButton) || null;
         if (sectionKey) {
           userTouched.add(sectionKey);
         }
