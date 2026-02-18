@@ -20,7 +20,74 @@
 
   const COOLDOWN_MS = 800;
   const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] > button[aria-expanded]';
+  const SECTION_TOGGLE_ICON_SUFFIX = '#d3876b';
   const SECTION_ORDER = ['projects', 'groupChats', 'yourChats'];
+  const SECTION_LABEL_KEYWORDS = {
+    projects: [
+      'projects',
+      'project',
+      'proyectos',
+      'proyecto',
+      'projets',
+      'projet',
+      'projekte',
+      'progetto',
+      'progetti',
+      'projetos',
+      'projeto',
+      'проекты',
+      'проект',
+      'परियोजनाएं',
+      'परियोजना',
+      '项目',
+      '項目',
+      'プロジェクト'
+    ],
+    groupChats: [
+      'group chats',
+      'group chat',
+      'chats de grupo',
+      'chat de grupo',
+      'discussions de groupe',
+      'discussion de groupe',
+      'gruppenchats',
+      'gruppenchat',
+      'chat di gruppo',
+      'chats di gruppo',
+      'conversas em grupo',
+      'conversa em grupo',
+      'групповые чаты',
+      'групповой чат',
+      'ग्रुप चैट',
+      'ग्रुप चैट्स',
+      '组聊天',
+      '群组聊天',
+      'グループチャット'
+    ],
+    yourChats: [
+      'your chats',
+      'your chat',
+      'chat history',
+      'tus chats',
+      'tu chat',
+      'vos discussions',
+      'votre discussion',
+      'deine chats',
+      'dein chat',
+      'le tue chat',
+      'la tua chat',
+      'seus chats',
+      'seu chat',
+      'ваши чаты',
+      'ваш чат',
+      'история чатов',
+      'आपके चैट',
+      'आपका चैट',
+      '聊天记录',
+      '你的聊天',
+      'あなたのチャット'
+    ]
+  };
   const lastApplied = new Map();
   const userTouched = new Set();
   let desiredState = { ...DEFAULTS };
@@ -97,9 +164,39 @@
     return allNavs.find(hasSectionToggleButtons) || null;
   }
 
+  function buttonHasSectionToggleIcon(button) {
+    if (!button) return false;
+    const iconUse = button.querySelector('use[href], use[xlink\\:href]');
+    if (!iconUse) return false;
+
+    const href = iconUse.getAttribute('href') || iconUse.getAttribute('xlink:href') || '';
+    return href.endsWith(SECTION_TOGGLE_ICON_SUFFIX);
+  }
+
+  function isLikelySectionToggleButton(button) {
+    return !!detectSectionKeyFromButton(button);
+  }
+
   function getSectionToggleButtons(root) {
     if (!root) return [];
-    return Array.from(root.querySelectorAll(SECTION_TOGGLE_BUTTON_SELECTOR));
+
+    const allCandidates = Array.from(root.querySelectorAll(SECTION_TOGGLE_BUTTON_SELECTOR));
+    if (!allCandidates.length) {
+      return [];
+    }
+
+    const localizedMatchedButtons = allCandidates.filter(isLikelySectionToggleButton);
+    const iconAndLocalizedMatchedButtons = localizedMatchedButtons.filter(buttonHasSectionToggleIcon);
+    if (iconAndLocalizedMatchedButtons.length) {
+      return iconAndLocalizedMatchedButtons;
+    }
+
+    if (localizedMatchedButtons.length) {
+      return localizedMatchedButtons;
+    }
+
+    const iconMatchedButtons = allCandidates.filter(buttonHasSectionToggleIcon);
+    return iconMatchedButtons.length ? iconMatchedButtons : allCandidates;
   }
 
   function getSectionButtons(root) {
@@ -109,15 +206,96 @@
     }
 
     const byKey = new Map();
+    const usedButtons = new Set();
+
+    buttons.forEach(button => {
+      const sectionKey = detectSectionKeyFromButton(button);
+      if (!sectionKey || byKey.has(sectionKey)) {
+        return;
+      }
+
+      byKey.set(sectionKey, button);
+      usedButtons.add(button);
+    });
+
+    if (byKey.size === SECTION_ORDER.length) {
+      return byKey;
+    }
+
+    const canUsePositionalFallback = byKey.size === 0 || buttons.length === SECTION_ORDER.length;
+    if (!canUsePositionalFallback) {
+      return byKey;
+    }
 
     SECTION_ORDER.forEach((key, index) => {
+      if (byKey.has(key)) {
+        return;
+      }
+
       const button = buttons[index];
-      if (button) {
+      if (button && !usedButtons.has(button)) {
         byKey.set(key, button);
+        usedButtons.add(button);
       }
     });
 
     return byKey;
+  }
+
+  function normalizeLabel(text) {
+    if (!text) return '';
+    return text
+      .toLowerCase()
+      .normalize('NFKC')
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function detectSectionKeyFromText(text) {
+    const normalizedText = normalizeLabel(text);
+    if (!normalizedText) {
+      return null;
+    }
+
+    for (const [key, keywords] of Object.entries(SECTION_LABEL_KEYWORDS)) {
+      const matched = keywords.some(keyword => {
+        const normalizedKeyword = normalizeLabel(keyword);
+        return (
+          normalizedText === normalizedKeyword ||
+          normalizedText.includes(normalizedKeyword) ||
+          normalizedKeyword.includes(normalizedText)
+        );
+      });
+
+      if (matched) {
+        return key;
+      }
+    }
+
+    return null;
+  }
+
+  function detectSectionKeyFromButton(button) {
+    if (!button) {
+      return null;
+    }
+
+    const labelCandidates = [
+      button.querySelector('h2.__menu-label')?.textContent,
+      button.getAttribute('aria-label'),
+      button.getAttribute('data-testid'),
+      button.textContent
+    ];
+
+    for (const candidate of labelCandidates) {
+      const sectionKey = detectSectionKeyFromText(candidate || '');
+      if (sectionKey) {
+        return sectionKey;
+      }
+    }
+
+    return null;
   }
 
   function scheduleApply(delay = 0) {
