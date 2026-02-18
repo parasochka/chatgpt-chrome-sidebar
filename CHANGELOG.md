@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2
+- Fixed: Sidebar layout control for ChatGPT navigation
+
 ## 1.1
 - Added new settings menu toggles to control default expansion/collapse behavior for sidebar sections.
 - You can now choose whether **Your chats**, **Group chats**, and **Projects** are expanded by default when the ChatGPT sidebar opens.
