@@ -1,5 +1,12 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 
+// Mark the document as running inside the extension sidebar frame.
+// window !== window.top is true only when this script executes inside an iframe,
+// which in practice means the sidebar panel — not a regular browser tab.
+if (window !== window.top) {
+  document.documentElement.setAttribute('data-sidely-frame', '');
+}
+
 function canUseAsyncClipboard() {
   try {
     const policy = document.permissionsPolicy || document.featurePolicy;
