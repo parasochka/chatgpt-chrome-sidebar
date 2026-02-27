@@ -73,13 +73,58 @@ if (isSidelyFrame) {
       return false;
     }
 
+    // Multilingual keywords for voice/dictation buttons.
+    // Covers the same languages as SECTION_LABEL_KEYWORDS in chatgpt-sidebar-sections.js.
+    var VOICE_BUTTON_KEYWORDS = [
+      // English
+      'voice', 'dictate', 'dictation', 'speech', 'microphone', 'speak', 'record',
+      // French
+      'dicter', 'dictée', 'voix', 'parler', 'enregistrer', 'micro',
+      'saisie vocale', 'dictée vocale',
+      // Spanish
+      'voz', 'dictar', 'dictado', 'micrófono', 'hablar', 'grabar',
+      // German
+      'sprache', 'spracheingabe', 'mikrofon', 'diktieren', 'diktat', 'sprechen', 'aufnahme',
+      // Italian
+      'voce', 'dettare', 'dettatura', 'microfono', 'parlare', 'registrare',
+      // Portuguese
+      'ditar', 'ditado', 'microfone', 'falar', 'gravar',
+      // Dutch
+      'stem', 'dicteren', 'dicteer', 'microfoon', 'spreken', 'opnemen',
+      // Polish
+      'głos', 'dyktować', 'dyktowanie', 'mikrofon', 'mówić', 'nagrywać',
+      // Russian
+      'голос', 'диктовать', 'диктовка', 'микрофон', 'говорить', 'запись',
+      // Ukrainian
+      'голос', 'диктувати', 'диктування', 'мікрофон', 'говорити', 'запис',
+      // Turkish
+      'ses', 'dikte', 'mikrofon', 'konuşma', 'konuşmak', 'kayıt',
+      // Arabic
+      'صوت', 'إملاء', 'ميكروفون', 'نطق', 'تسجيل',
+      // Hebrew
+      'קול', 'הכתבה', 'מיקרופון', 'דיבור', 'הקלטה',
+      // Japanese
+      '音声', 'マイク', '録音', '話す', '音声入力',
+      // Korean
+      '음성', '마이크', '녹음', '말하기',
+      // Chinese (Simplified & Traditional)
+      '语音', '麦克风', '录音', '说话', '語音', '麥克風', '錄音',
+      // Hindi
+      'आवाज', 'माइक्रोफोन', 'बोलना', 'रिकॉर्ड',
+      // Thai
+      'เสียง', 'ไมค์', 'บันทึก', 'พูด',
+    ];
+
     function isVoiceButton(el) {
       if (el.tagName !== 'BUTTON') return false;
       var aria = (el.getAttribute('aria-label') || '').toLowerCase();
       var title = (el.getAttribute('title') || '').toLowerCase();
-      // Match voice/dictate/speech/microphone buttons
-      if (/voice|dictate|speech|microphone|speak|record/i.test(aria + ' ' + title)) {
-        return true;
+      var combined = aria + ' ' + title;
+      // Match against multilingual voice/dictate/speech/microphone keywords
+      for (var k = 0; k < VOICE_BUTTON_KEYWORDS.length; k++) {
+        if (combined.indexOf(VOICE_BUTTON_KEYWORDS[k]) !== -1) {
+          return true;
+        }
       }
       // Check for microphone SVG icon
       var svgs = el.querySelectorAll('svg');
@@ -237,10 +282,30 @@ document.addEventListener('click', async (e) => {
   const title = (btn.getAttribute('title') || '').toLowerCase();
   const txt = (btn.textContent || '').toLowerCase();
 
+  // Multilingual "copy" button keywords (aria-label / title / text).
+  // "copy" is a substring of Spanish "copiar", French "copier" starts with
+  // "copi" not "copy", so we list localisations explicitly.
+  const COPY_KEYWORDS = [
+    'copy', 'clipboard',          // English
+    'copier', 'copié',            // French
+    'copiar',                     // Spanish / Portuguese
+    'kopieren', 'kopiert',        // German
+    'copiare', 'copiato',         // Italian
+    'kopiëren', 'gekopieerd',     // Dutch
+    'kopiować', 'skopiować',      // Polish
+    'копировать', 'скопировать',  // Russian
+    'копіювати', 'скопіювати',    // Ukrainian
+    'kopyala', 'kopyalandı',      // Turkish
+    'نسخ',                        // Arabic
+    'העתק', 'העתקה',              // Hebrew
+    'कॉपी',                       // Hindi
+    'คัดลอก',                     // Thai
+    'コピー',                     // Japanese
+    '복사',                       // Korean
+    '复制', '複製',               // Chinese
+  ];
   const looksLikeCopy =
-    aria.includes('copy') ||
-    title.includes('copy') ||
-    /copy|clipboard/.test(txt) ||
+    COPY_KEYWORDS.some(kw => aria.includes(kw) || title.includes(kw) || txt.includes(kw)) ||
     btn.matches('[data-testid="copy"],[data-testid="code-copy"],[data-testid="clipboard"]');
 
   const inCode = !!btn.closest('[data-testid="code"], pre, code');
