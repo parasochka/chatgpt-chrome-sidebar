@@ -1,11 +1,35 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 
-// Mark the document as running inside the extension sidebar frame.
-// window !== window.top is true only when this script executes inside an iframe,
-// which in practice means the sidebar panel — not a regular browser tab.
-if (window !== window.top) {
-  document.documentElement.setAttribute('data-sidely-frame', '');
-}
+// Mark the document as running inside our extension's sidebar iframe.
+// Three synchronous strategies are tried at document_start; a fourth
+// asynchronous fallback piggybacks on the theme postMessage that the
+// sidebar panel already sends after iframe load.
+(function markSidelyFrame() {
+  function mark() {
+    document.documentElement.setAttribute('data-sidely-frame', '');
+  }
+  try {
+    // Strategy 1 (most precise): check location.ancestorOrigins for our
+    // extension origin.  Chrome populates this list before any script runs.
+    var origins = location.ancestorOrigins;
+    if (origins && origins.length > 0) {
+      var extId = typeof chrome !== 'undefined' && chrome && chrome.runtime && chrome.runtime.id;
+      if (extId) {
+        var extOrigin = 'chrome-extension://' + extId;
+        for (var i = 0; i < origins.length; i++) {
+          if (origins[i] === extOrigin) { mark(); return; }
+        }
+      }
+    }
+    // Strategy 2: standard iframe detection.  In Chrome side-panels the
+    // iframe's window object differs from window.top.
+    if (window.self !== window.top) { mark(); return; }
+  } catch (_) {
+    // Strategy 3: accessing window.top threw a SecurityError — this only
+    // happens in a cross-origin iframe, which is exactly our case.
+    mark();
+  }
+}());
 
 function canUseAsyncClipboard() {
   try {
@@ -136,6 +160,11 @@ window.addEventListener('message', event => {
   }
   if (!event.origin || !event.origin.startsWith('chrome-extension://')) {
     return;
+  }
+  // Strategy 4 (async fallback): receiving a theme message from a
+  // chrome-extension:// origin proves we are inside the sidebar iframe.
+  if (!document.documentElement.hasAttribute('data-sidely-frame')) {
+    document.documentElement.setAttribute('data-sidely-frame', '');
   }
   applySidelyInjectedTheme(event.data.theme);
 });
