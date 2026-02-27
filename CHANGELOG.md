@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3
+- Split some design changes between the browser version and the sidebar itself.
+
 ## 1.2
 - Fixed: Sidebar layout control for ChatGPT navigation
 
