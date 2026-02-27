@@ -1,24 +1,34 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 
 // Mark the document as running inside our extension's sidebar iframe.
-// We inspect location.ancestorOrigins: when chatgpt.com is loaded inside the
-// extension's <iframe>, the immediate ancestor origin is our chrome-extension://
-// page. This is more reliable than `window !== window.top`, which can fail for
-// cross-origin iframes (the extension page and chatgpt.com are different origins).
+// Three synchronous strategies are tried at document_start; a fourth
+// asynchronous fallback piggybacks on the theme postMessage that the
+// sidebar panel already sends after iframe load.
 (function markSidelyFrame() {
+  function mark() {
+    document.documentElement.setAttribute('data-sidely-frame', '');
+  }
   try {
-    const origins = location.ancestorOrigins;
-    if (!origins || origins.length === 0) return;
-    const extId = typeof chrome !== 'undefined' && chrome && chrome.runtime && chrome.runtime.id;
-    if (!extId) return;
-    const extOrigin = 'chrome-extension://' + extId;
-    for (let i = 0; i < origins.length; i++) {
-      if (origins[i] === extOrigin) {
-        document.documentElement.setAttribute('data-sidely-frame', '');
-        return;
+    // Strategy 1 (most precise): check location.ancestorOrigins for our
+    // extension origin.  Chrome populates this list before any script runs.
+    var origins = location.ancestorOrigins;
+    if (origins && origins.length > 0) {
+      var extId = typeof chrome !== 'undefined' && chrome && chrome.runtime && chrome.runtime.id;
+      if (extId) {
+        var extOrigin = 'chrome-extension://' + extId;
+        for (var i = 0; i < origins.length; i++) {
+          if (origins[i] === extOrigin) { mark(); return; }
+        }
       }
     }
-  } catch (_) {}
+    // Strategy 2: standard iframe detection.  In Chrome side-panels the
+    // iframe's window object differs from window.top.
+    if (window.self !== window.top) { mark(); return; }
+  } catch (_) {
+    // Strategy 3: accessing window.top threw a SecurityError — this only
+    // happens in a cross-origin iframe, which is exactly our case.
+    mark();
+  }
 }());
 
 function canUseAsyncClipboard() {
@@ -150,6 +160,11 @@ window.addEventListener('message', event => {
   }
   if (!event.origin || !event.origin.startsWith('chrome-extension://')) {
     return;
+  }
+  // Strategy 4 (async fallback): receiving a theme message from a
+  // chrome-extension:// origin proves we are inside the sidebar iframe.
+  if (!document.documentElement.hasAttribute('data-sidely-frame')) {
+    document.documentElement.setAttribute('data-sidely-frame', '');
   }
   applySidelyInjectedTheme(event.data.theme);
 });
