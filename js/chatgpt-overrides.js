@@ -1,11 +1,25 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 
-// Mark the document as running inside the extension sidebar frame.
-// window !== window.top is true only when this script executes inside an iframe,
-// which in practice means the sidebar panel — not a regular browser tab.
-if (window !== window.top) {
-  document.documentElement.setAttribute('data-sidely-frame', '');
-}
+// Mark the document as running inside our extension's sidebar iframe.
+// We inspect location.ancestorOrigins: when chatgpt.com is loaded inside the
+// extension's <iframe>, the immediate ancestor origin is our chrome-extension://
+// page. This is more reliable than `window !== window.top`, which can fail for
+// cross-origin iframes (the extension page and chatgpt.com are different origins).
+(function markSidelyFrame() {
+  try {
+    const origins = location.ancestorOrigins;
+    if (!origins || origins.length === 0) return;
+    const extId = typeof chrome !== 'undefined' && chrome && chrome.runtime && chrome.runtime.id;
+    if (!extId) return;
+    const extOrigin = 'chrome-extension://' + extId;
+    for (let i = 0; i < origins.length; i++) {
+      if (origins[i] === extOrigin) {
+        document.documentElement.setAttribute('data-sidely-frame', '');
+        return;
+      }
+    }
+  } catch (_) {}
+}());
 
 function canUseAsyncClipboard() {
   try {
