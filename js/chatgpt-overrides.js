@@ -73,36 +73,75 @@ if (isSidelyFrame) {
       return false;
     }
 
-    // Multilingual keywords for voice/dictation buttons.
-    // Covers the same languages as SECTION_LABEL_KEYWORDS in chatgpt-sidebar-sections.js.
+    // Normalize text for voice button keyword matching.
+    // Mirrors normalizeLabel() from chatgpt-sidebar-sections.js.
+    function normalizeVoiceText(str) {
+      return (str || '').toLowerCase().normalize('NFKC')
+        .replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    // Multilingual keywords for voice/dictation buttons — single words,
+    // singular and plural (same convention as SECTION_LABEL_KEYWORDS).
+    // Matching is done word-by-word so "Démarrer le mode vocal" matches "vocal".
     var VOICE_BUTTON_KEYWORDS = [
       // English
-      'voice', 'dictate', 'dictation', 'speech', 'microphone', 'speak', 'record',
+      'voice', 'voices', 'vocal', 'vocalise',
+      'dictate', 'dictation', 'dictations',
+      'speech', 'speeches',
+      'microphone', 'microphones', 'mic', 'mics',
+      'speak', 'speaking', 'record', 'recording',
       // French
-      'dicter', 'dictée', 'voix', 'parler', 'enregistrer', 'micro',
-      'saisie vocale', 'dictée vocale',
+      'voix', 'vocal', 'vocale', 'vocaux', 'vocales',
+      'dicter', 'dictée', 'dictées',
+      'parler', 'enregistrer', 'micro',
       // Spanish
-      'voz', 'dictar', 'dictado', 'micrófono', 'hablar', 'grabar',
+      'voz', 'voces', 'vocal', 'vocales',
+      'dictar', 'dictado', 'dictados',
+      'micrófono', 'micrófonos',
+      'hablar', 'grabar',
       // German
-      'sprache', 'spracheingabe', 'mikrofon', 'diktieren', 'diktat', 'sprechen', 'aufnahme',
+      'sprache', 'sprachen', 'spracheingabe',
+      'mikrofon', 'mikrofone',
+      'diktieren', 'diktat', 'diktate',
+      'sprechen', 'aufnahme', 'aufnahmen',
       // Italian
-      'voce', 'dettare', 'dettatura', 'microfono', 'parlare', 'registrare',
+      'voce', 'voci', 'vocale', 'vocali',
+      'dettare', 'dettatura', 'dettature',
+      'microfono', 'microfoni',
+      'parlare', 'registrare',
       // Portuguese
-      'ditar', 'ditado', 'microfone', 'falar', 'gravar',
+      'voz', 'vozes', 'vocal', 'vocais',
+      'ditar', 'ditado', 'ditados',
+      'microfone', 'microfones',
+      'falar', 'gravar',
       // Dutch
-      'stem', 'dicteren', 'dicteer', 'microfoon', 'spreken', 'opnemen',
+      'stem', 'stemmen', 'vocaal', 'vocale',
+      'dicteren', 'dicteer',
+      'microfoon', 'microfonen',
+      'spreken', 'opnemen',
       // Polish
-      'głos', 'dyktować', 'dyktowanie', 'mikrofon', 'mówić', 'nagrywać',
+      'głos', 'głosy', 'głosowy', 'głosowa',
+      'dyktować', 'dyktowanie',
+      'mikrofon', 'mikrofony',
+      'mówić', 'nagrywać',
       // Russian
-      'голос', 'диктовать', 'диктовка', 'микрофон', 'говорить', 'запись',
+      'голос', 'голоса', 'голосовой', 'голосовая', 'голосовое', 'голосовые',
+      'диктовать', 'диктовка', 'диктовки',
+      'микрофон', 'микрофоны',
+      'говорить', 'запись',
       // Ukrainian
-      'голос', 'диктувати', 'диктування', 'мікрофон', 'говорити', 'запис',
+      'голос', 'голоси', 'голосовий', 'голосова',
+      'диктувати', 'диктування',
+      'мікрофон', 'мікрофони',
+      'говорити', 'запис',
       // Turkish
-      'ses', 'dikte', 'mikrofon', 'konuşma', 'konuşmak', 'kayıt',
+      'ses', 'sesler', 'sesli',
+      'dikte', 'mikrofon', 'mikrofonlar',
+      'konuşma', 'konuşmak', 'kayıt', 'kayıtlar',
       // Arabic
-      'صوت', 'إملاء', 'ميكروفون', 'نطق', 'تسجيل',
+      'صوت', 'أصوات', 'صوتي', 'إملاء', 'ميكروفون', 'نطق', 'تسجيل',
       // Hebrew
-      'קול', 'הכתבה', 'מיקרופון', 'דיבור', 'הקלטה',
+      'קול', 'קולות', 'הכתבה', 'מיקרופון', 'דיבור', 'הקלטה',
       // Japanese
       '音声', 'マイク', '録音', '話す', '音声入力',
       // Korean
@@ -117,15 +156,29 @@ if (isSidelyFrame) {
 
     function isVoiceButton(el) {
       if (el.tagName !== 'BUTTON') return false;
-      var aria = (el.getAttribute('aria-label') || '').toLowerCase();
-      var title = (el.getAttribute('title') || '').toLowerCase();
-      var combined = aria + ' ' + title;
-      // Match against multilingual voice/dictate/speech/microphone keywords
-      for (var k = 0; k < VOICE_BUTTON_KEYWORDS.length; k++) {
-        if (combined.indexOf(VOICE_BUTTON_KEYWORDS[k]) !== -1) {
-          return true;
+      var aria = el.getAttribute('aria-label') || '';
+      var title = el.getAttribute('title') || '';
+      var combined = normalizeVoiceText(aria + ' ' + title);
+
+      if (combined) {
+        // Split into individual words and match each word against keywords,
+        // the same way chatgpt-sidebar-sections.js matches section labels.
+        var words = combined.split(' ').filter(Boolean);
+        for (var k = 0; k < VOICE_BUTTON_KEYWORDS.length; k++) {
+          var kw = normalizeVoiceText(VOICE_BUTTON_KEYWORDS[k]);
+          if (!kw) continue;
+          if (kw.indexOf(' ') !== -1) {
+            // Multi-word keyword (phrase): match as substring
+            if (combined.indexOf(kw) !== -1) return true;
+          } else {
+            // Single-word keyword: exact word match (avoids false substring hits)
+            for (var w = 0; w < words.length; w++) {
+              if (words[w] === kw) return true;
+            }
+          }
         }
       }
+
       // Check for microphone SVG icon
       var svgs = el.querySelectorAll('svg');
       for (var i = 0; i < svgs.length; i++) {
