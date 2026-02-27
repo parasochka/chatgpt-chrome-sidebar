@@ -1,36 +1,165 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
+const SIDELY_FRAME_NAME = 'sidely-frame';
 
-// Mark the document as running inside our extension's sidebar iframe.
-// Three synchronous strategies are tried at document_start; a fourth
-// asynchronous fallback piggybacks on the theme postMessage that the
-// sidebar panel already sends after iframe load.
-(function markSidelyFrame() {
-  function mark() {
-    document.documentElement.setAttribute('data-sidely-frame', '');
-  }
-  try {
-    // Strategy 1 (most precise): check location.ancestorOrigins for our
-    // extension origin.  Chrome populates this list before any script runs.
-    var origins = location.ancestorOrigins;
-    if (origins && origins.length > 0) {
-      var extId = typeof chrome !== 'undefined' && chrome && chrome.runtime && chrome.runtime.id;
-      if (extId) {
-        var extOrigin = 'chrome-extension://' + extId;
-        for (var i = 0; i < origins.length; i++) {
-          if (origins[i] === extOrigin) { mark(); return; }
+// Detect whether we are inside the extension's sidebar iframe.
+// Primary strategy: the sidebar sets <iframe name="sidely-frame"> before
+// loading the src, so window.name is available immediately at document_start,
+// works cross-origin, and cannot be spoofed by the page.
+var isSidelyFrame = (window.name === SIDELY_FRAME_NAME);
+
+if (isSidelyFrame) {
+  document.documentElement.setAttribute('data-sidely-frame', '');
+}
+
+// ---------------------------------------------------------------------------
+// Sidebar-only: hide buttons that don't work or make no sense in the sidebar
+// (Google Drive menu item, voice/dictate buttons, disabled send button).
+//
+// Instead of fragile CSS selectors tied to SVG path `d` values or class names
+// that ChatGPT can change at any time, we use a MutationObserver that
+// identifies elements by stable attributes (data-testid, aria-label) and
+// heuristic text/icon matching.
+// ---------------------------------------------------------------------------
+if (isSidelyFrame) {
+  (function hideSidebarOnlyElements() {
+    var STYLE_ID = 'sidely-hidden';
+
+    // Inject a style tag for elements we can target with stable selectors
+    function injectSidebarCSS() {
+      if (document.getElementById(STYLE_ID)) return;
+      var style = document.createElement('style');
+      style.id = STYLE_ID;
+      style.textContent = [
+        // Hide voice/speech buttons by data-testid (stable)
+        '[data-testid="composer-speech-button"] { display: none !important; }',
+        '[data-testid="composer-speech-button-container"] { display: none !important; }',
+        // Hide disabled send button so it only shows when active
+        'button[data-testid="send-button"][aria-disabled="true"] { opacity: 0 !important; pointer-events: none !important; }',
+        'button[data-testid="send-button"][disabled] { opacity: 0 !important; pointer-events: none !important; }',
+      ].join('\n');
+      (document.head || document.documentElement).appendChild(style);
+    }
+
+    // Try to inject immediately (document_start — head may not exist yet)
+    injectSidebarCSS();
+    // Re-inject once DOM is ready in case head wasn't available
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', injectSidebarCSS);
+    }
+
+    // For elements that can only be found by inspecting their content
+    // (e.g. Google Drive menu item, voice button without data-testid),
+    // use a MutationObserver to hide them as they appear.
+    function hideElement(el) {
+      if (el && el.style.display !== 'none') {
+        el.style.setProperty('display', 'none', 'important');
+      }
+    }
+
+    function isGoogleDriveMenuItem(el) {
+      // Menu items that mention "Google Drive" or "Drive"
+      var text = (el.textContent || '').trim();
+      if (/google\s*drive/i.test(text)) return true;
+      // Check for the Google Drive SVG icon (triangle-based path)
+      var svgs = el.querySelectorAll('svg');
+      for (var i = 0; i < svgs.length; i++) {
+        var paths = svgs[i].querySelectorAll('path');
+        for (var j = 0; j < paths.length; j++) {
+          var d = paths[j].getAttribute('d') || '';
+          // Google Drive icon has characteristic path starting points
+          if (d.indexOf('M3.511') === 0 || d.indexOf('M3.51105') === 0) return true;
+        }
+      }
+      return false;
+    }
+
+    function isVoiceButton(el) {
+      if (el.tagName !== 'BUTTON') return false;
+      var aria = (el.getAttribute('aria-label') || '').toLowerCase();
+      var title = (el.getAttribute('title') || '').toLowerCase();
+      // Match voice/dictate/speech/microphone buttons
+      if (/voice|dictate|speech|microphone|speak|record/i.test(aria + ' ' + title)) {
+        return true;
+      }
+      // Check for microphone SVG icon
+      var svgs = el.querySelectorAll('svg');
+      for (var i = 0; i < svgs.length; i++) {
+        var paths = svgs[i].querySelectorAll('path');
+        for (var j = 0; j < paths.length; j++) {
+          var d = paths[j].getAttribute('d') || '';
+          if (d.indexOf('M7.91667 3.333') === 0 || d.indexOf('M15.7806 10.1963') === 0) return true;
+          // Generic microphone icon path patterns
+          if (d.indexOf('M12 1a3') >= 0 || d.indexOf('M12 1.5') >= 0 || d.indexOf('M8 1') >= 0) return true;
+        }
+      }
+      return false;
+    }
+
+    function scanAndHide(root) {
+      if (!root || !root.querySelectorAll) return;
+
+      // Hide Google Drive menu items
+      var menuItems = root.querySelectorAll('[role="menuitem"], [role="option"], [class*="menu-item"], [class*="menuitem"]');
+      for (var i = 0; i < menuItems.length; i++) {
+        if (isGoogleDriveMenuItem(menuItems[i])) {
+          hideElement(menuItems[i]);
+        }
+      }
+
+      // Hide voice/dictate buttons not caught by data-testid CSS
+      var buttons = root.querySelectorAll('button');
+      for (var j = 0; j < buttons.length; j++) {
+        if (isVoiceButton(buttons[j])) {
+          hideElement(buttons[j]);
         }
       }
     }
-    // Strategy 2: standard iframe detection.  In Chrome side-panels the
-    // iframe's window object differs from window.top.
-    if (window.self !== window.top) { mark(); return; }
-  } catch (_) {
-    // Strategy 3: accessing window.top threw a SecurityError — this only
-    // happens in a cross-origin iframe, which is exactly our case.
-    mark();
-  }
-}());
 
+    // Initial scan once body is available
+    function initialScan() {
+      scanAndHide(document.body);
+    }
+
+    if (document.body) {
+      initialScan();
+    } else {
+      document.addEventListener('DOMContentLoaded', initialScan);
+    }
+
+    // Watch for new elements being added to the DOM
+    var observer = new MutationObserver(function(mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        var added = mutations[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          var node = added[j];
+          if (node.nodeType === 1) {
+            // Check the node itself
+            if (node.matches && node.matches('[role="menuitem"], [role="option"], [class*="menu-item"], [class*="menuitem"]')) {
+              if (isGoogleDriveMenuItem(node)) hideElement(node);
+            }
+            if (node.tagName === 'BUTTON' && isVoiceButton(node)) {
+              hideElement(node);
+            }
+            // Check descendants
+            scanAndHide(node);
+          }
+        }
+      }
+    });
+
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    }
+  }());
+}
+
+// ---------------------------------------------------------------------------
+// Clipboard helpers (all frames)
+// ---------------------------------------------------------------------------
 function canUseAsyncClipboard() {
   try {
     const policy = document.permissionsPolicy || document.featurePolicy;
@@ -134,6 +263,9 @@ document.addEventListener('click', async (e) => {
   }
 }, true);
 
+// ---------------------------------------------------------------------------
+// Theme synchronisation
+// ---------------------------------------------------------------------------
 function applySidelyInjectedTheme(theme) {
   const root = document.documentElement;
   if (!root) return;
@@ -161,9 +293,10 @@ window.addEventListener('message', event => {
   if (!event.origin || !event.origin.startsWith('chrome-extension://')) {
     return;
   }
-  // Strategy 4 (async fallback): receiving a theme message from a
-  // chrome-extension:// origin proves we are inside the sidebar iframe.
-  if (!document.documentElement.hasAttribute('data-sidely-frame')) {
+  // Async fallback: receiving a theme message from a chrome-extension://
+  // origin proves we are inside the sidebar iframe.
+  if (!isSidelyFrame) {
+    isSidelyFrame = true;
     document.documentElement.setAttribute('data-sidely-frame', '');
   }
   applySidelyInjectedTheme(event.data.theme);

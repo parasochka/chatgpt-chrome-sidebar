@@ -28,36 +28,6 @@ html, body, main, article, section {
   user-select: text !important;
 }
 
-/* ── Sidebar-frame-only fixes ───────────────────────────────────────────────
-   These rules apply only when ChatGPT is loaded inside the extension sidebar
-   iframe. The [data-sidely-frame] attribute is set by chatgpt-overrides.js at
-   document_start when window !== window.top, so regular browser tabs are not
-   affected. */
-
-/* Hide "Add from Google Drive" menu option within the composer */
-html[data-sidely-frame] .\_\_menu-item:has(svg path[d^="M3.51105 18.4269"]),
-html[data-sidely-frame] .__menu-item:has(svg use[href*="#030f5c"]) {
-  display: none !important;
-}
-
-/* Hide dictate/voice buttons in the composer footer */
-html[data-sidely-frame] button.composer-btn:has(svg path[d^="M15.7806 10.1963"]),
-html[data-sidely-frame] button.composer-btn:has(svg use[href*="#29f921"]),
-html[data-sidely-frame] [data-testid="composer-speech-button"],
-html[data-sidely-frame] [data-testid="composer-speech-button-container"],
-html[data-sidely-frame] button:has(svg path[d^="M7.91667 3.33331"]),
-html[data-sidely-frame] button:has(svg use[href*="#f8aa74"]) {
-  display: none !important;
-}
-
-/* Hide every disabled state of the send button so it only appears when active */
-html[data-sidely-frame] button[data-testid="send-button"][aria-disabled="true"],
-html[data-sidely-frame] button[data-testid="send-button"][disabled],
-html[data-sidely-frame] button[data-testid="send-button"][data-state~="disabled"] {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
 /* Normalize the hamburger/sidebar toggle to two equal bars */
 button[data-testid="open-sidebar-button"],
 button[aria-controls="stage-popover-sidebar"]:not([data-testid="close-sidebar-button"]) {

@@ -619,6 +619,7 @@ function mountPortalIntoIframe(base) {
   lastRequestedIframeSrc = targetSrc;
   iframe.dataset.currentSrc = targetSrc;
   setRefreshButtonLoading(true);
+  iframe.name = 'sidely-frame';
   iframe.src = targetSrc;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
