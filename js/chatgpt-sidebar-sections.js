@@ -19,7 +19,7 @@
   };
 
   const COOLDOWN_MS = 800;
-  const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] > button[aria-expanded]';
+  const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] button[aria-expanded]';
   const SECTION_TOGGLE_ICON_SUFFIX = '#d3876b';
   const SECTION_ORDER = ['projects', 'groupChats', 'yourChats'];
   const SECTION_LABEL_KEYWORDS = {
