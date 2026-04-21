@@ -262,6 +262,7 @@
 
   function getSidebarRoot() {
     const hasSectionToggleButtons = node => !!node?.querySelector(SECTION_TOGGLE_BUTTON_SELECTOR);
+    const hasBroadExpandoButtons = node => !!node?.querySelector('button[aria-expanded]');
 
     const stageSidebar = document.getElementById('stage-slideover-sidebar');
     if (stageSidebar) {
@@ -270,10 +271,23 @@
       if (stagedMatch) {
         return stagedMatch;
       }
+      const stagedChatHistoryNav = stageSidebar.querySelector('nav[aria-label="Chat history"]');
+      if (stagedChatHistoryNav) {
+        return stagedChatHistoryNav;
+      }
+      const broadStagedMatch = stagedNavs.find(hasBroadExpandoButtons);
+      if (broadStagedMatch) {
+        return broadStagedMatch;
+      }
     }
 
     const allNavs = Array.from(document.querySelectorAll('nav'));
-    return allNavs.find(hasSectionToggleButtons) || null;
+    return (
+      allNavs.find(hasSectionToggleButtons) ||
+      document.querySelector('nav[aria-label="Chat history"]') ||
+      allNavs.find(hasBroadExpandoButtons) ||
+      null
+    );
   }
 
   function buttonHasSectionToggleIcon(button) {
@@ -293,22 +307,30 @@
     if (!root) return [];
 
     const allCandidates = Array.from(root.querySelectorAll(SECTION_TOGGLE_BUTTON_SELECTOR));
-    if (!allCandidates.length) {
+    if (allCandidates.length) {
+      const localizedMatchedButtons = allCandidates.filter(isLikelySectionToggleButton);
+      const iconAndLocalizedMatchedButtons = localizedMatchedButtons.filter(buttonHasSectionToggleIcon);
+      if (iconAndLocalizedMatchedButtons.length) {
+        return iconAndLocalizedMatchedButtons;
+      }
+
+      if (localizedMatchedButtons.length) {
+        return localizedMatchedButtons;
+      }
+
+      const iconMatchedButtons = allCandidates.filter(buttonHasSectionToggleIcon);
+      return iconMatchedButtons.length ? iconMatchedButtons : allCandidates;
+    }
+
+    // Fallback: primary CSS selector didn't match (ChatGPT may have changed class names).
+    // Search all aria-expanded buttons in the nav and filter by section keyword matching.
+    const broadCandidates = Array.from(root.querySelectorAll('button[aria-expanded]'));
+    if (!broadCandidates.length) {
       return [];
     }
 
-    const localizedMatchedButtons = allCandidates.filter(isLikelySectionToggleButton);
-    const iconAndLocalizedMatchedButtons = localizedMatchedButtons.filter(buttonHasSectionToggleIcon);
-    if (iconAndLocalizedMatchedButtons.length) {
-      return iconAndLocalizedMatchedButtons;
-    }
-
-    if (localizedMatchedButtons.length) {
-      return localizedMatchedButtons;
-    }
-
-    const iconMatchedButtons = allCandidates.filter(buttonHasSectionToggleIcon);
-    return iconMatchedButtons.length ? iconMatchedButtons : allCandidates;
+    const keywordMatched = broadCandidates.filter(isLikelySectionToggleButton);
+    return keywordMatched;
   }
 
   function getSectionButtons(root) {
