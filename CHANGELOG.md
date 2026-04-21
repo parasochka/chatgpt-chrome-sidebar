@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1
+- Minor layout updates
+
 ## 1.3
 - Split some design changes between the browser version and the sidebar itself.
 
