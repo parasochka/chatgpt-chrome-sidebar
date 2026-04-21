@@ -19,7 +19,7 @@
   };
 
   const COOLDOWN_MS = 800;
-  const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] > button[aria-expanded]';
+  const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] button[aria-expanded]';
   const SECTION_TOGGLE_ICON_SUFFIX = '#d3876b';
   const SECTION_ORDER = ['projects', 'groupChats', 'yourChats'];
   const SECTION_LABEL_KEYWORDS = {
@@ -196,7 +196,40 @@
       '聊天记录',
       '历史记录',
       '對話',
-      '履歴'
+      '履歴',
+      'recientes',
+      'récents',
+      'récentes',
+      'letzte',
+      'zuletzt',
+      'recenti',
+      'recentes',
+      'recente',
+      'ostatnie',
+      'nedávné',
+      'nedávne',
+      'senaste',
+      'siste',
+      'seneste',
+      'viimeisimmät',
+      'son konuşmalar',
+      'yakın zamanda',
+      'πρόσφατα',
+      'недавние',
+      'нещодавні',
+      'الأخيرة',
+      'الحديثة',
+      'אחרונים',
+      'אחרונות',
+      'हाल के',
+      'हाल की',
+      'সাম্প্রতিক',
+      'ล่าสุด',
+      'gần đây',
+      'terbaru',
+      'terkini',
+      '最近',
+      '최근'
     ]
   };
 
@@ -262,6 +295,7 @@
 
   function getSidebarRoot() {
     const hasSectionToggleButtons = node => !!node?.querySelector(SECTION_TOGGLE_BUTTON_SELECTOR);
+    const hasBroadExpandoButtons = node => !!node?.querySelector('button[aria-expanded]');
 
     const stageSidebar = document.getElementById('stage-slideover-sidebar');
     if (stageSidebar) {
@@ -270,10 +304,23 @@
       if (stagedMatch) {
         return stagedMatch;
       }
+      const stagedChatHistoryNav = stageSidebar.querySelector('nav[aria-label="Chat history"]');
+      if (stagedChatHistoryNav) {
+        return stagedChatHistoryNav;
+      }
+      const broadStagedMatch = stagedNavs.find(hasBroadExpandoButtons);
+      if (broadStagedMatch) {
+        return broadStagedMatch;
+      }
     }
 
     const allNavs = Array.from(document.querySelectorAll('nav'));
-    return allNavs.find(hasSectionToggleButtons) || null;
+    return (
+      allNavs.find(hasSectionToggleButtons) ||
+      document.querySelector('nav[aria-label="Chat history"]') ||
+      allNavs.find(hasBroadExpandoButtons) ||
+      null
+    );
   }
 
   function buttonHasSectionToggleIcon(button) {
@@ -293,22 +340,30 @@
     if (!root) return [];
 
     const allCandidates = Array.from(root.querySelectorAll(SECTION_TOGGLE_BUTTON_SELECTOR));
-    if (!allCandidates.length) {
+    if (allCandidates.length) {
+      const localizedMatchedButtons = allCandidates.filter(isLikelySectionToggleButton);
+      const iconAndLocalizedMatchedButtons = localizedMatchedButtons.filter(buttonHasSectionToggleIcon);
+      if (iconAndLocalizedMatchedButtons.length) {
+        return iconAndLocalizedMatchedButtons;
+      }
+
+      if (localizedMatchedButtons.length) {
+        return localizedMatchedButtons;
+      }
+
+      const iconMatchedButtons = allCandidates.filter(buttonHasSectionToggleIcon);
+      return iconMatchedButtons.length ? iconMatchedButtons : allCandidates;
+    }
+
+    // Fallback: primary CSS selector didn't match (ChatGPT may have changed class names).
+    // Search all aria-expanded buttons in the nav and filter by section keyword matching.
+    const broadCandidates = Array.from(root.querySelectorAll('button[aria-expanded]'));
+    if (!broadCandidates.length) {
       return [];
     }
 
-    const localizedMatchedButtons = allCandidates.filter(isLikelySectionToggleButton);
-    const iconAndLocalizedMatchedButtons = localizedMatchedButtons.filter(buttonHasSectionToggleIcon);
-    if (iconAndLocalizedMatchedButtons.length) {
-      return iconAndLocalizedMatchedButtons;
-    }
-
-    if (localizedMatchedButtons.length) {
-      return localizedMatchedButtons;
-    }
-
-    const iconMatchedButtons = allCandidates.filter(buttonHasSectionToggleIcon);
-    return iconMatchedButtons.length ? iconMatchedButtons : allCandidates;
+    const keywordMatched = broadCandidates.filter(isLikelySectionToggleButton);
+    return keywordMatched;
   }
 
   function getSectionButtons(root) {
