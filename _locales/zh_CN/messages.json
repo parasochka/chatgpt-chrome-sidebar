@@ -107,6 +107,9 @@
   "settingsSidebarSectionsHint": {
     "message": "选择在 ChatGPT 侧边栏出现时默认展开的分区。"
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "默认展开“已固定”"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "默认展开“项目”"
   },

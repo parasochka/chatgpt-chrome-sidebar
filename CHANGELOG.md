@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4
+- Updated sidebar section controls for the new ChatGPT layout where projects can be pinned.
+- Added a **Pinned** toggle so you can choose whether the pinned section is expanded by default, alongside Projects, Your chats, and Group chats.
+- Expanded multilingual detection so the controls keep working across all supported interface languages.
+
 ## 1.3.1
 - Minor layout updates
 

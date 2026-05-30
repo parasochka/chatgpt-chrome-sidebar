@@ -7,12 +7,14 @@
   };
 
   const STORAGE_KEYS = {
+    pinned: 'sidelySidebarPinnedExpanded',
     projects: 'sidelySidebarProjectsExpanded',
     yourChats: 'sidelySidebarYourChatsExpanded',
     groupChats: 'sidelySidebarGroupChatsExpanded'
   };
 
   const DEFAULTS = {
+    pinned: true,
     projects: true,
     yourChats: true,
     groupChats: true
@@ -21,8 +23,108 @@
   const COOLDOWN_MS = 800;
   const SECTION_TOGGLE_BUTTON_SELECTOR = 'div[class*="group/sidebar-expando-section"] button[aria-expanded]';
   const SECTION_TOGGLE_ICON_SUFFIX = '#d3876b';
-  const SECTION_ORDER = ['projects', 'groupChats', 'yourChats'];
+  const SECTION_ORDER = ['pinned', 'projects', 'groupChats', 'yourChats'];
   const SECTION_LABEL_KEYWORDS = {
+    pinned: [
+      'pin',
+      'pins',
+      'pinned',
+      'fijado',
+      'fijados',
+      'fijadas',
+      'fijar',
+      'anclado',
+      'anclados',
+      'ancladas',
+      'anclar',
+      'épinglé',
+      'épinglés',
+      'épinglée',
+      'épinglées',
+      'epingle',
+      'epingles',
+      'épingler',
+      'angeheftet',
+      'angepinnt',
+      'fixiert',
+      'anheften',
+      'fissato',
+      'fissati',
+      'bloccato',
+      'bloccati',
+      'appuntato',
+      'appuntati',
+      'in evidenza',
+      'fixado',
+      'fixados',
+      'fixadas',
+      'fixar',
+      'fixada',
+      'vastgezet',
+      'vastgemaakt',
+      'vastgepind',
+      'przypięte',
+      'przypięty',
+      'przypiete',
+      'připnuté',
+      'připnuto',
+      'pripnute',
+      'fästa',
+      'fästade',
+      'fastnålade',
+      'festet',
+      'festede',
+      'fastgjort',
+      'fastgjorte',
+      'kiinnitetyt',
+      'kiinnitetty',
+      'sabitlenmiş',
+      'sabitlendi',
+      'sabitlenenler',
+      'sabitle',
+      'καρφιτσωμένα',
+      'καρφιτσωμένο',
+      'καρφίτσωμα',
+      'закреплённые',
+      'закрепленные',
+      'закреплённое',
+      'закреплено',
+      'закреплён',
+      'закреплен',
+      'закреп',
+      'закріплені',
+      'закріплено',
+      'закріплене',
+      'مثبت',
+      'المثبتة',
+      'تثبيت',
+      'مثبتة',
+      'מוצמד',
+      'מוצמדים',
+      'נעוץ',
+      'נעוצים',
+      'पिन',
+      'पिन किया गया',
+      'पिन किए गए',
+      'পিন',
+      'পিন করা',
+      'ปักหมุด',
+      'ปักหมุดแล้ว',
+      'đã ghim',
+      'ghim',
+      'daghim',
+      'disematkan',
+      'disemat',
+      'sematan',
+      'ピン留め',
+      'ピン留め済み',
+      '固定',
+      '고정',
+      '고정됨',
+      '已固定',
+      '置顶',
+      '已置顶'
+    ],
     projects: [
       'project',
       'projects',
@@ -287,6 +389,7 @@
   async function getSettingValues() {
     const stored = await storageGetWithFallback(Object.values(STORAGE_KEYS));
     return {
+      pinned: normalizeBoolean(stored[STORAGE_KEYS.pinned], DEFAULTS.pinned),
       projects: normalizeBoolean(stored[STORAGE_KEYS.projects], DEFAULTS.projects),
       yourChats: normalizeBoolean(stored[STORAGE_KEYS.yourChats], DEFAULTS.yourChats),
       groupChats: normalizeBoolean(stored[STORAGE_KEYS.groupChats], DEFAULTS.groupChats)
@@ -596,6 +699,12 @@
       }
 
       let changed = false;
+
+      if (changes[STORAGE_KEYS.pinned]) {
+        desiredState.pinned = normalizeBoolean(changes[STORAGE_KEYS.pinned].newValue, DEFAULTS.pinned);
+        userTouched.delete('pinned');
+        changed = true;
+      }
 
       if (changes[STORAGE_KEYS.projects]) {
         desiredState.projects = normalizeBoolean(changes[STORAGE_KEYS.projects].newValue, DEFAULTS.projects);

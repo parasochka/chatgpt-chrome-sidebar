@@ -107,6 +107,9 @@
   "settingsSidebarSectionsHint": {
     "message": "Choose which sections are expanded by default when the ChatGPT sidebar appears."
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "Pinned expanded by default"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projects expanded by default"
   },

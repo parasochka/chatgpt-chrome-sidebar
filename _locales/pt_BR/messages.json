@@ -107,6 +107,9 @@
   "settingsSidebarSectionsHint": {
     "message": "Escolha quais seções ficam expandidas por padrão quando a barra lateral do ChatGPT aparecer."
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "Fixados expandidos por padrão"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projetos expandidos por padrão"
   },

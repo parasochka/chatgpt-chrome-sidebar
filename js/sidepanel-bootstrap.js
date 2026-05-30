@@ -29,6 +29,7 @@ const FALLBACK_MESSAGES = {
   settingsThemeDark: 'Dark',
   settingsSidebarSectionsTitle: 'ChatGPT sidebar sections',
   settingsSidebarSectionsHint: 'Choose which sections are expanded by default when the ChatGPT sidebar appears.',
+  settingsSidebarPinnedToggle: 'Pinned expanded by default',
   settingsSidebarProjectsToggle: 'Projects expanded by default',
   settingsSidebarYourChatsToggle: 'Your chats expanded by default',
   settingsSidebarGroupChatsToggle: 'Group chats expanded by default',
@@ -195,6 +196,7 @@ const FEATURE_NOTICE_TARGET_VERSION = '1.1';
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   themeMode: 'sidelyThemeMode',
+  sidebarPinnedExpanded: 'sidelySidebarPinnedExpanded',
   sidebarProjectsExpanded: 'sidelySidebarProjectsExpanded',
   sidebarYourChatsExpanded: 'sidelySidebarYourChatsExpanded',
   sidebarGroupChatsExpanded: 'sidelySidebarGroupChatsExpanded',
@@ -208,6 +210,7 @@ const THEME_MESSAGE_TYPE = 'sidely-theme-change';
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
   themeMode: 'auto',
+  sidebarPinnedExpanded: true,
   sidebarProjectsExpanded: true,
   sidebarYourChatsExpanded: true,
   sidebarGroupChatsExpanded: true
@@ -487,6 +490,7 @@ function applyLocalization() {
   });
 
   [
+    ['settings-sidebar-pinned-expanded', 'settings-sidebar-pinned-expanded-label'],
     ['settings-sidebar-projects-expanded', 'settings-sidebar-projects-expanded-label'],
     ['settings-sidebar-your-chats-expanded', 'settings-sidebar-your-chats-expanded-label'],
     ['settings-sidebar-group-chats-expanded', 'settings-sidebar-group-chats-expanded-label']
@@ -775,6 +779,7 @@ function storageGet(keys) {
 function storageSet(items) {
   const normalizedItems = { ...items };
   [
+    STORAGE_KEYS.sidebarPinnedExpanded,
     STORAGE_KEYS.sidebarProjectsExpanded,
     STORAGE_KEYS.sidebarYourChatsExpanded,
     STORAGE_KEYS.sidebarGroupChatsExpanded
@@ -880,6 +885,10 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
+  nextState.sidebarPinnedExpanded = normalizeBooleanSetting(
+    stored[STORAGE_KEYS.sidebarPinnedExpanded],
+    SETTINGS_DEFAULTS.sidebarPinnedExpanded
+  );
   nextState.sidebarProjectsExpanded = normalizeBooleanSetting(
     stored[STORAGE_KEYS.sidebarProjectsExpanded],
     SETTINGS_DEFAULTS.sidebarProjectsExpanded
@@ -909,6 +918,11 @@ function syncSettingsUI() {
   themeInputs.forEach(input => {
     input.checked = input.value === settingsState.themeMode;
   });
+
+  const sidebarPinnedInput = document.getElementById('settings-sidebar-pinned-expanded');
+  if (sidebarPinnedInput) {
+    sidebarPinnedInput.checked = !!settingsState.sidebarPinnedExpanded;
+  }
 
   const sidebarProjectsInput = document.getElementById('settings-sidebar-projects-expanded');
   if (sidebarProjectsInput) {
@@ -971,6 +985,11 @@ function setupSettingsControls() {
   });
 
   const sidebarBooleanControls = [
+    {
+      id: 'settings-sidebar-pinned-expanded',
+      stateKey: 'sidebarPinnedExpanded',
+      storageKey: STORAGE_KEYS.sidebarPinnedExpanded
+    },
     {
       id: 'settings-sidebar-projects-expanded',
       stateKey: 'sidebarProjectsExpanded',

@@ -107,6 +107,9 @@
   "settingsSidebarSectionsHint": {
     "message": "ChatGPT サイドバーが表示されたときに、どのセクションを既定で展開するかを選択します。"
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "ピン留めを既定で展開する"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "プロジェクトを既定で展開する"
   },
