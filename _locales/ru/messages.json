@@ -107,6 +107,12 @@
   "settingsSidebarSectionsHint": {
     "message": "Выберите, какие разделы будут развернуты по умолчанию при появлении боковой панели ChatGPT."
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "Закреплённые развернуты по умолчанию"
+  },
+  "settingsSidebarRecentsToggle": {
+    "message": "Недавние развернуты по умолчанию"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Проекты развернуты по умолчанию"
   },

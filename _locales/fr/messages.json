@@ -107,6 +107,12 @@
   "settingsSidebarSectionsHint": {
     "message": "Choisissez les sections développées par défaut lorsque la barre latérale ChatGPT apparaît."
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "Épinglés développés par défaut"
+  },
+  "settingsSidebarRecentsToggle": {
+    "message": "Récents développés par défaut"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projets développés par défaut"
   },

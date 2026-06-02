@@ -107,6 +107,12 @@
   "settingsSidebarSectionsHint": {
     "message": "Wählen Sie aus, welche Bereiche standardmäßig erweitert sind, wenn die ChatGPT-Seitenleiste angezeigt wird."
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "Angeheftete standardmäßig erweitert"
+  },
+  "settingsSidebarRecentsToggle": {
+    "message": "Zuletzt standardmäßig erweitert"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projekte standardmäßig erweitert"
   },

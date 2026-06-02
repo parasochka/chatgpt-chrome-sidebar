@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4
+- Reworked the sidebar section controls for ChatGPT's new layout, which now uses just two collapsible sections: **Pinned** (projects and pinned items) and **Recents**.
+- The settings now offer a **Pinned** and a **Recents** toggle to choose their default expanded/collapsed state.
+- Expanded multilingual section detection so the controls keep working across all supported interface languages.
+
 ## 1.3.1
 - Minor layout updates
 

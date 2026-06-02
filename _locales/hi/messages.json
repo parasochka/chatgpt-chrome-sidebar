@@ -107,6 +107,12 @@
   "settingsSidebarSectionsHint": {
     "message": "जब ChatGPT साइडबार दिखे, तब कौन-से सेक्शन डिफ़ॉल्ट रूप से खुले रहें यह चुनें।"
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "Pinned डिफ़ॉल्ट रूप से खुले"
+  },
+  "settingsSidebarRecentsToggle": {
+    "message": "Recents डिफ़ॉल्ट रूप से खुले"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projects डिफ़ॉल्ट रूप से खुले"
   },

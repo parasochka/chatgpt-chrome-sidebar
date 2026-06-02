@@ -107,6 +107,12 @@
   "settingsSidebarSectionsHint": {
     "message": "Elige qué secciones se expanden de forma predeterminada cuando aparece la barra lateral de ChatGPT."
   },
+  "settingsSidebarPinnedToggle": {
+    "message": "Fijados expandidos por defecto"
+  },
+  "settingsSidebarRecentsToggle": {
+    "message": "Recientes expandidos por defecto"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Proyectos expandidos por defecto"
   },
