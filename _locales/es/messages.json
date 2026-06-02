@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "Fijados expandidos por defecto"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "Recientes expandidos por defecto"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Proyectos expandidos por defecto"
   },

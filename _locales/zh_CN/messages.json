@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "默认展开“已固定”"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "默认展开“最近”"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "默认展开“项目”"
   },

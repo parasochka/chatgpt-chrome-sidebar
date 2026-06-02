@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "Закреплённые развернуты по умолчанию"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "Недавние развернуты по умолчанию"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Проекты развернуты по умолчанию"
   },

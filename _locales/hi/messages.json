@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "Pinned डिफ़ॉल्ट रूप से खुले"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "Recents डिफ़ॉल्ट रूप से खुले"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projects डिफ़ॉल्ट रूप से खुले"
   },

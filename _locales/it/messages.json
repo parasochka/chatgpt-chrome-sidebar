@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "Fissati espansi per impostazione predefinita"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "Recenti espansi per impostazione predefinita"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Progetti espansi per impostazione predefinita"
   },

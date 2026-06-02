@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "Épinglés développés par défaut"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "Récents développés par défaut"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projets développés par défaut"
   },

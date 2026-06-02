@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "Angeheftete standardmäßig erweitert"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "Zuletzt standardmäßig erweitert"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "Projekte standardmäßig erweitert"
   },

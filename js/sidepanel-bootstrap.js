@@ -30,9 +30,7 @@ const FALLBACK_MESSAGES = {
   settingsSidebarSectionsTitle: 'ChatGPT sidebar sections',
   settingsSidebarSectionsHint: 'Choose which sections are expanded by default when the ChatGPT sidebar appears.',
   settingsSidebarPinnedToggle: 'Pinned expanded by default',
-  settingsSidebarProjectsToggle: 'Projects expanded by default',
-  settingsSidebarYourChatsToggle: 'Your chats expanded by default',
-  settingsSidebarGroupChatsToggle: 'Group chats expanded by default',
+  settingsSidebarRecentsToggle: 'Recents expanded by default',
   featureNoticeChatState: 'New: manage chat states with collapsed or expanded sections.',
   featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
@@ -197,9 +195,7 @@ const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   themeMode: 'sidelyThemeMode',
   sidebarPinnedExpanded: 'sidelySidebarPinnedExpanded',
-  sidebarProjectsExpanded: 'sidelySidebarProjectsExpanded',
   sidebarYourChatsExpanded: 'sidelySidebarYourChatsExpanded',
-  sidebarGroupChatsExpanded: 'sidelySidebarGroupChatsExpanded',
   featureNoticeDismissedV11: 'sidelyFeatureNoticeDismissedV11'
 };
 
@@ -211,9 +207,7 @@ const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
   themeMode: 'auto',
   sidebarPinnedExpanded: true,
-  sidebarProjectsExpanded: true,
-  sidebarYourChatsExpanded: true,
-  sidebarGroupChatsExpanded: true
+  sidebarYourChatsExpanded: true
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -491,9 +485,7 @@ function applyLocalization() {
 
   [
     ['settings-sidebar-pinned-expanded', 'settings-sidebar-pinned-expanded-label'],
-    ['settings-sidebar-projects-expanded', 'settings-sidebar-projects-expanded-label'],
-    ['settings-sidebar-your-chats-expanded', 'settings-sidebar-your-chats-expanded-label'],
-    ['settings-sidebar-group-chats-expanded', 'settings-sidebar-group-chats-expanded-label']
+    ['settings-sidebar-your-chats-expanded', 'settings-sidebar-your-chats-expanded-label']
   ].forEach(([inputId, labelId]) => {
     const input = document.getElementById(inputId);
     const label = document.getElementById(labelId);
@@ -780,9 +772,7 @@ function storageSet(items) {
   const normalizedItems = { ...items };
   [
     STORAGE_KEYS.sidebarPinnedExpanded,
-    STORAGE_KEYS.sidebarProjectsExpanded,
-    STORAGE_KEYS.sidebarYourChatsExpanded,
-    STORAGE_KEYS.sidebarGroupChatsExpanded
+    STORAGE_KEYS.sidebarYourChatsExpanded
   ].forEach(key => {
     if (Object.prototype.hasOwnProperty.call(normalizedItems, key)) {
       normalizedItems[key] = normalizeBooleanSetting(normalizedItems[key], SETTINGS_DEFAULTS[key]);
@@ -889,17 +879,9 @@ async function loadSettingsFromStorage() {
     stored[STORAGE_KEYS.sidebarPinnedExpanded],
     SETTINGS_DEFAULTS.sidebarPinnedExpanded
   );
-  nextState.sidebarProjectsExpanded = normalizeBooleanSetting(
-    stored[STORAGE_KEYS.sidebarProjectsExpanded],
-    SETTINGS_DEFAULTS.sidebarProjectsExpanded
-  );
   nextState.sidebarYourChatsExpanded = normalizeBooleanSetting(
     stored[STORAGE_KEYS.sidebarYourChatsExpanded],
     SETTINGS_DEFAULTS.sidebarYourChatsExpanded
-  );
-  nextState.sidebarGroupChatsExpanded = normalizeBooleanSetting(
-    stored[STORAGE_KEYS.sidebarGroupChatsExpanded],
-    SETTINGS_DEFAULTS.sidebarGroupChatsExpanded
   );
 
   featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissedV11], false);
@@ -924,19 +906,9 @@ function syncSettingsUI() {
     sidebarPinnedInput.checked = !!settingsState.sidebarPinnedExpanded;
   }
 
-  const sidebarProjectsInput = document.getElementById('settings-sidebar-projects-expanded');
-  if (sidebarProjectsInput) {
-    sidebarProjectsInput.checked = !!settingsState.sidebarProjectsExpanded;
-  }
-
   const sidebarYourChatsInput = document.getElementById('settings-sidebar-your-chats-expanded');
   if (sidebarYourChatsInput) {
     sidebarYourChatsInput.checked = !!settingsState.sidebarYourChatsExpanded;
-  }
-
-  const sidebarGroupChatsInput = document.getElementById('settings-sidebar-group-chats-expanded');
-  if (sidebarGroupChatsInput) {
-    sidebarGroupChatsInput.checked = !!settingsState.sidebarGroupChatsExpanded;
   }
 }
 
@@ -991,19 +963,9 @@ function setupSettingsControls() {
       storageKey: STORAGE_KEYS.sidebarPinnedExpanded
     },
     {
-      id: 'settings-sidebar-projects-expanded',
-      stateKey: 'sidebarProjectsExpanded',
-      storageKey: STORAGE_KEYS.sidebarProjectsExpanded
-    },
-    {
       id: 'settings-sidebar-your-chats-expanded',
       stateKey: 'sidebarYourChatsExpanded',
       storageKey: STORAGE_KEYS.sidebarYourChatsExpanded
-    },
-    {
-      id: 'settings-sidebar-group-chats-expanded',
-      stateKey: 'sidebarGroupChatsExpanded',
-      storageKey: STORAGE_KEYS.sidebarGroupChatsExpanded
     }
   ];
 

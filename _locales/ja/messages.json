@@ -110,6 +110,9 @@
   "settingsSidebarPinnedToggle": {
     "message": "ピン留めを既定で展開する"
   },
+  "settingsSidebarRecentsToggle": {
+    "message": "最近の項目を既定で展開する"
+  },
   "settingsSidebarProjectsToggle": {
     "message": "プロジェクトを既定で展開する"
   },
