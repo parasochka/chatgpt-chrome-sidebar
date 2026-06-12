@@ -43,6 +43,20 @@ const SELECTION_MAX_LENGTH = 4000;
 const LANGUAGE_STORAGE_KEY = 'sidelyExtensionLanguage';
 const AUTO_SEND_STORAGE_KEY = 'sidelyAutoSendQuickActions';
 
+// Locale folder for each extension UI language (matches _locales/*).
+const LOCALE_FOLDER_BY_LANGUAGE = {
+  en: 'en',
+  de: 'de',
+  es: 'es',
+  fr: 'fr',
+  hi: 'hi',
+  it: 'it',
+  ja: 'ja',
+  'pt-BR': 'pt_BR',
+  ru: 'ru',
+  'zh-CN': 'zh_CN'
+};
+
 // English names of the extension UI languages, used inside the prompt
 // instructions so ChatGPT answers in the user's language.
 const LANGUAGE_NAMES = {
@@ -148,24 +162,58 @@ function createContextMenuItem(properties) {
   });
 }
 
-function registerSelectionContextMenu() {
+// Context-menu titles must follow the extension-language setting, not the
+// browser UI locale, so load the chosen locale file directly (like the
+// side-panel page does).
+async function loadContextMenuMessages(language) {
+  const folder = LOCALE_FOLDER_BY_LANGUAGE[language] || LOCALE_FOLDER_BY_LANGUAGE.en;
+  try {
+    const response = await fetch(chrome.runtime.getURL(`_locales/${folder}/messages.json`));
+    if (!response.ok) {
+      throw new Error(`Failed to load locale ${folder}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.warn('Unable to load locale file for context menus:', error);
+    return null;
+  }
+}
+
+// Chrome treats "&" in context-menu titles as a mnemonic marker on
+// Windows/Linux ("Fix grammar & spelling" would render as "Fix grammar
+// spelling"); a literal ampersand has to be doubled.
+function escapeContextMenuTitle(title) {
+  return title.replace(/&/g, '&&');
+}
+
+function resolveContextMenuTitle(messages, messageKey, fallbackTitle) {
+  const localized = messages?.[messageKey]?.message;
+  const title = (typeof localized === 'string' && localized) ||
+    chrome.i18n.getMessage(messageKey) ||
+    fallbackTitle;
+  return escapeContextMenuTitle(title);
+}
+
+async function registerSelectionContextMenu() {
   if (!chrome.contextMenus) return;
+  const { language } = await readQuickActionSettings();
+  const messages = await loadContextMenuMessages(language);
   chrome.contextMenus.removeAll(() => {
     createContextMenuItem({
       id: ASK_SELECTION_MENU_ID,
-      title: chrome.i18n.getMessage('contextMenuAskSelection') || 'Ask ChatGPT about "%s"',
+      title: resolveContextMenuTitle(messages, 'contextMenuAskSelection', 'Ask ChatGPT about "%s"'),
       contexts: ['selection']
     });
     QUICK_ACTION_MENU_ITEMS.forEach((item) => {
       createContextMenuItem({
         id: item.id,
-        title: chrome.i18n.getMessage(item.messageKey) || item.fallbackTitle,
+        title: resolveContextMenuTitle(messages, item.messageKey, item.fallbackTitle),
         contexts: ['selection']
       });
     });
     createContextMenuItem({
       id: ASK_PAGE_MENU_ID,
-      title: chrome.i18n.getMessage('contextMenuAskPage') || 'Ask ChatGPT about this page',
+      title: resolveContextMenuTitle(messages, 'contextMenuAskPage', 'Ask ChatGPT about this page'),
       contexts: ['page']
     });
   });
@@ -221,6 +269,15 @@ if (chrome.contextMenus) {
 function initializeSidepanelExtension() {
   registerSidepanelDnrRules();
   registerSelectionContextMenu();
+}
+
+// Re-localize the context menu when the extension language changes.
+if (chrome.storage?.onChanged) {
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if ((areaName === 'sync' || areaName === 'local') && changes[LANGUAGE_STORAGE_KEY]) {
+      registerSelectionContextMenu();
+    }
+  });
 }
 
 // Apply the rules on install/update and when the browser starts

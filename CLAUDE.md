@@ -33,7 +33,10 @@ and by loading the unpacked extension in Chrome.
 - **Donate button**: yellow heart icon in the toolbar (right zone, left of the settings gear),
   wiggles once after load, opens the Stripe one-time payment link (`DONATE_URL` in
   `js/sidepanel-bootstrap.js`). Hideable via settings; the donate button inside the settings panel always stays.
-- **Context menu** (registered in the service worker, titles localized via `chrome.i18n`):
+- **Context menu** (registered in the service worker; titles follow the extension-language setting —
+  the worker fetches the chosen `_locales/*/messages.json` directly, falls back to `chrome.i18n`,
+  re-registers on language change, and escapes `&` as `&&` because Chrome treats single ampersands
+  in menu titles as mnemonic markers on Windows/Linux):
   - `sidely-ask-selection` — Ask ChatGPT about "%s" (selection; inserts the raw selection + blank line, never auto-sends).
   - `sidely-selection-translate` / `-summarize` / `-explain` / `-grammar` — quick actions (selection);
     prompts are built in English in `QUICK_ACTION_MENU_ITEMS`, the answer/translation language follows the
@@ -100,9 +103,9 @@ Storage key constants are duplicated between the service worker and the bootstra
 
 - Add every new user-visible string to **all 10** `_locales/*/messages.json` files and, for strings
   used by the side-panel page, to `FALLBACK_MESSAGES` in `js/sidepanel-bootstrap.js`.
-- The side panel localizes at runtime from the chosen extension language (fetches the locale file
-  directly); `__MSG_...__` placeholders and context-menu titles use the **browser** UI locale via
-  `chrome.i18n` — both paths must have the key.
+- The side panel and the context menu localize at runtime from the chosen extension language
+  (both fetch the locale file directly); `__MSG_...__` placeholders use the **browser** UI locale
+  via `chrome.i18n` — both paths must have the key.
 - Elements with `data-i18n-key` are re-localized automatically on language change.
 
 ## Fragile spots (check on ChatGPT UI changes)
