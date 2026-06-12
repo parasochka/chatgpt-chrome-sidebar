@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.1
+- Fixed: the copy-code button lost its icon after showing the "Copied!" confirmation.
+- Fixed: sidebar section toggle defaults were not applied correctly when saving settings.
+- Security: theme sync messages are now accepted only from the Sidely extension itself.
+- Fixed: clipboard permissions were narrowed when the ChatGPT frame reloaded.
+- Synced the package version with the extension manifest.
+
 ## 1.4
 - Reworked the sidebar section controls for ChatGPT's new layout, which now uses just two collapsible sections: **Pinned** (projects and pinned items) and **Recents**.
 - The settings now offer a **Pinned** and a **Recents** toggle to choose their default expanded/collapsed state.

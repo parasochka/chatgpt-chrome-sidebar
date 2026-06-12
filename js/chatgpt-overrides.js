@@ -375,9 +375,14 @@ document.addEventListener('click', async (e) => {
     e.stopImmediatePropagation();
     e.preventDefault();
 
-    const original = btn.textContent;
+    // Swap the button content for "Copied!" and restore the original child
+    // nodes afterwards (textContent alone would destroy the SVG icon).
+    const originalNodes = Array.from(btn.childNodes);
     btn.textContent = 'Copied!';
-    setTimeout(() => { btn.textContent = original; }, 1000);
+    setTimeout(() => {
+      btn.textContent = '';
+      originalNodes.forEach(node => btn.appendChild(node));
+    }, 1000);
   }
 }, true);
 
@@ -404,14 +409,26 @@ function applySidelyInjectedTheme(theme) {
   } catch (_) {}
 }
 
+function getOwnExtensionOrigin() {
+  try {
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
+      return new URL(chrome.runtime.getURL('')).origin;
+    }
+  } catch (_) {}
+  return null;
+}
+
 window.addEventListener('message', event => {
   if (!event || !event.data || event.data.type !== SIDELY_THEME_MESSAGE) {
     return;
   }
-  if (!event.origin || !event.origin.startsWith('chrome-extension://')) {
+  // Only trust messages coming from this extension's own origin —
+  // any other extension or page must not be able to flip the theme.
+  const ownOrigin = getOwnExtensionOrigin();
+  if (!event.origin || !ownOrigin || event.origin !== ownOrigin) {
     return;
   }
-  // Async fallback: receiving a theme message from a chrome-extension://
+  // Async fallback: receiving a theme message from the extension's
   // origin proves we are inside the sidebar iframe.
   if (!isSidelyFrame) {
     isSidelyFrame = true;
