@@ -496,6 +496,39 @@ function insertPromptText(text) {
   return inserted;
 }
 
+function findComposerSendButton() {
+  const direct =
+    document.querySelector('button[data-testid="send-button"]') ||
+    document.getElementById('composer-submit-button');
+  if (direct) return direct;
+
+  // Scope the generic fallbacks to the composer's own form so we never click
+  // a submit button belonging to some other dialog on the page.
+  const composer = findPromptComposer();
+  const form =
+    (composer && composer.closest('form')) ||
+    document.querySelector('form[data-type="unified-composer"]');
+  if (!form) return null;
+
+  return (
+    form.querySelector('button[type="submit"]') ||
+    form.querySelector('button[aria-label*="Send" i]') ||
+    null
+  );
+}
+
+// The send button enables asynchronously after the composer input event,
+// so keep retrying briefly before giving up.
+function submitComposerWhenReady(attemptsLeft = 20) {
+  const button = findComposerSendButton();
+  if (button && !button.disabled && button.getAttribute('aria-disabled') !== 'true') {
+    button.click();
+    return;
+  }
+  if (attemptsLeft <= 0) return;
+  setTimeout(() => submitComposerWhenReady(attemptsLeft - 1), 150);
+}
+
 window.addEventListener('message', event => {
   if (!event || !event.data || event.data.type !== SIDELY_PROMPT_MESSAGE) {
     return;
@@ -516,6 +549,9 @@ window.addEventListener('message', event => {
         event.origin
       );
     } catch (_) {}
+    if (event.data.autoSend === true) {
+      setTimeout(() => submitComposerWhenReady(), 150);
+    }
   }
 });
 

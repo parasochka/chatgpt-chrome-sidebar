@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "Novidade: selecione um texto em qualquer página, clique com o botão direito e pergunte ao ChatGPT direto na barra lateral."
+  },
+  "contextMenuTranslateSelection": {
+    "message": "Traduzir seleção"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "Resumir seleção"
+  },
+  "contextMenuExplainSelection": {
+    "message": "Explicar em termos simples"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "Corrigir gramática e ortografia"
+  },
+  "contextMenuAskPage": {
+    "message": "Perguntar ao ChatGPT sobre esta página"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "Ações do menu de contexto"
+  },
+  "settingsQuickActionsHint": {
+    "message": "Selecione um texto em qualquer página e clique com o botão direito: traduzir, resumir, explicar ou corrigir."
+  },
+  "settingsAutoSendLabel": {
+    "message": "Enviar ações rápidas automaticamente"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "Chat temporário"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "Abrir o ChatGPT em um chat temporário que não é salvo no seu histórico."
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "Sempre iniciar em chat temporário"
+  },
+  "featureNoticeQuickActions": {
+    "message": "Novo: clique com o botão direito no texto selecionado para traduzir, resumir, explicar ou corrigir — além de envio automático e chat temporário nas configurações."
   }
 }

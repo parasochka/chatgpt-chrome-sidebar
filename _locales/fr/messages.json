@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "Nouveau : sélectionnez du texte sur n’importe quelle page, faites un clic droit et interrogez ChatGPT directement dans la barre latérale."
+  },
+  "contextMenuTranslateSelection": {
+    "message": "Traduire la sélection"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "Résumer la sélection"
+  },
+  "contextMenuExplainSelection": {
+    "message": "Expliquer simplement"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "Corriger la grammaire et l'orthographe"
+  },
+  "contextMenuAskPage": {
+    "message": "Demander à ChatGPT à propos de cette page"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "Actions du menu contextuel"
+  },
+  "settingsQuickActionsHint": {
+    "message": "Sélectionnez du texte sur n'importe quelle page puis cliquez droit : traduire, résumer, expliquer ou corriger."
+  },
+  "settingsAutoSendLabel": {
+    "message": "Envoyer automatiquement les actions rapides"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "Chat éphémère"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "Ouvrir ChatGPT dans un chat éphémère, non enregistré dans votre historique."
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "Toujours démarrer en chat éphémère"
+  },
+  "featureNoticeQuickActions": {
+    "message": "Nouveau : cliquez droit sur le texte sélectionné pour le traduire, le résumer, l'expliquer ou le corriger — avec envoi automatique et chat éphémère dans les réglages."
   }
 }

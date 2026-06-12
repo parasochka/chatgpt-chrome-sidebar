@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Effective date:** 17 February 2026
+**Effective date:** 12 June 2026
 **Extension name:** Sidely - ChatGPT Sidebar
 
 Sidely is designed with a privacy-first approach.
@@ -19,9 +19,10 @@ Authentication remains between you and OpenAI.
 - ❌ **No conversation logging** by the extension.
 - ❌ **No third-party analytics**.
 - ❌ **No remote backend controlled by Sidely** for chat data.
-- ⚙️ **Local/Sync settings only:** language, theme, and sidebar layout preferences (Projects, Your chats, Group chats).
+- ⚙️ **Local/Sync settings only:** language, theme, auto-send for quick actions, and temporary chat mode.
+- ✂️ **Selected text (quick actions):** when you choose a right-click action (ask, translate, summarize, explain, fix grammar, or ask about this page), the selected text - or the page title and URL - is stored **temporarily** in the extension's session storage only to place it into the ChatGPT composer in the sidebar. It is capped in size, discarded after delivery (or within 60 seconds), and is never transmitted to any server other than chatgpt.com as part of your own conversation.
 
-These settings are saved via Chrome extension storage APIs and may sync between your devices when Chrome Sync is enabled.
+Settings are saved via Chrome extension storage APIs and may sync between your devices when Chrome Sync is enabled.
 
 ## Permissions explanation
 
@@ -29,8 +30,9 @@ Sidely requests only the permissions required to run inside the side panel:
 
 - `sidePanel` - display ChatGPT in Chrome sidebar.
 - `declarativeNetRequestWithHostAccess` - adjust restrictive headers (like CSP / X-Frame-Options) so the official ChatGPT page can load in the embedded panel.
+- `contextMenus` - add the right-click quick actions for selected text and pages.
 - `clipboardWrite` - provide reliable local copy behavior for code blocks.
-- `storage` - save extension settings.
+- `storage` - save extension settings and hand the selected text from the page to the sidebar.
 - `host_permissions` - access official ChatGPT domains needed for embedding.
 
 These permissions do not grant Sidely access to unrelated websites or private account data outside the extension context.
@@ -42,5 +44,5 @@ If you have questions about this policy, contact:
 
 ---
 
-© 2025 Artem Parasochka. All rights reserved.
+© 2025-2026 Artem Parasochka. All rights reserved.
 This project is distributed under the Sidely - ChatGPT Sidebar for Chrome Commercial License. See the `LICENSE` file for full terms.

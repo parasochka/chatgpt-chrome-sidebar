@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "新功能：在任意网页选中文本，右键点击，即可直接在侧边栏向 ChatGPT 提问。"
+  },
+  "contextMenuTranslateSelection": {
+    "message": "翻译所选内容"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "总结所选内容"
+  },
+  "contextMenuExplainSelection": {
+    "message": "用简单的语言解释"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "修正语法和拼写"
+  },
+  "contextMenuAskPage": {
+    "message": "向 ChatGPT 询问此页面"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "右键菜单操作"
+  },
+  "settingsQuickActionsHint": {
+    "message": "在任意页面选中文本并点击右键：翻译、总结、解释或纠错。"
+  },
+  "settingsAutoSendLabel": {
+    "message": "自动发送快捷操作"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "临时聊天"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "在不保存到历史记录的临时聊天中打开 ChatGPT。"
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "始终以临时聊天开始"
+  },
+  "featureNoticeQuickActions": {
+    "message": "新功能：右键点击选中的文本即可翻译、总结、解释或纠错——设置中还新增了自动发送和临时聊天。"
   }
 }

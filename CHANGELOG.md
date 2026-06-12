@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0
+- New: quick actions in the right-click menu for selected text — **Translate**, **Summarize**, **Explain in simple terms**, and **Fix grammar & spelling**. The answer language follows the extension language setting.
+- New: **Ask ChatGPT about this page** — right-click anywhere on a page to send its title and URL to the sidebar composer.
+- New setting: **Send quick actions automatically** — quick-action prompts are submitted to ChatGPT immediately, no extra Enter needed.
+- New setting: **Always start in temporary chat** — the sidebar opens ChatGPT in temporary mode so conversations are not saved to your history.
+
 ## 1.5.0
 - New: select text on any webpage, right-click, and choose **Ask ChatGPT about "…"** — the sidebar opens with the selection already placed in the ChatGPT composer, ready for your question. No copy-pasting or window switching needed.
 - A one-time notice in the sidebar introduces the new feature after the update; it disappears for good once dismissed.

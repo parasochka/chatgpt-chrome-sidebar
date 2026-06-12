@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "Новое: выделите текст на любой странице, нажмите правой кнопкой — и спросите ChatGPT прямо в боковой панели."
+  },
+  "contextMenuTranslateSelection": {
+    "message": "Перевести выделенное"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "Кратко пересказать выделенное"
+  },
+  "contextMenuExplainSelection": {
+    "message": "Объяснить простыми словами"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "Исправить грамматику и орфографию"
+  },
+  "contextMenuAskPage": {
+    "message": "Спросить ChatGPT об этой странице"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "Действия контекстного меню"
+  },
+  "settingsQuickActionsHint": {
+    "message": "Выделите текст на любой странице и нажмите правой кнопкой: перевод, краткий пересказ, объяснение или исправление ошибок."
+  },
+  "settingsAutoSendLabel": {
+    "message": "Отправлять быстрые действия автоматически"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "Временный чат"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "Открывать ChatGPT во временном чате, который не сохраняется в истории."
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "Всегда начинать с временного чата"
+  },
+  "featureNoticeQuickActions": {
+    "message": "Новое: выделите текст и нажмите правой кнопкой — перевод, пересказ, объяснение или правка. А в настройках появились автоотправка и временный чат."
   }
 }

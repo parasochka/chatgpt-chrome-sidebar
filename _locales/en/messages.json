@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "New: select text on any page, right-click, and ask ChatGPT about it — straight from the sidebar."
+  },
+  "contextMenuTranslateSelection": {
+    "message": "Translate selection"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "Summarize selection"
+  },
+  "contextMenuExplainSelection": {
+    "message": "Explain in simple terms"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "Fix grammar & spelling"
+  },
+  "contextMenuAskPage": {
+    "message": "Ask ChatGPT about this page"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "Context menu actions"
+  },
+  "settingsQuickActionsHint": {
+    "message": "Right-click selected text on any page for quick actions: translate, summarize, explain, or fix grammar."
+  },
+  "settingsAutoSendLabel": {
+    "message": "Send quick actions automatically"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "Temporary chat"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "Open ChatGPT in a temporary chat that is not saved to your history."
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "Always start in temporary chat"
+  },
+  "featureNoticeQuickActions": {
+    "message": "New: right-click selected text to translate, summarize, explain, or fix it — and try auto-send and temporary chat in the settings."
   }
 }

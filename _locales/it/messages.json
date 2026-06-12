@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "Novità: seleziona del testo su qualsiasi pagina, fai clic destro e chiedi a ChatGPT direttamente nella barra laterale."
+  },
+  "contextMenuTranslateSelection": {
+    "message": "Traduci selezione"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "Riassumi selezione"
+  },
+  "contextMenuExplainSelection": {
+    "message": "Spiega in parole semplici"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "Correggi grammatica e ortografia"
+  },
+  "contextMenuAskPage": {
+    "message": "Chiedi a ChatGPT di questa pagina"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "Azioni del menu contestuale"
+  },
+  "settingsQuickActionsHint": {
+    "message": "Seleziona del testo su qualsiasi pagina e fai clic destro: traduci, riassumi, spiega o correggi."
+  },
+  "settingsAutoSendLabel": {
+    "message": "Invia automaticamente le azioni rapide"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "Chat temporanea"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "Apri ChatGPT in una chat temporanea che non viene salvata nella cronologia."
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "Avvia sempre in chat temporanea"
+  },
+  "featureNoticeQuickActions": {
+    "message": "Novità: fai clic destro sul testo selezionato per tradurlo, riassumerlo, spiegarlo o correggerlo — più invio automatico e chat temporanea nelle impostazioni."
   }
 }
