@@ -110,5 +110,8 @@
   "contextMenuAskSelection": {
     "message": "ChatGPT zu „%s“ fragen",
     "description": "%s is replaced by the selected text in the context menu."
+  },
+  "featureNoticeAskSelection": {
+    "message": "Neu: Text auf einer beliebigen Seite markieren, Rechtsklick — und ChatGPT direkt in der Seitenleiste dazu fragen."
   }
 }

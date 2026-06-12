@@ -2,6 +2,7 @@
 
 ## 1.5.0
 - New: select text on any webpage, right-click, and choose **Ask ChatGPT about "…"** — the sidebar opens with the selection already placed in the ChatGPT composer, ready for your question. No copy-pasting or window switching needed.
+- A one-time notice in the sidebar introduces the new feature after the update; it disappears for good once dismissed.
 
 ## 1.4.1
 - Fixed: the copy-code button lost its icon after showing the "Copied!" confirmation.

@@ -28,6 +28,7 @@ const FALLBACK_MESSAGES = {
   settingsThemeLight: 'Light',
   settingsThemeDark: 'Dark',
   featureNoticeChatState: 'New: manage chat states with collapsed or expanded sections.',
+  featureNoticeAskSelection: 'New: select text on any page, right-click, and ask ChatGPT about it — straight from the sidebar.',
   featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
@@ -188,11 +189,11 @@ let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
 const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
-const FEATURE_NOTICE_TARGET_VERSION = '1.1';
+const FEATURE_NOTICE_TARGET_VERSION = '1.5.0';
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   themeMode: 'sidelyThemeMode',
-  featureNoticeDismissedV11: 'sidelyFeatureNoticeDismissedV11'
+  featureNoticeDismissed: 'sidelyFeatureNoticeDismissedV150'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
@@ -701,7 +702,7 @@ function syncFeatureNoticeVisibility() {
 async function dismissFeatureNotice() {
   featureNoticeDismissed = true;
   syncFeatureNoticeVisibility();
-  await storageSet({ [STORAGE_KEYS.featureNoticeDismissedV11]: true });
+  await storageSet({ [STORAGE_KEYS.featureNoticeDismissed]: true });
 }
 
 function getStorageAreasByPriority() {
@@ -869,7 +870,7 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
-  featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissedV11], false);
+  featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissed], false);
 
   settingsState = nextState;
   applyThemeMode(settingsState.themeMode);

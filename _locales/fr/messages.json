@@ -110,5 +110,8 @@
   "contextMenuAskSelection": {
     "message": "Demander à ChatGPT à propos de « %s »",
     "description": "%s is replaced by the selected text in the context menu."
+  },
+  "featureNoticeAskSelection": {
+    "message": "Nouveau : sélectionnez du texte sur n’importe quelle page, faites un clic droit et interrogez ChatGPT directement dans la barre latérale."
   }
 }

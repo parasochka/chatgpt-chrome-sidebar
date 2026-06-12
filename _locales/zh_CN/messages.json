@@ -110,5 +110,8 @@
   "contextMenuAskSelection": {
     "message": "向 ChatGPT 询问“%s”",
     "description": "%s is replaced by the selected text in the context menu."
+  },
+  "featureNoticeAskSelection": {
+    "message": "新功能：在任意网页选中文本，右键点击，即可直接在侧边栏向 ChatGPT 提问。"
   }
 }
