@@ -106,5 +106,9 @@
   },
   "featureNoticeCloseLabel": {
     "message": "关闭新功能提示"
+  },
+  "contextMenuAskSelection": {
+    "message": "向 ChatGPT 询问“%s”",
+    "description": "%s is replaced by the selected text in the context menu."
   }
 }

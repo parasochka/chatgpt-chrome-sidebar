@@ -106,5 +106,9 @@
   },
   "featureNoticeCloseLabel": {
     "message": "नई सुविधा सूचना बंद करें"
+  },
+  "contextMenuAskSelection": {
+    "message": "\"%s\" के बारे में ChatGPT से पूछें",
+    "description": "%s is replaced by the selected text in the context menu."
   }
 }

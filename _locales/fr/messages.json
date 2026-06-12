@@ -106,5 +106,9 @@
   },
   "featureNoticeCloseLabel": {
     "message": "Fermer l'avis de nouveauté"
+  },
+  "contextMenuAskSelection": {
+    "message": "Demander à ChatGPT à propos de « %s »",
+    "description": "%s is replaced by the selected text in the context menu."
   }
 }

@@ -106,5 +106,9 @@
   },
   "featureNoticeCloseLabel": {
     "message": "Hinweis zur neuen Funktion schließen"
+  },
+  "contextMenuAskSelection": {
+    "message": "ChatGPT zu „%s“ fragen",
+    "description": "%s is replaced by the selected text in the context menu."
   }
 }
