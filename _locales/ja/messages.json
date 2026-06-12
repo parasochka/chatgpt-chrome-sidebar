@@ -149,5 +149,23 @@
   },
   "featureNoticeQuickActions": {
     "message": "新機能: 選択したテキストを右クリックして翻訳・要約・説明・校正。設定では自動送信と一時的なチャットも利用できます。"
+  },
+  "donateButtonAriaLabel": {
+    "message": "Sidelyを応援する"
+  },
+  "donateButtonTooltip": {
+    "message": "Sidelyが気に入りましたか？Stripeでの1回限りの寄付で応援できます。"
+  },
+  "settingsDonateTitle": {
+    "message": "Sidelyを応援する"
+  },
+  "settingsDonateHint": {
+    "message": "Sidelyは無料です。役に立っていると感じたら、Stripeでの1回限りの寄付で応援できます。"
+  },
+  "settingsDonateToggleLabel": {
+    "message": "ツールバーに寄付ボタンを表示する"
+  },
+  "settingsDonateAction": {
+    "message": "Stripeで寄付する"
   }
 }

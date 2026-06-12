@@ -36,6 +36,12 @@ const FALLBACK_MESSAGES = {
   settingsTemporaryChatTitle: 'Temporary chat',
   settingsTemporaryChatHint: 'Open ChatGPT in a temporary chat that is not saved to your history.',
   settingsTemporaryChatLabel: 'Always start in temporary chat',
+  donateButtonAriaLabel: 'Support Sidely',
+  donateButtonTooltip: 'Enjoying Sidely? Support it with a one-time donation via Stripe.',
+  settingsDonateTitle: 'Support Sidely',
+  settingsDonateHint: 'Sidely is free. If it saves you time, you can support it with a one-time donation via Stripe.',
+  settingsDonateToggleLabel: 'Show donate button in the toolbar',
+  settingsDonateAction: 'Donate via Stripe',
   featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
@@ -190,6 +196,7 @@ async function ensureActiveLocaleMessages(language) {
 }
 
 const CHATGPT_PORTAL = 'https://chatgpt.com';
+const DONATE_URL = 'https://buy.stripe.com/aFa00c0vLdY0bGL2vG53O00';
 const PORTAL_PROBE_TIMEOUT_MS = 8000;
 
 let lastRequestedIframeSrc = '';
@@ -202,6 +209,7 @@ const STORAGE_KEYS = {
   themeMode: 'sidelyThemeMode',
   autoSend: 'sidelyAutoSendQuickActions',
   temporaryChat: 'sidelyTemporaryChat',
+  showDonateButton: 'sidelyShowDonateButton',
   featureNoticeDismissed: 'sidelyFeatureNoticeDismissedV160'
 };
 
@@ -221,7 +229,8 @@ const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
   themeMode: 'auto',
   autoSend: false,
-  temporaryChat: false
+  temporaryChat: false,
+  showDonateButton: true
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -479,6 +488,14 @@ function applyLocalization() {
     settingsButton.setAttribute('aria-label', SETTINGS_BUTTON_ARIA_LABEL);
   }
 
+  const donateButton = document.getElementById('donate-button');
+  if (donateButton) {
+    donateButton.setAttribute(
+      'aria-label',
+      getLocalizedString('donateButtonAriaLabel', FALLBACK_MESSAGES.donateButtonAriaLabel)
+    );
+  }
+
   const featureNoticeCloseButton = getFeatureUpdateNoticeCloseButton();
   if (featureNoticeCloseButton) {
     featureNoticeCloseButton.setAttribute(
@@ -499,7 +516,8 @@ function applyLocalization() {
 
   [
     ['settings-auto-send', 'settings-auto-send-label'],
-    ['settings-temporary-chat', 'settings-temporary-chat-label']
+    ['settings-temporary-chat', 'settings-temporary-chat-label'],
+    ['settings-show-donate', 'settings-show-donate-label']
   ].forEach(([inputId, labelId]) => {
     const input = document.getElementById(inputId);
     const label = document.getElementById(labelId);
@@ -564,6 +582,13 @@ function setupToolbarInteractions() {
     });
   }
 
+  const donateButton = document.getElementById('donate-button');
+  if (donateButton) {
+    donateButton.addEventListener('click', () => {
+      openDonatePage();
+    });
+  }
+
   const settingsButton = document.getElementById('settings-button');
   const closeButton = document.getElementById('settings-close-button');
 
@@ -584,6 +609,25 @@ function setupToolbarInteractions() {
   }
 
   setRefreshButtonLoading(false);
+}
+
+function openDonatePage() {
+  if (typeof chrome !== 'undefined' && chrome?.tabs?.create) {
+    try {
+      chrome.tabs.create({ url: DONATE_URL });
+      return;
+    } catch (err) {
+      // Fall back to window.open below.
+    }
+  }
+  window.open(DONATE_URL, '_blank', 'noopener');
+}
+
+function syncDonateButtonVisibility() {
+  const wrap = document.getElementById('donate-button-wrap');
+  if (wrap) {
+    wrap.hidden = settingsState.showDonateButton !== true;
+  }
 }
 
 async function fetchPortalAuthState(base) {
@@ -883,6 +927,7 @@ async function loadSettingsFromStorage() {
 
   nextState.autoSend = normalizeBooleanSetting(stored[STORAGE_KEYS.autoSend], SETTINGS_DEFAULTS.autoSend);
   nextState.temporaryChat = normalizeBooleanSetting(stored[STORAGE_KEYS.temporaryChat], SETTINGS_DEFAULTS.temporaryChat);
+  nextState.showDonateButton = normalizeBooleanSetting(stored[STORAGE_KEYS.showDonateButton], SETTINGS_DEFAULTS.showDonateButton);
 
   featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissed], false);
 
@@ -910,6 +955,13 @@ function syncSettingsUI() {
   if (temporaryChatInput) {
     temporaryChatInput.checked = settingsState.temporaryChat === true;
   }
+
+  const showDonateInput = document.getElementById('settings-show-donate');
+  if (showDonateInput) {
+    showDonateInput.checked = settingsState.showDonateButton === true;
+  }
+
+  syncDonateButtonVisibility();
 }
 
 async function setExtensionLanguage(value) {
@@ -973,6 +1025,23 @@ function setupSettingsControls() {
       storageSet({ [STORAGE_KEYS.temporaryChat]: enabled });
       // Remount the portal so the temporary-chat mode takes effect right away.
       loadChatPortal();
+    });
+  }
+
+  const showDonateInput = document.getElementById('settings-show-donate');
+  if (showDonateInput) {
+    showDonateInput.addEventListener('change', event => {
+      const enabled = Boolean(event.target.checked);
+      settingsState.showDonateButton = enabled;
+      storageSet({ [STORAGE_KEYS.showDonateButton]: enabled });
+      syncDonateButtonVisibility();
+    });
+  }
+
+  const settingsDonateButton = document.getElementById('settings-donate-button');
+  if (settingsDonateButton) {
+    settingsDonateButton.addEventListener('click', () => {
+      openDonatePage();
     });
   }
 }

@@ -149,5 +149,23 @@
   },
   "featureNoticeQuickActions": {
     "message": "नया: चुने हुए टेक्स्ट पर राइट-क्लिक करके अनुवाद, सारांश, व्याख्या या सुधार करें — सेटिंग्स में स्वचालित भेजना और अस्थायी चैट भी उपलब्ध हैं।"
+  },
+  "donateButtonAriaLabel": {
+    "message": "Sidely का समर्थन करें"
+  },
+  "donateButtonTooltip": {
+    "message": "Sidely पसंद है? Stripe के ज़रिए एक बार के दान से इसका समर्थन करें।"
+  },
+  "settingsDonateTitle": {
+    "message": "Sidely का समर्थन करें"
+  },
+  "settingsDonateHint": {
+    "message": "Sidely मुफ़्त है। अगर यह आपका समय बचाता है, तो Stripe के ज़रिए एक बार के दान से इसका समर्थन कर सकते हैं।"
+  },
+  "settingsDonateToggleLabel": {
+    "message": "टूलबार में दान बटन दिखाएँ"
+  },
+  "settingsDonateAction": {
+    "message": "Stripe से दान करें"
   }
 }

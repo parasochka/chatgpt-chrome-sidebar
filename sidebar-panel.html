@@ -285,6 +285,34 @@
     @keyframes toolbar-spin {
       to { transform: rotate(1turn); }
     }
+    .frame-toolbar__zone--right {
+      gap: 4px;
+    }
+    .toolbar-tooltip[hidden] {
+      display: none;
+    }
+    .toolbar-btn--donate {
+      color: #ca8a04;
+    }
+    .settings-donate-btn {
+      appearance: none;
+      border: 0;
+      margin: 12px 0 0;
+      padding: 10px 16px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 600 14px/1.2 inherit;
+      background: #facc15;
+      color: #422006;
+      cursor: pointer;
+    }
+    .settings-donate-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
     body.theme-dark {
       background: #020617;
       color: #f1f5f9;
@@ -303,6 +331,9 @@
     body.theme-dark .toolbar-btn:hover,
     body.theme-dark .toolbar-btn:focus-visible {
       background: rgba(59, 130, 246, 0.2);
+    }
+    body.theme-dark .toolbar-btn--donate {
+      color: #facc15;
     }
     body.theme-dark .toolbar-tooltip__bubble {
       background: rgba(15, 23, 42, 0.95);
@@ -370,6 +401,9 @@
       body.theme-auto .toolbar-btn:hover,
       body.theme-auto .toolbar-btn:focus-visible {
         background: rgba(59, 130, 246, 0.2);
+      }
+      body.theme-auto .toolbar-btn--donate {
+        color: #facc15;
       }
       body.theme-auto .toolbar-tooltip__bubble {
         background: rgba(15, 23, 42, 0.95);
@@ -461,6 +495,25 @@
           </div>
         </div>
         <div class="frame-toolbar__zone frame-toolbar__zone--right">
+          <div class="toolbar-tooltip" id="donate-button-wrap">
+            <button
+              id="donate-button"
+              class="toolbar-btn toolbar-btn--donate"
+              type="button"
+              aria-describedby="donate-tooltip"
+              aria-label="__MSG_donateButtonAriaLabel__"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+              </svg>
+            </button>
+            <span
+              id="donate-tooltip"
+              role="tooltip"
+              class="toolbar-tooltip__bubble"
+              data-i18n-key="donateButtonTooltip"
+            >__MSG_donateButtonTooltip__</span>
+          </div>
           <button
             id="settings-button"
             class="toolbar-btn"
@@ -624,6 +677,38 @@
                 >__MSG_settingsTemporaryChatLabel__</span>
               </label>
             </div>
+          </section>
+          <section class="settings-section" aria-labelledby="settings-donate-title">
+            <h3
+              id="settings-donate-title"
+              class="settings-section__title"
+              data-i18n-key="settingsDonateTitle"
+            >__MSG_settingsDonateTitle__</h3>
+            <p
+              id="settings-donate-hint"
+              class="settings-section__hint"
+              data-i18n-key="settingsDonateHint"
+            >__MSG_settingsDonateHint__</p>
+            <div class="settings-options">
+              <label class="settings-option">
+                <input
+                  type="checkbox"
+                  id="settings-show-donate"
+                  aria-describedby="settings-donate-hint"
+                >
+                <span
+                  class="settings-option__label"
+                  id="settings-show-donate-label"
+                  data-i18n-key="settingsDonateToggleLabel"
+                >__MSG_settingsDonateToggleLabel__</span>
+              </label>
+            </div>
+            <button id="settings-donate-button" type="button" class="settings-donate-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+              </svg>
+              <span data-i18n-key="settingsDonateAction">__MSG_settingsDonateAction__</span>
+            </button>
           </section>
         </div>
       </div>

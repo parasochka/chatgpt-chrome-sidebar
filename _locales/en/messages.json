@@ -149,5 +149,23 @@
   },
   "featureNoticeQuickActions": {
     "message": "New: right-click selected text to translate, summarize, explain, or fix it — and try auto-send and temporary chat in the settings."
+  },
+  "donateButtonAriaLabel": {
+    "message": "Support Sidely"
+  },
+  "donateButtonTooltip": {
+    "message": "Enjoying Sidely? Support it with a one-time donation via Stripe."
+  },
+  "settingsDonateTitle": {
+    "message": "Support Sidely"
+  },
+  "settingsDonateHint": {
+    "message": "Sidely is free. If it saves you time, you can support it with a one-time donation via Stripe."
+  },
+  "settingsDonateToggleLabel": {
+    "message": "Show donate button in the toolbar"
+  },
+  "settingsDonateAction": {
+    "message": "Donate via Stripe"
   }
 }
