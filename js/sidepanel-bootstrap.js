@@ -147,7 +147,9 @@ function getLocaleFolderFromLanguage(language) {
   if (typeof language !== 'string') {
     return null;
   }
-  const normalized = language in LOCALE_FOLDER_BY_LANGUAGE ? language : normalizeLanguage(language);
+  const normalized = Object.prototype.hasOwnProperty.call(LOCALE_FOLDER_BY_LANGUAGE, language)
+    ? language
+    : normalizeLanguage(language);
   return LOCALE_FOLDER_BY_LANGUAGE[normalized] || null;
 }
 
@@ -617,7 +619,7 @@ function mountPortalIntoIframe(base) {
   setRefreshButtonLoading(true);
   iframe.name = 'sidely-frame';
   iframe.src = targetSrc;
-  iframe.setAttribute('allow', 'clipboard-read; clipboard-write; autoplay; microphone; camera');
+  iframe.setAttribute('allow', 'clipboard-read *; clipboard-write *; autoplay; microphone; camera');
   iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 }
 
@@ -770,12 +772,13 @@ function storageGet(keys) {
 
 function storageSet(items) {
   const normalizedItems = { ...items };
-  [
-    STORAGE_KEYS.sidebarPinnedExpanded,
-    STORAGE_KEYS.sidebarYourChatsExpanded
-  ].forEach(key => {
+  const booleanStorageDefaults = {
+    [STORAGE_KEYS.sidebarPinnedExpanded]: SETTINGS_DEFAULTS.sidebarPinnedExpanded,
+    [STORAGE_KEYS.sidebarYourChatsExpanded]: SETTINGS_DEFAULTS.sidebarYourChatsExpanded
+  };
+  Object.entries(booleanStorageDefaults).forEach(([key, defaultValue]) => {
     if (Object.prototype.hasOwnProperty.call(normalizedItems, key)) {
-      normalizedItems[key] = normalizeBooleanSetting(normalizedItems[key], SETTINGS_DEFAULTS[key]);
+      normalizedItems[key] = normalizeBooleanSetting(normalizedItems[key], defaultValue);
     }
   });
 
