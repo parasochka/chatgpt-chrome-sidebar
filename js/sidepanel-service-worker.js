@@ -194,28 +194,40 @@ function resolveContextMenuTitle(messages, messageKey, fallbackTitle) {
   return escapeContextMenuTitle(title);
 }
 
-async function registerSelectionContextMenu() {
+// Registrations (install, startup, language change) are serialized so the
+// removeAll of one run can never interleave with the creates of another —
+// rapid language switching used to produce "duplicate id" errors and could
+// leave the menu partially built.
+let contextMenuRegistrationQueue = Promise.resolve();
+
+function registerSelectionContextMenu() {
+  contextMenuRegistrationQueue = contextMenuRegistrationQueue
+    .then(() => registerSelectionContextMenuNow())
+    .catch((error) => console.error('Failed to register context menu:', error));
+  return contextMenuRegistrationQueue;
+}
+
+async function registerSelectionContextMenuNow() {
   if (!chrome.contextMenus) return;
   const { language } = await readQuickActionSettings();
   const messages = await loadContextMenuMessages(language);
-  chrome.contextMenus.removeAll(() => {
+  await new Promise((resolve) => chrome.contextMenus.removeAll(resolve));
+  createContextMenuItem({
+    id: ASK_SELECTION_MENU_ID,
+    title: resolveContextMenuTitle(messages, 'contextMenuAskSelection', 'Ask ChatGPT about "%s"'),
+    contexts: ['selection']
+  });
+  QUICK_ACTION_MENU_ITEMS.forEach((item) => {
     createContextMenuItem({
-      id: ASK_SELECTION_MENU_ID,
-      title: resolveContextMenuTitle(messages, 'contextMenuAskSelection', 'Ask ChatGPT about "%s"'),
+      id: item.id,
+      title: resolveContextMenuTitle(messages, item.messageKey, item.fallbackTitle),
       contexts: ['selection']
     });
-    QUICK_ACTION_MENU_ITEMS.forEach((item) => {
-      createContextMenuItem({
-        id: item.id,
-        title: resolveContextMenuTitle(messages, item.messageKey, item.fallbackTitle),
-        contexts: ['selection']
-      });
-    });
-    createContextMenuItem({
-      id: ASK_PAGE_MENU_ID,
-      title: resolveContextMenuTitle(messages, 'contextMenuAskPage', 'Ask ChatGPT about this page'),
-      contexts: ['page']
-    });
+  });
+  createContextMenuItem({
+    id: ASK_PAGE_MENU_ID,
+    title: resolveContextMenuTitle(messages, 'contextMenuAskPage', 'Ask ChatGPT about this page'),
+    contexts: ['page']
   });
 }
 
@@ -260,7 +272,13 @@ if (chrome.contextMenus) {
       if (!payload || !payload.text) return;
       const storageArea = getSelectionStorageArea();
       if (storageArea) {
-        storageArea.set({ [SELECTION_STORAGE_KEY]: { ...payload, createdAt: Date.now() } });
+        const pending = { ...payload, createdAt: Date.now() };
+        // Address the payload to the window the click came from, so that with
+        // side panels open in several windows only one panel consumes it.
+        if (tab && typeof tab.windowId === 'number' && tab.windowId >= 0) {
+          pending.windowId = tab.windowId;
+        }
+        storageArea.set({ [SELECTION_STORAGE_KEY]: pending });
       }
     });
   });
