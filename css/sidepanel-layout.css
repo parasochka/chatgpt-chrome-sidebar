@@ -80,12 +80,17 @@ body {
 
 .frame-toolbar__zone--right {
   justify-content: flex-end;
+  gap: 4px;
 }
 
 .toolbar-tooltip {
   position: relative;
   display: inline-flex;
   align-items: center;
+}
+
+.toolbar-tooltip[hidden] {
+  display: none;
 }
 
 .toolbar-tooltip__bubble {
@@ -169,6 +174,22 @@ body {
 
 .toolbar-btn.is-loading svg {
   animation: toolbar-spin 1.2s linear infinite;
+}
+
+/* Donate button: icon-only, yellow in both themes, wiggles once after load. */
+.toolbar-btn--donate {
+  padding: 0 10px;
+  color: #ca8a04;
+}
+
+.toolbar-btn--donate:hover,
+.toolbar-btn--donate:focus-visible {
+  color: #a16207;
+}
+
+.toolbar-btn--donate svg {
+  transform-origin: 50% 60%;
+  animation: donate-wiggle 0.9s ease-in-out 1s 1 both;
 }
 
 .toolbar-btn__label {
@@ -478,6 +499,59 @@ body {
   }
 }
 
+@keyframes donate-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-14deg);
+  }
+  40% {
+    transform: rotate(12deg);
+  }
+  60% {
+    transform: rotate(-8deg);
+  }
+  80% {
+    transform: rotate(5deg);
+  }
+}
+
+.settings-donate-btn {
+  appearance: none;
+  border: 0;
+  margin: 14px 0 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
+  background: #facc15;
+  color: #422006;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-donate-btn:hover,
+.settings-donate-btn:focus-visible {
+  background: #eab308;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+  outline: none;
+}
+
+.settings-donate-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
 /* Manual theme overrides */
 body.theme-dark {
   background: #202123;
@@ -508,6 +582,15 @@ body.theme-dark .toolbar-btn:focus-visible {
 
 body.theme-dark .toolbar-btn:active {
   background: rgba(255, 255, 255, 0.14);
+}
+
+body.theme-dark .toolbar-btn--donate {
+  color: #facc15;
+}
+
+body.theme-dark .toolbar-btn--donate:hover,
+body.theme-dark .toolbar-btn--donate:focus-visible {
+  color: #fde047;
 }
 
 body.theme-dark .toolbar-btn[aria-disabled="true"] {
@@ -625,6 +708,15 @@ body.theme-dark .settings-close-btn:focus-visible {
     background: rgba(255, 255, 255, 0.14);
   }
 
+  body.theme-auto .toolbar-btn--donate {
+    color: #facc15;
+  }
+
+  body.theme-auto .toolbar-btn--donate:hover,
+  body.theme-auto .toolbar-btn--donate:focus-visible {
+    color: #fde047;
+  }
+
   body.theme-auto .toolbar-btn[aria-disabled="true"] {
     color: rgba(148, 163, 184, 0.65);
   }
@@ -717,6 +809,10 @@ body.theme-dark .settings-close-btn:focus-visible {
   }
 
   .toolbar-btn.is-loading svg {
+    animation: none;
+  }
+
+  .toolbar-btn--donate svg {
     animation: none;
   }
 }

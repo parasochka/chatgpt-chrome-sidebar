@@ -149,5 +149,23 @@
   },
   "featureNoticeQuickActions": {
     "message": "Новое: выделите текст и нажмите правой кнопкой — перевод, пересказ, объяснение или правка. А в настройках появились автоотправка и временный чат."
+  },
+  "donateButtonAriaLabel": {
+    "message": "Поддержать Sidely"
+  },
+  "donateButtonTooltip": {
+    "message": "Нравится Sidely? Поддержите проект разовым донатом через Stripe."
+  },
+  "settingsDonateTitle": {
+    "message": "Поддержать Sidely"
+  },
+  "settingsDonateHint": {
+    "message": "Sidely бесплатен. Если он экономит вам время, поддержите проект разовым платежом через Stripe."
+  },
+  "settingsDonateToggleLabel": {
+    "message": "Показывать кнопку доната в шапке"
+  },
+  "settingsDonateAction": {
+    "message": "Задонатить через Stripe"
   }
 }

@@ -28,7 +28,11 @@ and by loading the unpacked extension in Chrome.
 - **Side panel with ChatGPT**: iframe of chatgpt.com; auth-state probe (`/api/auth/session`) shows
   a localized sign-in / Cloudflare notice when not authorized.
 - **Settings panel** (gear icon): extension language (10 options), theme (auto/light/dark),
-  auto-send quick actions (checkbox), temporary chat (checkbox).
+  auto-send quick actions (checkbox), temporary chat (checkbox), donate (checkbox to show/hide the
+  toolbar donate button + an always-present "Donate via Stripe" button).
+- **Donate button**: yellow heart icon in the toolbar (right zone, left of the settings gear),
+  wiggles once after load, opens the Stripe one-time payment link (`DONATE_URL` in
+  `js/sidepanel-bootstrap.js`). Hideable via settings; the donate button inside the settings panel always stays.
 - **Context menu** (registered in the service worker, titles localized via `chrome.i18n`):
   - `sidely-ask-selection` — Ask ChatGPT about "%s" (selection; inserts the raw selection + blank line, never auto-sends).
   - `sidely-selection-translate` / `-summarize` / `-explain` / `-grammar` — quick actions (selection);
@@ -86,6 +90,7 @@ Settings are written by `storageSet()` to `chrome.storage.sync` first, falling b
 | `sidelyThemeMode` | `auto`/`light`/`dark` | `auto` | Sidebar + iframe theme. |
 | `sidelyAutoSendQuickActions` | bool | `false` | Auto-submit quick-action prompts. |
 | `sidelyTemporaryChat` | bool | `false` | Load ChatGPT with `?temporary-chat=true`. |
+| `sidelyShowDonateButton` | bool | `true` | Show the donate (heart) button in the toolbar. |
 | `sidelyFeatureNoticeDismissedV160` | bool | `false` | Current notice dismissed (key is version-suffixed). |
 | `sidelyPendingSelection` | object | — | Transient hand-off payload in `storage.session` (`{ text, autoSend, createdAt }`, max 4000 chars, 60 s TTL). |
 

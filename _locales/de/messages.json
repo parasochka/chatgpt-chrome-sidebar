@@ -149,5 +149,23 @@
   },
   "featureNoticeQuickActions": {
     "message": "Neu: Markierten Text per Rechtsklick übersetzen, zusammenfassen, erklären oder korrigieren — plus Auto-Senden und temporärer Chat in den Einstellungen."
+  },
+  "donateButtonAriaLabel": {
+    "message": "Sidely unterstützen"
+  },
+  "donateButtonTooltip": {
+    "message": "Gefällt dir Sidely? Unterstütze es mit einer einmaligen Spende über Stripe."
+  },
+  "settingsDonateTitle": {
+    "message": "Sidely unterstützen"
+  },
+  "settingsDonateHint": {
+    "message": "Sidely ist kostenlos. Wenn es dir Zeit spart, kannst du es mit einer einmaligen Spende über Stripe unterstützen."
+  },
+  "settingsDonateToggleLabel": {
+    "message": "Spenden-Button in der Symbolleiste anzeigen"
+  },
+  "settingsDonateAction": {
+    "message": "Über Stripe spenden"
   }
 }

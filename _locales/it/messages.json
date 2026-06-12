@@ -149,5 +149,23 @@
   },
   "featureNoticeQuickActions": {
     "message": "Novità: fai clic destro sul testo selezionato per tradurlo, riassumerlo, spiegarlo o correggerlo — più invio automatico e chat temporanea nelle impostazioni."
+  },
+  "donateButtonAriaLabel": {
+    "message": "Sostieni Sidely"
+  },
+  "donateButtonTooltip": {
+    "message": "Ti piace Sidely? Sostienilo con una donazione una tantum tramite Stripe."
+  },
+  "settingsDonateTitle": {
+    "message": "Sostieni Sidely"
+  },
+  "settingsDonateHint": {
+    "message": "Sidely è gratuito. Se ti fa risparmiare tempo, puoi sostenerlo con una donazione una tantum tramite Stripe."
+  },
+  "settingsDonateToggleLabel": {
+    "message": "Mostra il pulsante di donazione nella barra degli strumenti"
+  },
+  "settingsDonateAction": {
+    "message": "Dona con Stripe"
   }
 }
