@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "新機能：ページ上のテキストを選択して右クリックすると、サイドバーで直接ChatGPTに質問できます。"
+  },
+  "contextMenuTranslateSelection": {
+    "message": "選択範囲を翻訳"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "選択範囲を要約"
+  },
+  "contextMenuExplainSelection": {
+    "message": "わかりやすく説明"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "文法・スペルを修正"
+  },
+  "contextMenuAskPage": {
+    "message": "このページについてChatGPTに質問"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "コンテキストメニューの操作"
+  },
+  "settingsQuickActionsHint": {
+    "message": "任意のページでテキストを選択して右クリックすると、翻訳・要約・説明・校正ができます。"
+  },
+  "settingsAutoSendLabel": {
+    "message": "クイック操作を自動送信する"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "一時的なチャット"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "履歴に保存されない一時的なチャットでChatGPTを開きます。"
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "常に一時的なチャットで開始"
+  },
+  "featureNoticeQuickActions": {
+    "message": "新機能: 選択したテキストを右クリックして翻訳・要約・説明・校正。設定では自動送信と一時的なチャットも利用できます。"
   }
 }

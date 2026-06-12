@@ -29,6 +29,13 @@ const FALLBACK_MESSAGES = {
   settingsThemeDark: 'Dark',
   featureNoticeChatState: 'New: manage chat states with collapsed or expanded sections.',
   featureNoticeAskSelection: 'New: select text on any page, right-click, and ask ChatGPT about it — straight from the sidebar.',
+  featureNoticeQuickActions: 'New: right-click selected text to translate, summarize, explain, or fix it — and try auto-send and temporary chat in the settings.',
+  settingsQuickActionsTitle: 'Context menu actions',
+  settingsQuickActionsHint: 'Right-click selected text on any page for quick actions: translate, summarize, explain, or fix grammar.',
+  settingsAutoSendLabel: 'Send quick actions automatically',
+  settingsTemporaryChatTitle: 'Temporary chat',
+  settingsTemporaryChatHint: 'Open ChatGPT in a temporary chat that is not saved to your history.',
+  settingsTemporaryChatLabel: 'Always start in temporary chat',
   featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
@@ -189,11 +196,13 @@ let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
 const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
-const FEATURE_NOTICE_TARGET_VERSION = '1.5.0';
+const FEATURE_NOTICE_TARGET_VERSION = '1.6.0';
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   themeMode: 'sidelyThemeMode',
-  featureNoticeDismissed: 'sidelyFeatureNoticeDismissedV150'
+  autoSend: 'sidelyAutoSendQuickActions',
+  temporaryChat: 'sidelyTemporaryChat',
+  featureNoticeDismissed: 'sidelyFeatureNoticeDismissedV160'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
@@ -210,7 +219,9 @@ const PROMPT_DELIVERY_TIMEOUT_MS = 45000;
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
-  themeMode: 'auto'
+  themeMode: 'auto',
+  autoSend: false,
+  temporaryChat: false
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -487,8 +498,8 @@ function applyLocalization() {
   });
 
   [
-    ['settings-sidebar-pinned-expanded', 'settings-sidebar-pinned-expanded-label'],
-    ['settings-sidebar-your-chats-expanded', 'settings-sidebar-your-chats-expanded-label']
+    ['settings-auto-send', 'settings-auto-send-label'],
+    ['settings-temporary-chat', 'settings-temporary-chat-label']
   ].forEach(([inputId, labelId]) => {
     const input = document.getElementById(inputId);
     const label = document.getElementById(labelId);
@@ -614,7 +625,7 @@ function mountPortalIntoIframe(base) {
   const iframe = getChatIframe();
   if (!iframe) return;
   // Load the root page; ChatGPT decides where to redirect
-  const targetSrc = `${base}/`;
+  const targetSrc = settingsState.temporaryChat ? `${base}/?temporary-chat=true` : `${base}/`;
   lastRequestedIframeSrc = targetSrc;
   iframe.dataset.currentSrc = targetSrc;
   setRefreshButtonLoading(true);
@@ -870,6 +881,9 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
+  nextState.autoSend = normalizeBooleanSetting(stored[STORAGE_KEYS.autoSend], SETTINGS_DEFAULTS.autoSend);
+  nextState.temporaryChat = normalizeBooleanSetting(stored[STORAGE_KEYS.temporaryChat], SETTINGS_DEFAULTS.temporaryChat);
+
   featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissed], false);
 
   settingsState = nextState;
@@ -886,6 +900,16 @@ function syncSettingsUI() {
   themeInputs.forEach(input => {
     input.checked = input.value === settingsState.themeMode;
   });
+
+  const autoSendInput = document.getElementById('settings-auto-send');
+  if (autoSendInput) {
+    autoSendInput.checked = settingsState.autoSend === true;
+  }
+
+  const temporaryChatInput = document.getElementById('settings-temporary-chat');
+  if (temporaryChatInput) {
+    temporaryChatInput.checked = settingsState.temporaryChat === true;
+  }
 }
 
 async function setExtensionLanguage(value) {
@@ -932,6 +956,25 @@ function setupSettingsControls() {
     });
   });
 
+  const autoSendInput = document.getElementById('settings-auto-send');
+  if (autoSendInput) {
+    autoSendInput.addEventListener('change', event => {
+      const enabled = Boolean(event.target.checked);
+      settingsState.autoSend = enabled;
+      storageSet({ [STORAGE_KEYS.autoSend]: enabled });
+    });
+  }
+
+  const temporaryChatInput = document.getElementById('settings-temporary-chat');
+  if (temporaryChatInput) {
+    temporaryChatInput.addEventListener('change', event => {
+      const enabled = Boolean(event.target.checked);
+      settingsState.temporaryChat = enabled;
+      storageSet({ [STORAGE_KEYS.temporaryChat]: enabled });
+      // Remount the portal so the temporary-chat mode takes effect right away.
+      loadChatPortal();
+    });
+  }
 }
 
 function setupFeatureNoticeControls() {
@@ -1013,7 +1056,7 @@ function cancelPromptDelivery() {
   pendingPromptDelivery = null;
 }
 
-function deliverPromptToIframe(text) {
+function deliverPromptToIframe(text, autoSend = false) {
   cancelPromptDelivery();
 
   const requestId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -1021,7 +1064,7 @@ function deliverPromptToIframe(text) {
     const iframe = getChatIframe();
     if (iframe && iframe.contentWindow) {
       try {
-        iframe.contentWindow.postMessage({ type: PROMPT_MESSAGE_TYPE, text, requestId }, '*');
+        iframe.contentWindow.postMessage({ type: PROMPT_MESSAGE_TYPE, text, requestId, autoSend }, '*');
       } catch (err) {
         // Iframe may be mid-navigation; keep retrying until the timeout.
       }
@@ -1045,6 +1088,11 @@ function handlePendingSelection(entry) {
     return;
   }
   clearStoredSelection();
+  const autoSend = entry.autoSend === true;
+  if (autoSend) {
+    deliverPromptToIframe(entry.text.trim(), true);
+    return;
+  }
   // Trailing blank line so the user can type their question right after
   // the quoted selection.
   deliverPromptToIframe(`${entry.text.trim()}\n\n`);

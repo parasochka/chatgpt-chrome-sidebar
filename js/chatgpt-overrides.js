@@ -496,6 +496,27 @@ function insertPromptText(text) {
   return inserted;
 }
 
+function findComposerSendButton() {
+  return (
+    document.querySelector('button[data-testid="send-button"]') ||
+    document.querySelector('#composer-submit-button') ||
+    document.querySelector('form button[type="submit"]') ||
+    null
+  );
+}
+
+// The send button enables asynchronously after the composer input event,
+// so keep retrying briefly before giving up.
+function submitComposerWhenReady(attemptsLeft = 20) {
+  const button = findComposerSendButton();
+  if (button && !button.disabled && button.getAttribute('aria-disabled') !== 'true') {
+    button.click();
+    return;
+  }
+  if (attemptsLeft <= 0) return;
+  setTimeout(() => submitComposerWhenReady(attemptsLeft - 1), 150);
+}
+
 window.addEventListener('message', event => {
   if (!event || !event.data || event.data.type !== SIDELY_PROMPT_MESSAGE) {
     return;
@@ -516,6 +537,9 @@ window.addEventListener('message', event => {
         event.origin
       );
     } catch (_) {}
+    if (event.data.autoSend === true) {
+      setTimeout(() => submitComposerWhenReady(), 150);
+    }
   }
 });
 

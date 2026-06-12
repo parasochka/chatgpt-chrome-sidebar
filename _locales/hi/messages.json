@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "नया: किसी भी पेज पर टेक्स्ट चुनें, राइट-क्लिक करें और साइडबार में सीधे ChatGPT से पूछें।"
+  },
+  "contextMenuTranslateSelection": {
+    "message": "चयनित टेक्स्ट का अनुवाद करें"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "चयनित टेक्स्ट का सारांश बनाएं"
+  },
+  "contextMenuExplainSelection": {
+    "message": "सरल शब्दों में समझाएं"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "व्याकरण और वर्तनी सुधारें"
+  },
+  "contextMenuAskPage": {
+    "message": "इस पेज के बारे में ChatGPT से पूछें"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "कॉन्टेक्स्ट मेनू क्रियाएं"
+  },
+  "settingsQuickActionsHint": {
+    "message": "किसी भी पेज पर टेक्स्ट चुनें और राइट-क्लिक करें: अनुवाद, सारांश, व्याख्या या सुधार।"
+  },
+  "settingsAutoSendLabel": {
+    "message": "त्वरित क्रियाएं अपने आप भेजें"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "अस्थायी चैट"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "ChatGPT को अस्थायी चैट में खोलें, जो आपके इतिहास में सहेजी नहीं जाती।"
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "हमेशा अस्थायी चैट में शुरू करें"
+  },
+  "featureNoticeQuickActions": {
+    "message": "नया: चुने हुए टेक्स्ट पर राइट-क्लिक करके अनुवाद, सारांश, व्याख्या या सुधार करें — सेटिंग्स में स्वचालित भेजना और अस्थायी चैट भी उपलब्ध हैं।"
   }
 }

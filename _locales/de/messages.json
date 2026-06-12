@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "Neu: Text auf einer beliebigen Seite markieren, Rechtsklick — und ChatGPT direkt in der Seitenleiste dazu fragen."
+  },
+  "contextMenuTranslateSelection": {
+    "message": "Auswahl übersetzen"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "Auswahl zusammenfassen"
+  },
+  "contextMenuExplainSelection": {
+    "message": "Einfach erklären"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "Grammatik und Rechtschreibung korrigieren"
+  },
+  "contextMenuAskPage": {
+    "message": "ChatGPT zu dieser Seite fragen"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "Kontextmenü-Aktionen"
+  },
+  "settingsQuickActionsHint": {
+    "message": "Markieren Sie Text auf einer beliebigen Seite und klicken Sie mit der rechten Maustaste: Übersetzen, Zusammenfassen, Erklären oder Korrigieren."
+  },
+  "settingsAutoSendLabel": {
+    "message": "Schnellaktionen automatisch senden"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "Temporärer Chat"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "ChatGPT in einem temporären Chat öffnen, der nicht im Verlauf gespeichert wird."
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "Immer im temporären Chat starten"
+  },
+  "featureNoticeQuickActions": {
+    "message": "Neu: Markierten Text per Rechtsklick übersetzen, zusammenfassen, erklären oder korrigieren — plus Auto-Senden und temporärer Chat in den Einstellungen."
   }
 }

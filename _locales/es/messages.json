@@ -113,5 +113,41 @@
   },
   "featureNoticeAskSelection": {
     "message": "Novedad: selecciona texto en cualquier página, haz clic derecho y pregunta a ChatGPT directamente en la barra lateral."
+  },
+  "contextMenuTranslateSelection": {
+    "message": "Traducir selección"
+  },
+  "contextMenuSummarizeSelection": {
+    "message": "Resumir selección"
+  },
+  "contextMenuExplainSelection": {
+    "message": "Explicar en términos sencillos"
+  },
+  "contextMenuGrammarSelection": {
+    "message": "Corregir gramática y ortografía"
+  },
+  "contextMenuAskPage": {
+    "message": "Preguntar a ChatGPT sobre esta página"
+  },
+  "settingsQuickActionsTitle": {
+    "message": "Acciones del menú contextual"
+  },
+  "settingsQuickActionsHint": {
+    "message": "Selecciona texto en cualquier página y haz clic derecho: traducir, resumir, explicar o corregir."
+  },
+  "settingsAutoSendLabel": {
+    "message": "Enviar acciones rápidas automáticamente"
+  },
+  "settingsTemporaryChatTitle": {
+    "message": "Chat temporal"
+  },
+  "settingsTemporaryChatHint": {
+    "message": "Abrir ChatGPT en un chat temporal que no se guarda en tu historial."
+  },
+  "settingsTemporaryChatLabel": {
+    "message": "Empezar siempre en chat temporal"
+  },
+  "featureNoticeQuickActions": {
+    "message": "Nuevo: haz clic derecho sobre el texto seleccionado para traducirlo, resumirlo, explicarlo o corregirlo; además, envío automático y chat temporal en los ajustes."
   }
 }
