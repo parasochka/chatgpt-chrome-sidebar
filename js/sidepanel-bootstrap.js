@@ -28,6 +28,7 @@ const FALLBACK_MESSAGES = {
   settingsThemeLight: 'Light',
   settingsThemeDark: 'Dark',
   featureNoticeChatState: 'New: manage chat states with collapsed or expanded sections.',
+  featureNoticeAskSelection: 'New: select text on any page, right-click, and ask ChatGPT about it — straight from the sidebar.',
   featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
@@ -188,16 +189,24 @@ let lastRequestedIframeSrc = '';
 let toolbarInitialized = false;
 const REFRESH_BUTTON_TIMEOUT_MS = 15000;
 let refreshButtonResetTimeoutId = null;
-const FEATURE_NOTICE_TARGET_VERSION = '1.1';
+const FEATURE_NOTICE_TARGET_VERSION = '1.5.0';
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   themeMode: 'sidelyThemeMode',
-  featureNoticeDismissedV11: 'sidelyFeatureNoticeDismissedV11'
+  featureNoticeDismissed: 'sidelyFeatureNoticeDismissedV150'
 };
 
 const ALLOWED_LANGUAGES = Object.keys(LOCALE_FOLDER_BY_LANGUAGE);
 const THEME_MODES = ['auto', 'light', 'dark'];
 const THEME_MESSAGE_TYPE = 'sidely-theme-change';
+
+// Selected-text → ChatGPT composer hand-off
+const SELECTION_STORAGE_KEY = 'sidelyPendingSelection';
+const SELECTION_MAX_AGE_MS = 60000;
+const PROMPT_MESSAGE_TYPE = 'sidely-insert-prompt';
+const PROMPT_ACK_MESSAGE_TYPE = 'sidely-insert-prompt-ack';
+const PROMPT_DELIVERY_INTERVAL_MS = 700;
+const PROMPT_DELIVERY_TIMEOUT_MS = 45000;
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
@@ -693,7 +702,7 @@ function syncFeatureNoticeVisibility() {
 async function dismissFeatureNotice() {
   featureNoticeDismissed = true;
   syncFeatureNoticeVisibility();
-  await storageSet({ [STORAGE_KEYS.featureNoticeDismissedV11]: true });
+  await storageSet({ [STORAGE_KEYS.featureNoticeDismissed]: true });
 }
 
 function getStorageAreasByPriority() {
@@ -861,7 +870,7 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
-  featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissedV11], false);
+  featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissed], false);
 
   settingsState = nextState;
   applyThemeMode(settingsState.themeMode);
@@ -971,6 +980,122 @@ function isSettingsPanelVisible() {
   return Boolean(panel && panel.hidden === false);
 }
 
+// ---------------------------------------------------------------------------
+// Selected-text hand-off: read the pending selection saved by the service
+// worker and deliver it into the ChatGPT iframe. The content script inside
+// the iframe inserts it into the composer and replies with an ack; until
+// then we keep re-posting (the iframe may still be loading).
+// ---------------------------------------------------------------------------
+let pendingPromptDelivery = null;
+
+function getSelectionStorageArea() {
+  if (typeof chrome === 'undefined' || !chrome?.storage) {
+    return null;
+  }
+  return chrome.storage.session || chrome.storage.local || null;
+}
+
+function clearStoredSelection() {
+  const area = getSelectionStorageArea();
+  if (area) {
+    try {
+      area.remove(SELECTION_STORAGE_KEY);
+    } catch (err) {
+      console.warn('Failed to clear pending selection', err);
+    }
+  }
+}
+
+function cancelPromptDelivery() {
+  if (!pendingPromptDelivery) return;
+  clearInterval(pendingPromptDelivery.intervalId);
+  clearTimeout(pendingPromptDelivery.timeoutId);
+  pendingPromptDelivery = null;
+}
+
+function deliverPromptToIframe(text) {
+  cancelPromptDelivery();
+
+  const requestId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  const post = () => {
+    const iframe = getChatIframe();
+    if (iframe && iframe.contentWindow) {
+      try {
+        iframe.contentWindow.postMessage({ type: PROMPT_MESSAGE_TYPE, text, requestId }, '*');
+      } catch (err) {
+        // Iframe may be mid-navigation; keep retrying until the timeout.
+      }
+    }
+  };
+
+  pendingPromptDelivery = {
+    requestId,
+    intervalId: window.setInterval(post, PROMPT_DELIVERY_INTERVAL_MS),
+    timeoutId: window.setTimeout(cancelPromptDelivery, PROMPT_DELIVERY_TIMEOUT_MS)
+  };
+  post();
+}
+
+function handlePendingSelection(entry) {
+  if (!entry || typeof entry.text !== 'string' || !entry.text.trim()) {
+    return;
+  }
+  if (typeof entry.createdAt === 'number' && Date.now() - entry.createdAt > SELECTION_MAX_AGE_MS) {
+    clearStoredSelection();
+    return;
+  }
+  clearStoredSelection();
+  // Trailing blank line so the user can type their question right after
+  // the quoted selection.
+  deliverPromptToIframe(`${entry.text.trim()}\n\n`);
+}
+
+function consumeStoredSelection() {
+  const area = getSelectionStorageArea();
+  if (!area) {
+    return Promise.resolve();
+  }
+  return new Promise(resolve => {
+    try {
+      area.get([SELECTION_STORAGE_KEY], items => {
+        if (chrome?.runtime?.lastError) {
+          console.warn('Failed to read pending selection', chrome.runtime.lastError);
+        } else {
+          handlePendingSelection(items?.[SELECTION_STORAGE_KEY]);
+        }
+        resolve();
+      });
+    } catch (err) {
+      console.warn('Failed to read pending selection', err);
+      resolve();
+    }
+  });
+}
+
+function setupSelectionHandoff() {
+  window.addEventListener('message', event => {
+    if (!event?.data || event.data.type !== PROMPT_ACK_MESSAGE_TYPE) {
+      return;
+    }
+    const iframe = getChatIframe();
+    if (!iframe || event.source !== iframe.contentWindow) {
+      return;
+    }
+    if (pendingPromptDelivery && event.data.requestId === pendingPromptDelivery.requestId) {
+      cancelPromptDelivery();
+    }
+  });
+
+  if (typeof chrome !== 'undefined' && chrome?.storage?.onChanged) {
+    chrome.storage.onChanged.addListener(changes => {
+      const change = changes[SELECTION_STORAGE_KEY];
+      if (change && change.newValue) {
+        handlePendingSelection(change.newValue);
+      }
+    });
+  }
+}
+
 async function loadChatPortal() {
   const runId = ++portalLoadRunId;
   setRefreshButtonLoading(true);
@@ -1007,7 +1132,9 @@ async function bootstrapSidepanel() {
   setupFeatureNoticeControls();
   hideSettingsPanel();
   setupToolbarInteractions();
+  setupSelectionHandoff();
   await loadChatPortal();
+  await consumeStoredSelection();
 }
 
 document.addEventListener('DOMContentLoaded', bootstrapSidepanel);

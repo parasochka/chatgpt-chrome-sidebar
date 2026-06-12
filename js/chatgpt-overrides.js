@@ -1,5 +1,7 @@
 const SIDELY_THEME_MESSAGE = 'sidely-theme-change';
 const SIDELY_FRAME_NAME = 'sidely-frame';
+const SIDELY_PROMPT_MESSAGE = 'sidely-insert-prompt';
+const SIDELY_PROMPT_ACK_MESSAGE = 'sidely-insert-prompt-ack';
 
 // Detect whether we are inside the extension's sidebar iframe.
 // Primary strategy: the sidebar sets <iframe name="sidely-frame"> before
@@ -415,6 +417,107 @@ function getOwnExtensionOrigin() {
   } catch (_) {}
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// Selected-text hand-off: the sidebar posts the user's page selection here
+// so it lands directly in the ChatGPT composer.
+// ---------------------------------------------------------------------------
+function findPromptComposer() {
+  return (
+    document.querySelector('#prompt-textarea') ||
+    document.querySelector('form [contenteditable="true"]') ||
+    document.querySelector('form textarea') ||
+    null
+  );
+}
+
+function setComposerCaretToEnd(composer) {
+  try {
+    const selection = window.getSelection();
+    if (selection) {
+      selection.selectAllChildren(composer);
+      selection.collapseToEnd();
+    }
+  } catch (_) {}
+}
+
+function insertPromptText(text) {
+  const composer = findPromptComposer();
+  if (!composer) return false;
+
+  if (composer.tagName === 'TEXTAREA') {
+    try {
+      const setter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
+      const nextValue = composer.value ? `${composer.value}\n${text}` : text;
+      if (setter) {
+        setter.call(composer, nextValue);
+      } else {
+        composer.value = nextValue;
+      }
+      composer.dispatchEvent(new Event('input', { bubbles: true }));
+      composer.focus();
+      composer.selectionStart = composer.selectionEnd = composer.value.length;
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // ProseMirror contenteditable composer
+  composer.focus();
+  setComposerCaretToEnd(composer);
+
+  let inserted = false;
+  try {
+    inserted = document.execCommand('insertText', false, text);
+  } catch (_) {}
+
+  if (!inserted) {
+    // Fallback: build the paragraphs manually and notify the editor.
+    try {
+      composer.textContent = '';
+      text.split('\n').forEach(line => {
+        const p = document.createElement('p');
+        if (line) {
+          p.textContent = line;
+        } else {
+          p.appendChild(document.createElement('br'));
+        }
+        composer.appendChild(p);
+      });
+      composer.dispatchEvent(new InputEvent('input', { bubbles: true }));
+      inserted = true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  setComposerCaretToEnd(composer);
+  return inserted;
+}
+
+window.addEventListener('message', event => {
+  if (!event || !event.data || event.data.type !== SIDELY_PROMPT_MESSAGE) {
+    return;
+  }
+  // Only trust prompt messages coming from the extension's own sidebar page.
+  const ownOrigin = getOwnExtensionOrigin();
+  if (!event.origin || !ownOrigin || event.origin !== ownOrigin) {
+    return;
+  }
+  const text = typeof event.data.text === 'string' ? event.data.text : '';
+  if (!text) {
+    return;
+  }
+  if (insertPromptText(text) && event.source) {
+    try {
+      event.source.postMessage(
+        { type: SIDELY_PROMPT_ACK_MESSAGE, requestId: event.data.requestId },
+        event.origin
+      );
+    } catch (_) {}
+  }
+});
 
 window.addEventListener('message', event => {
   if (!event || !event.data || event.data.type !== SIDELY_THEME_MESSAGE) {

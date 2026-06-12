@@ -106,5 +106,12 @@
   },
   "featureNoticeCloseLabel": {
     "message": "Закрыть уведомление о новой функции"
+  },
+  "contextMenuAskSelection": {
+    "message": "Спросить ChatGPT о «%s»",
+    "description": "%s is replaced by the selected text in the context menu."
+  },
+  "featureNoticeAskSelection": {
+    "message": "Новое: выделите текст на любой странице, нажмите правой кнопкой — и спросите ChatGPT прямо в боковой панели."
   }
 }

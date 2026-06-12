@@ -106,5 +106,12 @@
   },
   "featureNoticeCloseLabel": {
     "message": "Fechar aviso de novo recurso"
+  },
+  "contextMenuAskSelection": {
+    "message": "Perguntar ao ChatGPT sobre “%s”",
+    "description": "%s is replaced by the selected text in the context menu."
+  },
+  "featureNoticeAskSelection": {
+    "message": "Novidade: selecione um texto em qualquer página, clique com o botão direito e pergunte ao ChatGPT direto na barra lateral."
   }
 }

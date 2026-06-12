@@ -106,5 +106,12 @@
   },
   "featureNoticeCloseLabel": {
     "message": "新機能のお知らせを閉じる"
+  },
+  "contextMenuAskSelection": {
+    "message": "「%s」についてChatGPTに質問する",
+    "description": "%s is replaced by the selected text in the context menu."
+  },
+  "featureNoticeAskSelection": {
+    "message": "新機能：ページ上のテキストを選択して右クリックすると、サイドバーで直接ChatGPTに質問できます。"
   }
 }
