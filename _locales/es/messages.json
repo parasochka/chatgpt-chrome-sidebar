@@ -101,27 +101,6 @@
   "settingsThemeDark": {
     "message": "Oscuro"
   },
-  "settingsSidebarSectionsTitle": {
-    "message": "Secciones de la barra lateral de ChatGPT"
-  },
-  "settingsSidebarSectionsHint": {
-    "message": "Elige qué secciones se expanden de forma predeterminada cuando aparece la barra lateral de ChatGPT."
-  },
-  "settingsSidebarPinnedToggle": {
-    "message": "Fijados expandidos por defecto"
-  },
-  "settingsSidebarRecentsToggle": {
-    "message": "Recientes expandidos por defecto"
-  },
-  "settingsSidebarProjectsToggle": {
-    "message": "Proyectos expandidos por defecto"
-  },
-  "settingsSidebarYourChatsToggle": {
-    "message": "Tus chats expandidos por defecto"
-  },
-  "settingsSidebarGroupChatsToggle": {
-    "message": "Chats grupales expandidos por defecto"
-  },
   "featureNoticeChatState": {
     "message": "Nuevo: controla chats con secciones contraídas o expandidas."
   },

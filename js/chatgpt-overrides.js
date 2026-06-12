@@ -74,7 +74,6 @@ if (isSidelyFrame) {
     }
 
     // Normalize text for voice button keyword matching.
-    // Mirrors normalizeLabel() from chatgpt-sidebar-sections.js.
     function normalizeVoiceText(str) {
       return (str || '').toLowerCase().normalize('NFKC')
         .replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim();
@@ -161,8 +160,7 @@ if (isSidelyFrame) {
       var combined = normalizeVoiceText(aria + ' ' + title);
 
       if (combined) {
-        // Split into individual words and match each word against keywords,
-        // the same way chatgpt-sidebar-sections.js matches section labels.
+        // Split into individual words and match each word against keywords.
         var words = combined.split(' ').filter(Boolean);
         for (var k = 0; k < VOICE_BUTTON_KEYWORDS.length; k++) {
           var kw = normalizeVoiceText(VOICE_BUTTON_KEYWORDS[k]);

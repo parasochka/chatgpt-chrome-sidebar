@@ -101,27 +101,6 @@
   "settingsThemeDark": {
     "message": "Dark"
   },
-  "settingsSidebarSectionsTitle": {
-    "message": "ChatGPT sidebar sections"
-  },
-  "settingsSidebarSectionsHint": {
-    "message": "Choose which sections are expanded by default when the ChatGPT sidebar appears."
-  },
-  "settingsSidebarPinnedToggle": {
-    "message": "Pinned expanded by default"
-  },
-  "settingsSidebarRecentsToggle": {
-    "message": "Recents expanded by default"
-  },
-  "settingsSidebarProjectsToggle": {
-    "message": "Projects expanded by default"
-  },
-  "settingsSidebarYourChatsToggle": {
-    "message": "Your chats expanded by default"
-  },
-  "settingsSidebarGroupChatsToggle": {
-    "message": "Group chats expanded by default"
-  },
   "featureNoticeChatState": {
     "message": "New: manage chat states with collapsed or expanded sections."
   },

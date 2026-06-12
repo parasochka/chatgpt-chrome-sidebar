@@ -25,8 +25,7 @@
         "https://*.openai.com/*"
       ],
       "js": [
-        "js/chatgpt-overrides.js",
-        "js/chatgpt-sidebar-sections.js"
+        "js/chatgpt-overrides.js"
       ],
       "css": [
         "css/chatgpt-overrides.css"

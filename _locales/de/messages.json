@@ -101,27 +101,6 @@
   "settingsThemeDark": {
     "message": "Dunkel"
   },
-  "settingsSidebarSectionsTitle": {
-    "message": "ChatGPT-Seitenleistenbereiche"
-  },
-  "settingsSidebarSectionsHint": {
-    "message": "Wählen Sie aus, welche Bereiche standardmäßig erweitert sind, wenn die ChatGPT-Seitenleiste angezeigt wird."
-  },
-  "settingsSidebarPinnedToggle": {
-    "message": "Angeheftete standardmäßig erweitert"
-  },
-  "settingsSidebarRecentsToggle": {
-    "message": "Zuletzt standardmäßig erweitert"
-  },
-  "settingsSidebarProjectsToggle": {
-    "message": "Projekte standardmäßig erweitert"
-  },
-  "settingsSidebarYourChatsToggle": {
-    "message": "Ihre Chats standardmäßig erweitert"
-  },
-  "settingsSidebarGroupChatsToggle": {
-    "message": "Gruppenchats standardmäßig erweitert"
-  },
   "featureNoticeChatState": {
     "message": "Neu: Chatstatus steuern, Bereiche eingeklappt oder ausgeklappt nutzen."
   },

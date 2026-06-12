@@ -101,27 +101,6 @@
   "settingsThemeDark": {
     "message": "Sombre"
   },
-  "settingsSidebarSectionsTitle": {
-    "message": "Sections de la barre latérale ChatGPT"
-  },
-  "settingsSidebarSectionsHint": {
-    "message": "Choisissez les sections développées par défaut lorsque la barre latérale ChatGPT apparaît."
-  },
-  "settingsSidebarPinnedToggle": {
-    "message": "Épinglés développés par défaut"
-  },
-  "settingsSidebarRecentsToggle": {
-    "message": "Récents développés par défaut"
-  },
-  "settingsSidebarProjectsToggle": {
-    "message": "Projets développés par défaut"
-  },
-  "settingsSidebarYourChatsToggle": {
-    "message": "Vos chats développés par défaut"
-  },
-  "settingsSidebarGroupChatsToggle": {
-    "message": "Discussions de groupe développées par défaut"
-  },
   "featureNoticeChatState": {
     "message": "Nouveau : gérez les chats, sections réduites ou développées."
   },

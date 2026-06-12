@@ -27,10 +27,6 @@ const FALLBACK_MESSAGES = {
   settingsThemeAuto: 'Auto (match system)',
   settingsThemeLight: 'Light',
   settingsThemeDark: 'Dark',
-  settingsSidebarSectionsTitle: 'ChatGPT sidebar sections',
-  settingsSidebarSectionsHint: 'Choose which sections are expanded by default when the ChatGPT sidebar appears.',
-  settingsSidebarPinnedToggle: 'Pinned expanded by default',
-  settingsSidebarRecentsToggle: 'Recents expanded by default',
   featureNoticeChatState: 'New: manage chat states with collapsed or expanded sections.',
   featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
@@ -196,8 +192,6 @@ const FEATURE_NOTICE_TARGET_VERSION = '1.1';
 const STORAGE_KEYS = {
   language: 'sidelyExtensionLanguage',
   themeMode: 'sidelyThemeMode',
-  sidebarPinnedExpanded: 'sidelySidebarPinnedExpanded',
-  sidebarYourChatsExpanded: 'sidelySidebarYourChatsExpanded',
   featureNoticeDismissedV11: 'sidelyFeatureNoticeDismissedV11'
 };
 
@@ -207,9 +201,7 @@ const THEME_MESSAGE_TYPE = 'sidely-theme-change';
 
 const SETTINGS_DEFAULTS = {
   language: DEFAULT_LANGUAGE,
-  themeMode: 'auto',
-  sidebarPinnedExpanded: true,
-  sidebarYourChatsExpanded: true
+  themeMode: 'auto'
 };
 
 let settingsState = { ...SETTINGS_DEFAULTS };
@@ -772,15 +764,6 @@ function storageGet(keys) {
 
 function storageSet(items) {
   const normalizedItems = { ...items };
-  const booleanStorageDefaults = {
-    [STORAGE_KEYS.sidebarPinnedExpanded]: SETTINGS_DEFAULTS.sidebarPinnedExpanded,
-    [STORAGE_KEYS.sidebarYourChatsExpanded]: SETTINGS_DEFAULTS.sidebarYourChatsExpanded
-  };
-  Object.entries(booleanStorageDefaults).forEach(([key, defaultValue]) => {
-    if (Object.prototype.hasOwnProperty.call(normalizedItems, key)) {
-      normalizedItems[key] = normalizeBooleanSetting(normalizedItems[key], defaultValue);
-    }
-  });
 
   return new Promise(resolve => {
     const storageAreas = getStorageAreasByPriority();
@@ -878,15 +861,6 @@ async function loadSettingsFromStorage() {
     nextState.themeMode = normalizeThemeMode(stored[STORAGE_KEYS.themeMode]);
   }
 
-  nextState.sidebarPinnedExpanded = normalizeBooleanSetting(
-    stored[STORAGE_KEYS.sidebarPinnedExpanded],
-    SETTINGS_DEFAULTS.sidebarPinnedExpanded
-  );
-  nextState.sidebarYourChatsExpanded = normalizeBooleanSetting(
-    stored[STORAGE_KEYS.sidebarYourChatsExpanded],
-    SETTINGS_DEFAULTS.sidebarYourChatsExpanded
-  );
-
   featureNoticeDismissed = normalizeBooleanSetting(stored[STORAGE_KEYS.featureNoticeDismissedV11], false);
 
   settingsState = nextState;
@@ -903,16 +877,6 @@ function syncSettingsUI() {
   themeInputs.forEach(input => {
     input.checked = input.value === settingsState.themeMode;
   });
-
-  const sidebarPinnedInput = document.getElementById('settings-sidebar-pinned-expanded');
-  if (sidebarPinnedInput) {
-    sidebarPinnedInput.checked = !!settingsState.sidebarPinnedExpanded;
-  }
-
-  const sidebarYourChatsInput = document.getElementById('settings-sidebar-your-chats-expanded');
-  if (sidebarYourChatsInput) {
-    sidebarYourChatsInput.checked = !!settingsState.sidebarYourChatsExpanded;
-  }
 }
 
 async function setExtensionLanguage(value) {
@@ -959,33 +923,6 @@ function setupSettingsControls() {
     });
   });
 
-  const sidebarBooleanControls = [
-    {
-      id: 'settings-sidebar-pinned-expanded',
-      stateKey: 'sidebarPinnedExpanded',
-      storageKey: STORAGE_KEYS.sidebarPinnedExpanded
-    },
-    {
-      id: 'settings-sidebar-your-chats-expanded',
-      stateKey: 'sidebarYourChatsExpanded',
-      storageKey: STORAGE_KEYS.sidebarYourChatsExpanded
-    }
-  ];
-
-  sidebarBooleanControls.forEach(control => {
-    const input = document.getElementById(control.id);
-    if (!input) {
-      return;
-    }
-    input.addEventListener('change', event => {
-      if (!(event.target instanceof HTMLInputElement)) {
-        return;
-      }
-      const value = !!event.target.checked;
-      settingsState[control.stateKey] = value;
-      storageSet({ [control.storageKey]: value });
-    });
-  });
 }
 
 function setupFeatureNoticeControls() {

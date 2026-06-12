@@ -101,27 +101,6 @@
   "settingsThemeDark": {
     "message": "Тёмная"
   },
-  "settingsSidebarSectionsTitle": {
-    "message": "Разделы боковой панели ChatGPT"
-  },
-  "settingsSidebarSectionsHint": {
-    "message": "Выберите, какие разделы будут развернуты по умолчанию при появлении боковой панели ChatGPT."
-  },
-  "settingsSidebarPinnedToggle": {
-    "message": "Закреплённые развернуты по умолчанию"
-  },
-  "settingsSidebarRecentsToggle": {
-    "message": "Недавние развернуты по умолчанию"
-  },
-  "settingsSidebarProjectsToggle": {
-    "message": "Проекты развернуты по умолчанию"
-  },
-  "settingsSidebarYourChatsToggle": {
-    "message": "Ваши чаты развернуты по умолчанию"
-  },
-  "settingsSidebarGroupChatsToggle": {
-    "message": "Групповые чаты развернуты по умолчанию"
-  },
   "featureNoticeChatState": {
     "message": "Новое: управляйте чатами, сворачивайте и разворачивайте разделы."
   },
