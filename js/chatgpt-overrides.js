@@ -497,10 +497,22 @@ function insertPromptText(text) {
 }
 
 function findComposerSendButton() {
-  return (
+  const direct =
     document.querySelector('button[data-testid="send-button"]') ||
-    document.querySelector('#composer-submit-button') ||
-    document.querySelector('form button[type="submit"]') ||
+    document.getElementById('composer-submit-button');
+  if (direct) return direct;
+
+  // Scope the generic fallbacks to the composer's own form so we never click
+  // a submit button belonging to some other dialog on the page.
+  const composer = findPromptComposer();
+  const form =
+    (composer && composer.closest('form')) ||
+    document.querySelector('form[data-type="unified-composer"]');
+  if (!form) return null;
+
+  return (
+    form.querySelector('button[type="submit"]') ||
+    form.querySelector('button[aria-label*="Send" i]') ||
     null
   );
 }
