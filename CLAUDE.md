@@ -43,9 +43,10 @@ and by loading the unpacked extension in Chrome.
     extension-language setting via the `LANGUAGE_NAMES` map. These honor the auto-send setting.
   - `sidely-ask-page` — Ask ChatGPT about this page (page context; inserts page title + URL, never auto-sends).
 - **Prompt hand-off pipeline**: context-menu click → worker opens side panel (must stay inside the
-  user gesture, synchronously) → payload `{ text, autoSend, createdAt }` written to
+  user gesture, synchronously) → payload `{ text, autoSend, createdAt, windowId }` written to
   `chrome.storage.session` under `sidelyPendingSelection` → bootstrap picks it up via
-  `storage.onChanged` (or `consumeStoredSelection()` on startup; entries older than 60 s are dropped)
+  `storage.onChanged` (or `consumeStoredSelection()` on startup; entries older than 60 s are dropped,
+  and with panels open in several windows only the panel whose window matches `windowId` consumes it)
   → posts `sidely-insert-prompt` messages into the iframe every 700 ms until the content script
   acks with `sidely-insert-prompt-ack` (45 s timeout) → content script inserts into the composer
   (`#prompt-textarea`, ProseMirror contenteditable; textarea fallback) and, when `autoSend` is true,
@@ -95,7 +96,7 @@ Settings are written by `storageSet()` to `chrome.storage.sync` first, falling b
 | `sidelyTemporaryChat` | bool | `false` | Load ChatGPT with `?temporary-chat=true`. |
 | `sidelyShowDonateButton` | bool | `true` | Show the donate (heart) button in the toolbar. |
 | `sidelyFeatureNoticeDismissedV160` | bool | `false` | Current notice dismissed (key is version-suffixed). |
-| `sidelyPendingSelection` | object | — | Transient hand-off payload in `storage.session` (`{ text, autoSend, createdAt }`, max 4000 chars, 60 s TTL). |
+| `sidelyPendingSelection` | object | — | Transient hand-off payload in `storage.session` (`{ text, autoSend, createdAt, windowId }`, max 4000 chars, 60 s TTL). |
 
 Storage key constants are duplicated between the service worker and the bootstrap — change them in both.
 

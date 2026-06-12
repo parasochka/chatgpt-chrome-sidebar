@@ -326,6 +326,10 @@ function getCodeTextFromButton(btn) {
 }
 
 let lastHandledAt = 0;
+// Per-button "Copied!" state: keeps the original child nodes captured once,
+// so a re-click while the confirmation is shown can't save the "Copied!"
+// text node as the content to restore and lose the SVG icon.
+const copyButtonRestoreState = new WeakMap();
 document.addEventListener('click', async (e) => {
   const t = e.target;
   const btn = t && (t.closest('button,[role="button"],[data-testid]') || null);
@@ -377,11 +381,18 @@ document.addEventListener('click', async (e) => {
 
     // Swap the button content for "Copied!" and restore the original child
     // nodes afterwards (textContent alone would destroy the SVG icon).
-    const originalNodes = Array.from(btn.childNodes);
+    let restoreState = copyButtonRestoreState.get(btn);
+    if (restoreState) {
+      clearTimeout(restoreState.timeoutId);
+    } else {
+      restoreState = { originalNodes: Array.from(btn.childNodes) };
+      copyButtonRestoreState.set(btn, restoreState);
+    }
     btn.textContent = 'Copied!';
-    setTimeout(() => {
+    restoreState.timeoutId = setTimeout(() => {
+      copyButtonRestoreState.delete(btn);
       btn.textContent = '';
-      originalNodes.forEach(node => btn.appendChild(node));
+      restoreState.originalNodes.forEach(node => btn.appendChild(node));
     }, 1000);
   }
 }, true);
@@ -474,8 +485,12 @@ function insertPromptText(text) {
 
   if (!inserted) {
     // Fallback: build the paragraphs manually and notify the editor.
+    // Append after any existing draft instead of wiping the composer;
+    // only an empty editor (placeholder <p><br></p>) is cleared first.
     try {
-      composer.textContent = '';
+      if (!(composer.textContent || '').trim()) {
+        composer.textContent = '';
+      }
       text.split('\n').forEach(line => {
         const p = document.createElement('p');
         if (line) {

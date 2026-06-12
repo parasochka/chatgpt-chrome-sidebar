@@ -128,7 +128,9 @@ function getLocalizedString(key, fallback, substitutions) {
     try {
       const chromeMessage = chrome.i18n.getMessage(key, substitutions);
       if (typeof chromeMessage === 'string' && chromeMessage.length) {
-        return chromeMessage;
+        // chrome.i18n knows nothing about the __PORTAL__ convention used in
+        // the locale files, so run our substitutions over its result too.
+        return applyMessageSubstitutions(chromeMessage, substitutions);
       }
     } catch (err) {
       // ignore and fall back
@@ -570,7 +572,9 @@ function setupToolbarInteractions() {
       if (refreshButton.getAttribute('aria-disabled') === 'true') {
         return;
       }
-      reloadChatIframe();
+      // Re-run the auth probe alongside the reload so the sign-in notice
+      // appears or disappears in step with the actual session state.
+      loadChatPortal();
     });
   }
 
@@ -695,7 +699,9 @@ function renderPortalNotice(state) {
   root.style.margin = '0 auto';
   root.style.fontFamily = 'system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif';
   root.style.textAlign = 'center';
-  root.style.zIndex = '10';
+  // Positioned (paints above the iframe) but below the settings panel and,
+  // thanks to the .frame-body anchor, never on top of the toolbar.
+  root.style.zIndex = '0';
 
   const box = document.createElement('div');
   box.style.width = '100%';
@@ -732,7 +738,11 @@ function renderPortalNotice(state) {
 
   box.appendChild(p);
   root.appendChild(box);
-  document.body.appendChild(root);
+  // Anchor inside the portal area: .frame-body is position:relative, so the
+  // notice floats over the iframe. Appended to <body> it used to sit on top
+  // of the toolbar and block its buttons.
+  const mountPoint = getPortalContainer() || document.body;
+  mountPoint.appendChild(root);
 }
 
 function clearPortalNotice() {
@@ -785,44 +795,48 @@ function normalizeBooleanSetting(value, defaultValue = true) {
 }
 
 function storageGet(keys) {
-  return new Promise(resolve => {
-    const storageAreas = getStorageAreasByPriority();
-    if (!storageAreas.length) {
-      const results = {};
-      if (Array.isArray(keys) && typeof window !== 'undefined' && window?.localStorage) {
-        keys.forEach(key => {
-          const value = window.localStorage.getItem(key);
-          if (value !== null) {
-            results[key] = value;
-          }
-        });
-      }
-      resolve(results);
-      return;
+  const storageAreas = getStorageAreasByPriority();
+  if (!storageAreas.length) {
+    const results = {};
+    if (Array.isArray(keys) && typeof window !== 'undefined' && window?.localStorage) {
+      keys.forEach(key => {
+        const value = window.localStorage.getItem(key);
+        if (value !== null) {
+          results[key] = value;
+        }
+      });
     }
+    return Promise.resolve(results);
+  }
 
-    const tryGet = index => {
-      if (index >= storageAreas.length) {
-        resolve({});
-        return;
-      }
-      const storageArea = storageAreas[index];
-      try {
-        storageArea.get(keys, items => {
-          if (chrome?.runtime?.lastError) {
-            console.warn('storage.get failed', chrome.runtime.lastError);
-            tryGet(index + 1);
-            return;
-          }
-          resolve(items || {});
-        });
-      } catch (err) {
-        console.warn('storage.get error', err);
-        tryGet(index + 1);
-      }
-    };
+  const readArea = storageArea => new Promise(resolve => {
+    try {
+      storageArea.get(keys, items => {
+        if (chrome?.runtime?.lastError) {
+          console.warn('storage.get failed', chrome.runtime.lastError);
+          resolve(null);
+          return;
+        }
+        resolve(items || {});
+      });
+    } catch (err) {
+      console.warn('storage.get error', err);
+      resolve(null);
+    }
+  });
 
-    tryGet(0);
+  // Read every area and merge per key with the highest-priority area (sync)
+  // winning — the same precedence the service worker uses. Taking only the
+  // first responsive area dropped values that had been written to the local
+  // fallback while sync was unavailable.
+  return Promise.all(storageAreas.map(readArea)).then(results => {
+    const merged = {};
+    for (let i = results.length - 1; i >= 0; i--) {
+      if (results[i]) {
+        Object.assign(merged, results[i]);
+      }
+    }
+    return merged;
   });
 }
 
@@ -1099,6 +1113,33 @@ function isSettingsPanelVisible() {
 // then we keep re-posting (the iframe may still be loading).
 // ---------------------------------------------------------------------------
 let pendingPromptDelivery = null;
+let currentWindowIdPromise = null;
+
+// The side panel exists per browser window; the payload carries the windowId
+// of the window where the context menu was clicked so that, with panels open
+// in several windows, only the matching panel consumes it.
+function getCurrentWindowId() {
+  if (!currentWindowIdPromise) {
+    currentWindowIdPromise = new Promise(resolve => {
+      if (typeof chrome === 'undefined' || !chrome?.windows?.getCurrent) {
+        resolve(null);
+        return;
+      }
+      try {
+        chrome.windows.getCurrent(win => {
+          if (chrome?.runtime?.lastError) {
+            resolve(null);
+            return;
+          }
+          resolve(typeof win?.id === 'number' ? win.id : null);
+        });
+      } catch (err) {
+        resolve(null);
+      }
+    });
+  }
+  return currentWindowIdPromise;
+}
 
 function getSelectionStorageArea() {
   if (typeof chrome === 'undefined' || !chrome?.storage) {
@@ -1148,13 +1189,20 @@ function deliverPromptToIframe(text, autoSend = false) {
   post();
 }
 
-function handlePendingSelection(entry) {
+async function handlePendingSelection(entry) {
   if (!entry || typeof entry.text !== 'string' || !entry.text.trim()) {
     return;
   }
   if (typeof entry.createdAt === 'number' && Date.now() - entry.createdAt > SELECTION_MAX_AGE_MS) {
     clearStoredSelection();
     return;
+  }
+  if (typeof entry.windowId === 'number' && entry.windowId >= 0) {
+    const ownWindowId = await getCurrentWindowId();
+    if (typeof ownWindowId === 'number' && ownWindowId !== entry.windowId) {
+      // Another window's panel will consume this payload.
+      return;
+    }
   }
   clearStoredSelection();
   const autoSend = entry.autoSend === true;
