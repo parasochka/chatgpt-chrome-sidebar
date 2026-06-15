@@ -198,7 +198,7 @@ async function ensureActiveLocaleMessages(language) {
 }
 
 const CHATGPT_PORTAL = 'https://chatgpt.com';
-const DONATE_URL = 'https://buy.stripe.com/aFa00c0vLdY0bGL2vG53O00';
+const DONATE_URL = 'https://buy.stripe.com/7sYcMY4Z3f7m3JSgRF00000';
 const PORTAL_PROBE_TIMEOUT_MS = 8000;
 
 let lastRequestedIframeSrc = '';
