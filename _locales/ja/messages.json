@@ -154,18 +154,18 @@
     "message": "Sidelyを応援する"
   },
   "donateButtonTooltip": {
-    "message": "Sidelyが気に入りましたか？Stripeでの1回限りの寄付で応援できます。"
+    "message": "Sidelyが気に入りましたか？Ko-fiでの寄付で応援できます。"
   },
   "settingsDonateTitle": {
     "message": "Sidelyを応援する"
   },
   "settingsDonateHint": {
-    "message": "Sidelyは無料です。役に立っていると感じたら、Stripeでの1回限りの寄付で応援できます。"
+    "message": "Sidelyは無料です。役に立っていると感じたら、Ko-fiでの寄付で応援できます。"
   },
   "settingsDonateToggleLabel": {
     "message": "ツールバーに寄付ボタンを表示する"
   },
   "settingsDonateAction": {
-    "message": "Stripeで寄付する"
+    "message": "Ko-fiで寄付する"
   }
 }
