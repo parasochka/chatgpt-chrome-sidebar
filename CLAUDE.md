@@ -29,9 +29,9 @@ and by loading the unpacked extension in Chrome.
   a localized sign-in / Cloudflare notice when not authorized.
 - **Settings panel** (gear icon): extension language (10 options), theme (auto/light/dark),
   auto-send quick actions (checkbox), temporary chat (checkbox), donate (checkbox to show/hide the
-  toolbar donate button + an always-present "Donate via Stripe" button).
+  toolbar donate button + an always-present "Donate on Ko-fi" button).
 - **Donate button**: yellow heart icon in the toolbar (right zone, left of the settings gear),
-  wiggles once after load, opens the Stripe one-time payment link (`DONATE_URL` in
+  wiggles once after load, opens the Ko-fi donation page (`DONATE_URL` in
   `js/sidepanel-bootstrap.js`). Hideable via settings; the donate button inside the settings panel always stays.
 - **Context menu** (registered in the service worker; titles follow the extension-language setting —
   the worker fetches the chosen `_locales/*/messages.json` directly, falls back to `chrome.i18n`,
