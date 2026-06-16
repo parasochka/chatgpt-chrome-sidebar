@@ -37,11 +37,11 @@ const FALLBACK_MESSAGES = {
   settingsTemporaryChatHint: 'Open ChatGPT in a temporary chat that is not saved to your history.',
   settingsTemporaryChatLabel: 'Always start in temporary chat',
   donateButtonAriaLabel: 'Support Sidely',
-  donateButtonTooltip: 'Enjoying Sidely? Support it with a donation on Ko-fi.',
+  donateButtonTooltip: 'Enjoying Sidely? Support it with a one-time donation via Stripe.',
   settingsDonateTitle: 'Support Sidely',
-  settingsDonateHint: 'Sidely is free. If it saves you time, you can support it with a donation on Ko-fi.',
+  settingsDonateHint: 'Sidely is free. If it saves you time, you can support it with a one-time donation via Stripe.',
   settingsDonateToggleLabel: 'Show donate button in the toolbar',
-  settingsDonateAction: 'Donate on Ko-fi',
+  settingsDonateAction: 'Donate via Stripe',
   featureNoticeCloseLabel: 'Close new feature notice',
   noticeCloudflare: 'You need to complete the Cloudflare check. Open __PORTAL__ in a tab, sign in, then return.',
   noticeUnauthorized: 'You need to sign in to your ChatGPT account. Open __PORTAL__ in a tab, sign in, then return.',
@@ -198,7 +198,7 @@ async function ensureActiveLocaleMessages(language) {
 }
 
 const CHATGPT_PORTAL = 'https://chatgpt.com';
-const DONATE_URL = 'https://ko-fi.com/sidely';
+const DONATE_URL = 'https://buy.stripe.com/7sYcMY4Z3f7m3JSgRF00000';
 const PORTAL_PROBE_TIMEOUT_MS = 8000;
 
 let lastRequestedIframeSrc = '';

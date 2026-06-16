@@ -154,18 +154,18 @@
     "message": "Sidely unterstützen"
   },
   "donateButtonTooltip": {
-    "message": "Gefällt dir Sidely? Unterstütze es mit einer Spende über Ko-fi."
+    "message": "Gefällt dir Sidely? Unterstütze es mit einer einmaligen Spende über Stripe."
   },
   "settingsDonateTitle": {
     "message": "Sidely unterstützen"
   },
   "settingsDonateHint": {
-    "message": "Sidely ist kostenlos. Wenn es dir Zeit spart, kannst du es mit einer Spende über Ko-fi unterstützen."
+    "message": "Sidely ist kostenlos. Wenn es dir Zeit spart, kannst du es mit einer einmaligen Spende über Stripe unterstützen."
   },
   "settingsDonateToggleLabel": {
     "message": "Spenden-Button in der Symbolleiste anzeigen"
   },
   "settingsDonateAction": {
-    "message": "Über Ko-fi spenden"
+    "message": "Über Stripe spenden"
   }
 }
