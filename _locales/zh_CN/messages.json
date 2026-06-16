@@ -154,18 +154,18 @@
     "message": "支持 Sidely"
   },
   "donateButtonTooltip": {
-    "message": "喜欢 Sidely？通过 Ko-fi 捐赠来支持它。"
+    "message": "喜欢 Sidely？通过 Stripe 一次性捐赠来支持它。"
   },
   "settingsDonateTitle": {
     "message": "支持 Sidely"
   },
   "settingsDonateHint": {
-    "message": "Sidely 完全免费。如果它为你节省了时间，欢迎通过 Ko-fi 进行捐赠支持。"
+    "message": "Sidely 完全免费。如果它为你节省了时间，欢迎通过 Stripe 进行一次性捐赠支持。"
   },
   "settingsDonateToggleLabel": {
     "message": "在工具栏中显示捐赠按钮"
   },
   "settingsDonateAction": {
-    "message": "通过 Ko-fi 捐赠"
+    "message": "通过 Stripe 捐赠"
   }
 }

@@ -154,18 +154,18 @@
     "message": "Sidely का समर्थन करें"
   },
   "donateButtonTooltip": {
-    "message": "Sidely पसंद है? Ko-fi पर दान करके इसका समर्थन करें।"
+    "message": "Sidely पसंद है? Stripe के ज़रिए एक बार के दान से इसका समर्थन करें।"
   },
   "settingsDonateTitle": {
     "message": "Sidely का समर्थन करें"
   },
   "settingsDonateHint": {
-    "message": "Sidely मुफ़्त है। अगर यह आपका समय बचाता है, तो Ko-fi पर दान करके इसका समर्थन कर सकते हैं।"
+    "message": "Sidely मुफ़्त है। अगर यह आपका समय बचाता है, तो Stripe के ज़रिए एक बार के दान से इसका समर्थन कर सकते हैं।"
   },
   "settingsDonateToggleLabel": {
     "message": "टूलबार में दान बटन दिखाएँ"
   },
   "settingsDonateAction": {
-    "message": "Ko-fi पर दान करें"
+    "message": "Stripe से दान करें"
   }
 }

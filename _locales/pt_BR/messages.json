@@ -154,18 +154,18 @@
     "message": "Apoiar o Sidely"
   },
   "donateButtonTooltip": {
-    "message": "Gosta do Sidely? Apoie com uma doação no Ko-fi."
+    "message": "Gosta do Sidely? Apoie com uma doação única via Stripe."
   },
   "settingsDonateTitle": {
     "message": "Apoiar o Sidely"
   },
   "settingsDonateHint": {
-    "message": "O Sidely é gratuito. Se ele economiza seu tempo, você pode apoiá-lo com uma doação no Ko-fi."
+    "message": "O Sidely é gratuito. Se ele economiza seu tempo, você pode apoiá-lo com uma doação única via Stripe."
   },
   "settingsDonateToggleLabel": {
     "message": "Mostrar o botão de doação na barra de ferramentas"
   },
   "settingsDonateAction": {
-    "message": "Doar no Ko-fi"
+    "message": "Doar via Stripe"
   }
 }
