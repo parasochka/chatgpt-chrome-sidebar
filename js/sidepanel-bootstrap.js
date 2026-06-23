@@ -198,6 +198,7 @@ async function ensureActiveLocaleMessages(language) {
 }
 
 const CHATGPT_PORTAL = 'https://chatgpt.com';
+const CHATGPT_TARGET_ORIGIN = 'https://chatgpt.com';
 const DONATE_URL = 'https://buy.stripe.com/7sYcMY4Z3f7m3JSgRF00000';
 const PORTAL_PROBE_TIMEOUT_MS = 8000;
 
@@ -333,7 +334,7 @@ function syncChatIframeTheme(theme, force = false) {
   }
   lastSyncedIframeTheme = resolved;
   try {
-    iframe.contentWindow.postMessage({ type: THEME_MESSAGE_TYPE, theme: resolved }, '*');
+    iframe.contentWindow.postMessage({ type: THEME_MESSAGE_TYPE, theme: resolved }, CHATGPT_TARGET_ORIGIN);
   } catch (err) {
     // Cross-origin iframe might block direct messaging; ignore silently.
   }
@@ -1174,7 +1175,10 @@ function deliverPromptToIframe(text, autoSend = false) {
     const iframe = getChatIframe();
     if (iframe && iframe.contentWindow) {
       try {
-        iframe.contentWindow.postMessage({ type: PROMPT_MESSAGE_TYPE, text, requestId, autoSend }, '*');
+        iframe.contentWindow.postMessage(
+          { type: PROMPT_MESSAGE_TYPE, text, requestId, autoSend },
+          CHATGPT_TARGET_ORIGIN
+        );
       } catch (err) {
         // Iframe may be mid-navigation; keep retrying until the timeout.
       }
@@ -1243,7 +1247,7 @@ function setupSelectionHandoff() {
       return;
     }
     const iframe = getChatIframe();
-    if (!iframe || event.source !== iframe.contentWindow) {
+    if (!iframe || event.source !== iframe.contentWindow || event.origin !== CHATGPT_TARGET_ORIGIN) {
       return;
     }
     if (pendingPromptDelivery && event.data.requestId === pendingPromptDelivery.requestId) {
