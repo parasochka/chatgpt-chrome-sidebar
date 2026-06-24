@@ -314,9 +314,30 @@
       height: 18px;
       fill: currentColor;
     }
+    .portal-notice__box {
+      width: 100%;
+      line-height: 1.45;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #1f2937;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      padding: 16px 20px;
+    }
+    .portal-notice__link {
+      color: #2563eb;
+    }
     body.theme-dark {
       background: #020617;
       color: #f1f5f9;
+    }
+    body.theme-dark .portal-notice__box {
+      background: rgba(32, 33, 35, 0.96);
+      color: #ececf1;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+    }
+    body.theme-dark .portal-notice__link {
+      color: #8ab4ff;
     }
     body.theme-dark .frame-wrap {
       background: #040c1a;
