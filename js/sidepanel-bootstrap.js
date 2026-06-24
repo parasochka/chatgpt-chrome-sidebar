@@ -704,19 +704,17 @@ function renderPortalNotice(state) {
   // thanks to the .frame-body anchor, never on top of the toolbar.
   root.style.zIndex = '0';
 
+  // Visual styling (background/text/link colors) lives in CSS so it can adapt
+  // to the active theme — a hardcoded white box made the text unreadable on the
+  // dark theme. See `.portal-notice__box` in css/sidepanel-layout.css.
   const box = document.createElement('div');
-  box.style.width = '100%';
-  box.style.lineHeight = '1.45';
-  box.style.fontSize = '14px';
-  box.style.background = 'rgba(255,255,255,0.95)';
-  box.style.borderRadius = '12px';
-  box.style.boxShadow = '0 6px 24px rgba(0,0,0,0.12)';
-  box.style.padding = '16px 20px';
+  box.className = 'portal-notice__box';
 
   const p = document.createElement('p');
   p.style.margin = '0 0 8px 0';
 
   const link = document.createElement('a');
+  link.className = 'portal-notice__link';
   link.href = state.base;
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
